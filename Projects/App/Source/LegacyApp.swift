@@ -1,12 +1,12 @@
 import SwiftUI
 import Feature
-import GoogleMaps
 import Legacy_DesignSystem
 
 @main
 struct LegacyApp: App {
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    
     init() {
-        GMSServices.provideAPIKey(apiKey)
         Pretendard.register()
     }
     

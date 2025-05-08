@@ -3,8 +3,7 @@ import GoogleMaps
 
 final class LocationManager: NSObject, ObservableObject {
     private let manager = CLLocationManager()
-    private var locationContinuation: CheckedContinuation<CLLocation, Never>?
-    
+
     @Published var location: CLLocation?
     @Published var isLoading = true
 
@@ -12,22 +11,14 @@ final class LocationManager: NSObject, ObservableObject {
         super.init()
         manager.delegate = self
         manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.distanceFilter = 10 //업뎃 미터
     }
-    
-    func requestAndWaitForLocation() async -> CLLocation {
+
+    func startUpdating() {
         manager.requestWhenInUseAuthorization()
-        
-        return await withCheckedContinuation { continuation in
-            locationContinuation = continuation
-            manager.startUpdatingLocation()
-        }
+        manager.startUpdatingLocation()
     }
-    
-    func updateLocation(_ location: CLLocation) {
-        self.location = location
-        self.isLoading = false
-    }
-    
+
     func stopUpdating() {
         manager.stopUpdatingLocation()
     }
@@ -42,13 +33,12 @@ extension LocationManager: CLLocationManagerDelegate {
             break
         }
     }
-    
+
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
-        
-        locationContinuation?.resume(returning: location)
-        locationContinuation = nil
-        manager.stopUpdatingLocation()
+        DispatchQueue.main.async {
+            self.location = location
+            self.isLoading = false
+        }
     }
 }
-

@@ -15,7 +15,7 @@ public struct RootView: View {
         LegacyTabBar(selection: $selection) {
             switch selection {
             case .shop:
-                Test()
+                ShopView()
             case .medal:
                 Test()
             case .flag:

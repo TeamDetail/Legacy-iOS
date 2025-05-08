@@ -28,8 +28,9 @@ public struct ExploreView: View {
             }
         }
         .task {
-            let location = await locationManager.requestAndWaitForLocation()
-            locationManager.updateLocation(location)
+//            let location = await locationManager.requestAndWaitForLocation()
+//            locationManager.updateLocation(location)
+            locationManager.startUpdating()
         }
         .onDisappear {
             locationManager.stopUpdating()

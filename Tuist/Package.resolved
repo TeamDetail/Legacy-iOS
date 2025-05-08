@@ -1,5 +1,5 @@
 {
-  "originHash" : "7a15bbe232cd43b23a0f40bc7ab885e641728f67f65a94c88aec8b991ea96802",
+  "originHash" : "da5b89167716cf3393a7f1164ef1160fa63c8fc642408b2d07952bddeaa861ca",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -33,8 +33,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/TeamDetail/Legacy-DesignSystem",
       "state" : {
-        "revision" : "40547ba6d754b55fe21a35ca888e8dd09daeba76",
-        "version" : "1.0.4"
+        "revision" : "0bd384ec0d20aef495d698bed122070bb6c60f03",
+        "version" : "1.0.6"
       }
     },
     {

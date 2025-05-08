@@ -48,7 +48,7 @@ struct LegacyTopBar: View {
                     }
                 } label: {
                     Image(icon: .menu)
-                        .foregroundStyle(.white)
+                        .foreground(LegacyColor.Common.white)
                         .frame(width: 56, height: 56)
                         .background(LegacyColor.Fill.normal)
                         .clipShape(size: 12)

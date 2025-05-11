@@ -1,25 +1,39 @@
-# Makefile
+.PHONY: go clean lint periphery codequality fresh
 
-# 프로젝트 설정 및 생성
-generate:
-	mise exec -- tuist install
-	Make generate
-	mise exec -- tuist generate
-	mise exec -- tuist edit
+# tuist generate
+go:
+	tuist generate
 
-# Xcode 관련 파일 정리
+# tuist clean
 clean:
-	rm -rf **/*.xcodeproj
-	rm -rf *.xcworkspace
+	tuist clean
 
-# tuist 클린 + Xcode 파일 정리
-reset:
-	mise exec -- tuist clean
-	rm -rf **/*.xcodeproj
-	rm -rf *.xcworkspace
+# SwiftLint
+lint:
+	swiftlint
 
-# Swift Package Manager 캐시 삭제
-clean-spm:
-	rm -rf ~/Library/Caches/org.swift.swiftpm
-	rm -rf ~/Library/org.swift.swiftpm
+# Periphery
+periphery:
+	periphery scan --strict
+
+# 통합 코드 퀄리티
+codequality:
+	Tuist/Scripts/CodeQualityRunScript.sh
+
+# 완전 클린 후 새로 시작
+fresh:
+	rm -rf \
+		DerivedData \
+		.build \
+		Tuist/Dependencies \
+		*.xcworkspace \
+		*.xcodeproj \
+		.graph \
+		.swiftpm \
+		.xcconfig \
+		.project.yml \
+		.project.swift
+	tuist clean
+	tuist generate
+
 

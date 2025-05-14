@@ -19,7 +19,8 @@ let project = Project(
                 .external(name: "Moya"),
                 .external(name: "GoogleMaps"),
                 .external(name: "FlexibleKit"),
-                .external(name: "Legacy-DesignSystem")
+                .external(name: "Legacy-DesignSystem"),
+                .external(name: "FlowKit"),
             ],
             settings: .settings(
                 base: [

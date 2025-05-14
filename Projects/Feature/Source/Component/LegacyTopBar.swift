@@ -8,10 +8,12 @@
 import SwiftUI
 import Legacy_DesignSystem
 import Shared
+import FlowKit
 
 struct LegacyTopBar: View {
     @State private var showMenu = false
     @State private var buttonFrame: CGRect = .zero
+    @Flow var flow
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -65,7 +67,7 @@ struct LegacyTopBar: View {
                     }
                 )
             }
-            .padding(.horizontal)
+            .padding(.horizontal, 14)
             .frame(maxWidth: .infinity)
             .frame(height: 72)
             .background(LegacyColor.Background.normal)
@@ -84,7 +86,7 @@ struct LegacyTopBar: View {
                     case .mail:
                         print("메일")
                     case .setting:
-                        print("메일")
+                        flow.push(SettingView())
                     case .wrong:
                         print("메일")
                     case .logout:

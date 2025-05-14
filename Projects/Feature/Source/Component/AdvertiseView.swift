@@ -10,7 +10,8 @@ import Legacy_DesignSystem
 import Shared
 
 struct AdvertiseView: View {
-    @State private var currentTime = ""
+    @ObservedObject var viewModel: ShopViewModel
+    
     var body: some View {
         VStack(spacing: 6) {
             VStack(alignment: .leading) {
@@ -33,10 +34,12 @@ struct AdvertiseView: View {
                 }
             }
             
+            
             HStack(alignment: .center) {
                 Text("초기화까지")
                     .foreground(LegacyColor.Label.netural)
-                Text("\(currentTime)")
+                
+                Text("초기화까지: \(formatTime(viewModel.timeRemaining))")
                     .foreground(LegacyColor.Purple.netural)
             }
             .frame(maxWidth: .infinity)
@@ -53,11 +56,7 @@ struct AdvertiseView: View {
         .clipShape(size: 20)
         .padding(.horizontal, 14)
         .onAppear {
-            startTimer(currentTime: $currentTime)
+            viewModel.checkAndResetShop()
         }
     }
-}
-
-#Preview {
-    AdvertiseView()
 }

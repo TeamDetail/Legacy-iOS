@@ -1,6 +1,7 @@
 import SwiftUI
 import Feature
 import Legacy_DesignSystem
+import FlowKit
 
 @main
 struct LegacyApp: App {
@@ -12,7 +13,8 @@ struct LegacyApp: App {
     
     var body: some Scene {
         WindowGroup {
-            RootView()
+            FlowPresenter(rootView: RootView())
+                .ignoresSafeArea()
         }
     }
 }

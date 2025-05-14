@@ -17,13 +17,13 @@ public struct RootView: View {
             case .shop:
                 ShopView()
             case .medal:
-                Test()
+                EmptyView()
             case .flag:
                 ExploreView()
             case .battle:
-                Test()
+                EmptyView()
             case .trophy:
-                Test()
+                LankingView()
             }
         }
     }

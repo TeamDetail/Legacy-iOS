@@ -21,6 +21,9 @@ let project = Project(
                 .external(name: "FlexibleKit"),
                 .external(name: "Legacy-DesignSystem"),
                 .external(name: "FlowKit"),
+                .external(name: "KakaoSDKAuth"),
+                .external(name: "KakaoSDKCommon"),
+                .external(name: "KakaoSDKUser")
             ],
             settings: .settings(
                 base: [

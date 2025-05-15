@@ -25,12 +25,26 @@ let project = Project(
             deploymentTargets: .iOS("15.0"),
             infoPlist: .extendingDefault(
                 with: [
+                    //MARK: map
                     "UIApplicationSceneManifest": [
                         "UIApplicationSupportsMultipleScenes": false,
                     ],
                     "UILaunchStoryboardName": "LaunchScreen",
                     "NSLocationWhenInUseUsageDescription": "이 앱은 지도에 현재 위치를 표시하기 위해 위치 정보를 사용합니다.",
-                    "NSLocationAlwaysAndWhenInUseUsageDescription": "이 앱은 지도에 현재 위치를 표시하기 위해 위치 정보를 사용합니다."
+                    "NSLocationAlwaysAndWhenInUseUsageDescription": "이 앱은 지도에 현재 위치를 표시하기 위해 위치 정보를 사용합니다.",
+                    
+                    //MARK: kakao
+                    "LSApplicationQueriesSchemes": [
+                        "kakaokompassauth",
+                        "kakaolink"
+                    ],
+                    "CFBundleURLTypes": [
+                        [
+                            "CFBundleURLSchemes": [
+                                "kakaob1cc10d264e3d7cb3022fab63c4632f3"
+                            ]
+                        ]
+                    ]
                 ]
             ),
             sources: ["Source/**"],
@@ -43,7 +57,9 @@ let project = Project(
                 .project(target: "DIContainer", path: .relativeToRoot("Projects/DIContainer")),
                 .project(target: "Shared", path: .relativeToRoot("Projects/Shared")),
                 .external(name: "GoogleMaps"),
-                .external(name: "Legacy-DesignSystem")
+                .external(name: "Legacy-DesignSystem"),
+                .external(name: "KakaoSDKAuth"),
+                .external(name: "KakaoSDKCommon"),
             ]
         )
     ]

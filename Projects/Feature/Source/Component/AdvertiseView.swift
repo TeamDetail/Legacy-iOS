@@ -39,7 +39,7 @@ struct AdvertiseView: View {
                 Text("초기화까지")
                     .foreground(LegacyColor.Label.netural)
                 
-                Text("초기화까지: \(formatTime(viewModel.timeRemaining))")
+                Text("\(formatTime(viewModel.timeRemaining))")
                     .foreground(LegacyColor.Purple.netural)
             }
             .frame(maxWidth: .infinity)

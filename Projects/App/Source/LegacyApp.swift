@@ -2,6 +2,7 @@ import SwiftUI
 import Feature
 import Legacy_DesignSystem
 import FlowKit
+import KakaoSDKAuth
 
 @main
 struct LegacyApp: App {
@@ -15,6 +16,11 @@ struct LegacyApp: App {
         WindowGroup {
             FlowPresenter(rootView: RootView())
                 .ignoresSafeArea()
+                .onOpenURL { url in
+                    if AuthApi.isKakaoTalkLoginUrl(url) {
+                        _ = AuthController.handleOpenUrl(url: url)
+                    }
+                }
         }
     }
 }

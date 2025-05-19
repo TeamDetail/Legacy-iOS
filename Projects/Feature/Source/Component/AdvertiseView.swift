@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Legacy_DesignSystem
+import Component
 import Shared
 
 struct AdvertiseView: View {

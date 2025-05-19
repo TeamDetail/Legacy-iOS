@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Legacy_DesignSystem
+import Component
 
 public func makeStyledText(count: Int) -> AttributedString {
     var attributed = AttributedString("오늘 총 \(count)개 구매")

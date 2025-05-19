@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Legacy_DesignSystem
+import Component
 
 struct ShopView: View {
     @StateObject private var viewModel = ShopViewModel()

@@ -1,6 +1,6 @@
 import SwiftUI
 import FlexibleKit
-import Legacy_DesignSystem
+import Component
 import KakaoSDKUser
 
 struct LoginView: View {

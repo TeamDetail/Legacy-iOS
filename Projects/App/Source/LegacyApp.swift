@@ -1,6 +1,6 @@
 import SwiftUI
 import Feature
-import Legacy_DesignSystem
+import Component
 import FlowKit
 import KakaoSDKAuth
 

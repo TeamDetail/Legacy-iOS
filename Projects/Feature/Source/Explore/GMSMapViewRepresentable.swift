@@ -1,7 +1,7 @@
 import SwiftUI
 import GoogleMaps
 import CoreLocation
-import Legacy_DesignSystem
+import Component
 
 struct GMSMapViewRepresentable: UIViewRepresentable {
     let userLocation: CLLocation?

@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Legacy_DesignSystem
+import Component
 
 struct CategoryButton: View {
     let category: String

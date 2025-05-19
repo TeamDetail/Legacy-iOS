@@ -27,7 +27,7 @@ let package = Package(
         .package(url: "https://github.com/Mercen-Lee/FlowKit", branch: "main"),
         .package(url: "https://github.com/googlemaps/ios-maps-sdk", from: "9.4.0"),
         .package(url: "https://github.com/eunchan2815/FlexibleKit", from: "1.0.1"),
-        .package(url: "https://github.com/TeamDetail/Legacy-DesignSystem", from: "1.0.8"),
+//        .package(url: "https://github.com/TeamDetail/Legacy-DesignSystem", from: "1.0.8"),
         .package(url: "https://github.com/kakao/kakao-ios-sdk", from: "2.24.2")
     ]
 )

@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-import Legacy_DesignSystem
+import Component
 
 public struct RootView: View {
     @State private var selection: LegacyTabItem = .flag

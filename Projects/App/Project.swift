@@ -57,7 +57,6 @@ let project = Project(
                 .project(target: "DIContainer", path: .relativeToRoot("Projects/DIContainer")),
                 .project(target: "Shared", path: .relativeToRoot("Projects/Shared")),
                 .external(name: "GoogleMaps"),
-//                .external(name: "Legacy-DesignSystem"),
                 .external(name: "KakaoSDKAuth"),
                 .external(name: "KakaoSDKCommon"),
             ]

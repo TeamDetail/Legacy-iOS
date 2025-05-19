@@ -13,7 +13,6 @@ let project = Project(
             sources: ["Source/**"],
             scripts: [.codeQuality],
             dependencies: [
-//                .external(name: "Legacy-DesignSystem")
             ]
         )
     ]

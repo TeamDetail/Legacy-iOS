@@ -20,7 +20,6 @@ let project = Project(
                 .external(name: "Moya"),
                 .external(name: "GoogleMaps"),
                 .external(name: "FlexibleKit"),
-//                .external(name: "Legacy-DesignSystem"),
                 .external(name: "FlowKit"),
                 .external(name: "KakaoSDKAuth"),
                 .external(name: "KakaoSDKCommon"),

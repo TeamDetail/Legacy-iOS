@@ -14,6 +14,8 @@ let project = Project(
             scripts: [.codeQuality],
             dependencies: [
                 // 여기에 의존성 추가
+                .external(name: "Swinject"),
+                .project(target: "Domain", path: .relativeToRoot("Projects/Domain")),
             ]
         )
     ]

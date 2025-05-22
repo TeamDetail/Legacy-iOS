@@ -33,6 +33,11 @@ let project = Project(
                     "NSLocationWhenInUseUsageDescription": "이 앱은 지도에 현재 위치를 표시하기 위해 위치 정보를 사용합니다.",
                     "NSLocationAlwaysAndWhenInUseUsageDescription": "이 앱은 지도에 현재 위치를 표시하기 위해 위치 정보를 사용합니다.",
                     
+                    //MARK: 가로모드 제한
+                    "UISupportedInterfaceOrientations": [
+                        "UIInterfaceOrientationPortrait"
+                    ],
+                    
                     //MARK: kakao
                     "LSApplicationQueriesSchemes": [
                         "kakaokompassauth",
@@ -56,6 +61,7 @@ let project = Project(
                 .project(target: "Data", path: .relativeToRoot("Projects/Data")),
                 .project(target: "DIContainer", path: .relativeToRoot("Projects/DIContainer")),
                 .project(target: "Shared", path: .relativeToRoot("Projects/Shared")),
+                .project(target: "Component", path: .relativeToRoot("Projects/Component")),
                 .external(name: "GoogleMaps"),
                 .external(name: "KakaoSDKAuth"),
                 .external(name: "KakaoSDKCommon"),

@@ -1,7 +1,6 @@
 import SwiftUI
 import FlexibleKit
 import Component
-import KakaoSDKUser
 
 struct LoginView: View {
     @StateObject private var sessionManager = SessionManager()

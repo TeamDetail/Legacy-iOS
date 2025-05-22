@@ -13,6 +13,7 @@ let project = Project(
             sources: ["Source/**"],
             scripts: [.codeQuality],
             dependencies: [
+                .project(target: "Component", path: .relativeToRoot("Projects/Component")),
             ]
         )
     ]

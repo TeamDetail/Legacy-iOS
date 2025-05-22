@@ -3,8 +3,6 @@ import Combine
 
 class ShopViewModel: ObservableObject {
     @Published var timeRemaining: TimeInterval = 0
-    private let resetKey = "lastShopResetDate"
-    private let resetInterval: TimeInterval = 24 * 60 * 60
     private var timer: AnyCancellable?
     
     init() {
@@ -14,17 +12,13 @@ class ShopViewModel: ObservableObject {
     
     func checkAndResetShop() {
         let now = Date()
-        let lastReset = UserDefaults.standard.object(forKey: resetKey) as? Date ?? .distantPast
-        let elapsed = now.timeIntervalSince(lastReset)
+        let calendar = Calendar.current
         
-        if elapsed >= resetInterval {
-            //MARK: 초기화 로직 추가
-            UserDefaults.standard.set(now, forKey: resetKey)
-            timeRemaining = resetInterval
-        } else {
-            //MARK: 로딩 로직 추가
-            timeRemaining = resetInterval - elapsed
-        }
+        let todayMidnight = calendar.startOfDay(for: now)
+        guard let nextMidnight = calendar.date(byAdding: .day, value: 1, to: todayMidnight) else { return }
+        
+        let timeUntilNextMidnight = nextMidnight.timeIntervalSince(now)
+        timeRemaining = timeUntilNextMidnight
     }
     
     private func startTimer() {
@@ -32,11 +26,12 @@ class ShopViewModel: ObservableObject {
             .publish(every: 1, on: .main, in: .common)
             .autoconnect()
             .sink { [weak self] _ in
-                guard let self else { return }
-                if timeRemaining > 0 {
-                    timeRemaining -= 1
+                guard let self = self else { return }
+                if self.timeRemaining > 0 {
+                    self.timeRemaining -= 1
                 } else {
-                    checkAndResetShop()
+                    self.checkAndResetShop()
+                    //MARK: 초기화 로직
                 }
             }
     }

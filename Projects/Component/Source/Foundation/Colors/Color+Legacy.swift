@@ -123,8 +123,8 @@ extension LegacyColor.Label : LegacyColorable, CaseIterable {
         case .normal: .init(P.neutral99)
         case .strong: .init(P.common100)
         case .netural: .init(P.neutral95)
-        case .alternative: .init(P.neutral99)
-        case .assistive: .init(P.neutral70)
+        case .alternative: .init(P.neutral70)
+        case .assistive: .init(P.neutral99)
         case .disable: .init(P.neutral30)
         }
     }

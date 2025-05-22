@@ -8,7 +8,7 @@
 import SwiftUI
 
 //MARK: 근데 분리할 필요 없어보임 일단 해놓는거
-public struct SwiftUIView: View {
+public struct PackButton: View {
     let title: String
     let description: String
     let credit: String
@@ -46,21 +46,21 @@ public struct SwiftUIView: View {
                 }
                 .font(.bitFont(size: 16))
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.vertical, 20)
-            .padding(.horizontal, 12)
-            .frame(width: 194, height: 160)
+            .padding(.horizontal, 18)
             .background(LegacyColor.Fill.normal)
             .overlay {
                 RoundedRectangle(cornerRadius: 20)
                     .stroke(lineWidth: 2)
                     .foreground(strokeColor)
             }
+            .clipShape(size: 20)
+            //            .padding(8)
         }
     }
 }
 
 #Preview {
-    SwiftUIView(title: "삼국시대팩", description: "고구려 & 신라 & 백제 특성 카드가 포함된 카드팩", credit: "300,000", strokeColor: LegacyColor.Blue.alternative) {
-        
-    }
+    PackButton(title: "삼국시대팩", description: "고구려&신라&백제특성카드가 포함된 카드팩", credit: "300,000", strokeColor: LegacyColor.Blue.alternative) {}
 }

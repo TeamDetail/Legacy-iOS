@@ -32,7 +32,12 @@ struct ShopView: View {
                 viewModel: viewModel
             )
             
-            LazyVGrid(columns: columns, spacing: 16) {} //TODO: add PackCompoent, stack 분리
+            LazyVGrid(columns: columns, spacing: 8) {
+                ForEach(1...10, id: \.self) { _ in
+                    PackButton(title: "삼국시대팩", description: "고구려 & 신라 & 백제 특성 카드가 포함된 카드팩", credit: "300,000", strokeColor: LegacyColor.Blue.alternative) {}
+                }
+            }
+            .padding(.horizontal, 14)
             
             Spacer()
                 .frame(height: 110)

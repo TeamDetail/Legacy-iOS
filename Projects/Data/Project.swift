@@ -15,6 +15,7 @@ let project = Project(
             dependencies: [
                 // 여기에 의존성 추가
                 .project(target: "Domain", path: .relativeToRoot("Projects/Domain")),
+                .project(target: "Shared", path: .relativeToRoot("Projects/Shared")),
                 .external(name: "Swinject")
             ]
         )

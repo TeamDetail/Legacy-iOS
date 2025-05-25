@@ -14,7 +14,10 @@ struct CategoryButton: View {
     let action: () -> Void
     var body: some View {
         Button {
-            action()
+            withAnimation(.spring(duration: 0.2)) {
+                HapticManager.instance.impact(style: .soft)
+                action()
+            }
         } label: {
             Text(category)
                 .font(.caption1(.bold))

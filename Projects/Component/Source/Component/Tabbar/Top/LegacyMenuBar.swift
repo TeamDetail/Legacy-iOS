@@ -1,6 +1,5 @@
 import SwiftUI
 
-
 public struct LegacyMenuBar: View {
     public let action: (LegacyMenuItem) -> Void
     @State private var showAnimation = false

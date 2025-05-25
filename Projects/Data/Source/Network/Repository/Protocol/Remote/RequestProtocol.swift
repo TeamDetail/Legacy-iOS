@@ -17,7 +17,7 @@ extension RequestProtocol {
             with: data,
             options: .allowFragments
            )).flatMap({ $0 as? [String: Any] }) {
-            var modifiedObject = object
+            let modifiedObject = object
             
             if encoding is URLEncoding {
                 var queryItems: [String: Any] = [:]

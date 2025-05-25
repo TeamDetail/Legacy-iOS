@@ -38,6 +38,9 @@ let project = Project(
                         "UIInterfaceOrientationPortrait"
                     ],
                     
+                    //MARK: 다크모드만 지원
+                    "UIUserInterfaceStyle": "Dark",
+                    
                     //MARK: kakao
                     "LSApplicationQueriesSchemes": [
                         "kakaokompassauth",

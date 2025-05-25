@@ -19,4 +19,5 @@ public enum LegacyIconography: String, Hashable {
     case shop = "Shop"
     case medal = "Medal"
     case trophy = "Trophy"
+    case pen = "Pen"
 }

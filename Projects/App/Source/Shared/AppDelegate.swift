@@ -1,6 +1,7 @@
 import GoogleMaps
 import KakaoSDKCommon
 import KakaoSDKAuth
+import Shared
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,

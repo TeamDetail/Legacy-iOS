@@ -23,7 +23,8 @@ let project = Project(
                 .external(name: "FlowKit"),
                 .external(name: "KakaoSDKAuth"),
                 .external(name: "KakaoSDKCommon"),
-                .external(name: "KakaoSDKUser")
+                .external(name: "KakaoSDKUser"),
+                .external(name: "Kingfisher")
             ],
             settings: .settings(
                 base: [

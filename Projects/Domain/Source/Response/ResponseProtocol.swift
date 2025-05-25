@@ -7,4 +7,4 @@
 
 import Foundation
 
-public protocol ResponseProtocol: Decodable & Hashable
+public protocol ResponseProtocol: Decodable & Hashable {}

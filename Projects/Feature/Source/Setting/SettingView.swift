@@ -16,15 +16,10 @@ struct SettingView: View {
         ScrollView {
             ProfileComponent{ }
             HStack {
-                CategoryButton(category: "내 기록", select: selection == 0) {
-                    selection = 0
-                }
-                CategoryButton(category: "칭호", select: selection == 1) {
-                    selection = 1
-                }
-                CategoryButton(category: "도감", select: selection == 2) {
-                    selection = 2
-                }
+                CategoryButtonGroup(
+                    categories: ["내 기록", "칭호", "도감"],
+                    selection: $selection
+                )
             }
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.top, 20)

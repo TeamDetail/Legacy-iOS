@@ -1,18 +1,24 @@
 //
-//  LankingCategoryButton.swift
+//  CategoryButton.swift
 //  Feature
 //
-//  Created by dgsw27 on 5/14/25.
+//  Created by dgsw30 on 5/8/25.
 //
 
 import SwiftUI
-import Component
 
-struct LankingCategoryButton: View {
+public struct CategoryButton: View {
     let category: String
     let select: Bool
     let action: () -> Void
-    var body: some View {
+    
+    public init(category: String, select: Bool, action: @escaping () -> Void) {
+        self.category = category
+        self.select = select
+        self.action = action
+    }
+    
+    public var body: some View {
         Button {
             withAnimation(.spring(duration: 0.2)) {
                 HapticManager.instance.impact(style: .soft)
@@ -24,8 +30,9 @@ struct LankingCategoryButton: View {
                 .foreground(select ? LegacyColor.Common.white : LegacyColor.Label.assistive)
                 .padding(.vertical, 6)
                 .padding(.horizontal, 12)
-                .background(select ? LegacyColor.Red.netural : LegacyColor.Line.netural)
+                .background(select ? LegacyColor.Primary.normal : LegacyColor.Line.netural)
                 .clipShape(size: 50)
         }
     }
 }
+

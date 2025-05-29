@@ -68,5 +68,5 @@ Derived/
 
 ### Tuist managed dependencies ###
 Tuist/.build
-Projects/Shared/Project/Source/Key/ApiKey.swift
+Projects/Shared/Source/Key/ApiKey.swift
 

@@ -1,4 +1,5 @@
 import SwiftUI
+import DIContainer
 import Feature
 import Component
 import FlowKit
@@ -10,6 +11,7 @@ struct LegacyApp: App {
     
     init() {
         Pretendard.register()
+        DependencyProvider.shared.register()
     }
     
     var body: some Scene {

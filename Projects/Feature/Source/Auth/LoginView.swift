@@ -3,7 +3,7 @@ import FlexibleKit
 import Component
 
 struct LoginView: View {
-    @StateObject private var sessionManager = SessionManager()
+    @StateObject private var sessionManager = LoginViewModel()
     @State private var showWebView = false
     
     var body: some View {

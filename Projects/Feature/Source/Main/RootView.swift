@@ -12,21 +12,21 @@ public struct RootView: View {
     @State private var selection: LegacyTabItem = .flag
     public init() {}
     public var body: some View {
-        LegacyTabBar(selection: $selection) {
-            switch selection {
-            case .shop:
-                ShopView()
-            case .medal:
-                EmptyView()
-            case .flag:
-                ExploreView()
-            case .battle:
-                EmptyView()
-            case .trophy:
-                LankingView()
-            }
-        }
-        //        LoginView()
+        //        LegacyTabBar(selection: $selection) {
+        //            switch selection {
+        //            case .shop:
+        //                ShopView()
+        //            case .medal:
+        //                EmptyView()
+        //            case .flag:
+        //                ExploreView()
+        //            case .battle:
+        //                EmptyView()
+        //            case .trophy:
+        //                LankingView()
+        //            }
+        //        }
+        LoginView()
     }
 }
 

@@ -14,4 +14,9 @@ public struct AuthDataSource: DataSourceProtocol {
         let response: BaseResponse<TokenResponse> = try await self.request(target: .postLogin(request))
         return response.data
     }
+    
+    public func postReiuse(_ request: AuthRequest) async throws -> TokenResponse {
+        let response: BaseResponse<TokenResponse> = try await self.request(target: .postReiuse(request))
+        return response.data
+    }
 }

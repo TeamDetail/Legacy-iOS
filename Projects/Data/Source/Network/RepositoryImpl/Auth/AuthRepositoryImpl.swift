@@ -18,4 +18,8 @@ public struct AuthRepositoryImpl: AuthRepository {
     public func postLogin(_ request: AuthRequest) async throws -> TokenResponse {
         return try await dataSource.postLogin(request)
     }
+    
+    public func postReissue(_ request: AuthRequest) async throws -> TokenResponse {
+        return try await dataSource.postReiuse(request)
+    }
 }

@@ -3,9 +3,10 @@ import Component
 import Shared
 
 struct LankingView: View {
+    @Binding var tabItem: LegacyTabItem
     @State private var selection: ShopEnum = .trial
     var body: some View {
-        LegacyScrollView(title: "랭킹", icon: .trophy) {
+        LegacyScrollView(title: "랭킹", icon: .trophy, item: tabItem) {
             HStack {
                 CategoryButton(category: "시련", select: selection == ShopEnum.trial) {
                     selection = .trial
@@ -53,8 +54,4 @@ struct LankingView: View {
             LegacyTopBar()
         }
     }
-}
-
-#Preview {
-    LankingView()
 }

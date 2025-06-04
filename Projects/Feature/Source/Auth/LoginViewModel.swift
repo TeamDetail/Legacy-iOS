@@ -18,11 +18,13 @@ class LoginViewModel: ObservableObject {
                     return
                 }
                 
-                let request = AuthRequest(accessToken: oauthToken.accessToken, refreshToken: oauthToken.refreshToken)
-                
-                Task {
-                    await self.postLogin(request)
-                }
+//                let request = AuthRequest(accessToken: oauthToken.accessToken, refreshToken: oauthToken.refreshToken)
+//                
+//                Task {
+//                    await self.postLogin(request)
+//                }
+                print(oauthToken.accessToken)
+                print(oauthToken.refreshToken)
             }
         } else {
             UserApi.shared.loginWithKakaoAccount { oauthToken, error in

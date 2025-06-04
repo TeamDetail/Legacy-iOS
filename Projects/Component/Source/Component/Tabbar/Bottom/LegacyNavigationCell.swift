@@ -19,6 +19,5 @@ public struct LegacyNavigationCell: View {
             }
             .foreground(isSelected ? LegacyColor.Primary.normal : LegacyColor.Label.assistive)
         }
-        .disabled(isSelected)
     }
 }

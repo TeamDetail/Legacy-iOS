@@ -9,6 +9,7 @@ import SwiftUI
 import Component
 
 struct ShopView: View {
+    @Binding var tabItem: LegacyTabItem
     @StateObject private var viewModel = ShopViewModel()
     @State private var selection = 0
     let columns = [
@@ -16,35 +17,33 @@ struct ShopView: View {
         GridItem(.flexible())
     ]
     var body: some View {
-        LegacyScrollView(title: "상점", icon: .shop) {
-            HStack {
-                CategoryButtonGroup(
-                    categories: ["카드 팩", "크래딧 충전"],
-                    selection: $selection
+        LegacyScrollView(title: "상점", icon: .shop, item: tabItem) {
+            VStack(spacing: 16) {
+                HStack {
+                    CategoryButtonGroup(
+                        categories: ["카드 팩", "크래딧 충전"],
+                        selection: $selection
+                    )
+                }
+                .padding(.horizontal, 14)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                AdvertiseView(
+                    viewModel: viewModel
                 )
-            }
-            .padding(.horizontal, 14)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.vertical, 8)
-            AdvertiseView(
-                viewModel: viewModel
-            )
-            
-            LazyVGrid(columns: columns, spacing: 8) {
-                ForEach(1...10, id: \.self) { _ in
-                    PackButton(title: "삼국시대팩",
-                               description: "고구려 & 신라 & 백제 특성 카드가 포함된 카드팩",
-                               credit: "300,000",
-                               strokeColor: LegacyColor.Blue.alternative
-                    ) {
-                        
+                
+                LazyVGrid(columns: columns, spacing: 8) {
+                    ForEach(1...10, id: \.self) { _ in
+                        PackButton(title: "삼국시대팩",
+                                   description: "고구려 & 신라 & 백제 특성 카드가 포함된 카드팩",
+                                   credit: "300,000",
+                                   strokeColor: LegacyColor.Blue.alternative
+                        ) {
+                            
+                        }
                     }
                 }
+                .padding(.horizontal, 14)
             }
-            .padding(.horizontal, 14)
-            
-            Spacer()
-                .frame(height: 110)
         }
         .padding(.top, 80)
         .background(LegacyColor.Background.alternative)
@@ -52,8 +51,4 @@ struct ShopView: View {
             LegacyTopBar()
         }
     }
-}
-
-#Preview {
-    ShopView()
 }

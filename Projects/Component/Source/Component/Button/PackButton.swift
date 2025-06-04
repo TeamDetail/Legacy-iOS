@@ -35,6 +35,7 @@ public struct PackButton: View {
                 Text(description)
                     .font(.caption1(.extraBold))
                     .foreground(LegacyColor.Label.alternative)
+                    .multilineTextAlignment(.leading)
                 
                 Spacer()
                 
@@ -56,11 +57,10 @@ public struct PackButton: View {
                     .foreground(strokeColor)
             }
             .clipShape(size: 20)
-            //            .padding(8)
         }
     }
 }
 
 #Preview {
-    PackButton(title: "삼국시대팩", description: "고구려&신라&백제특성카드가 포함된 카드팩", credit: "300,000", strokeColor: LegacyColor.Blue.alternative) {}
+    PackButton(title: "삼국시대팩", description: "고구려&신라&백제특성카드가포함된 카드팩", credit: "300,000", strokeColor: LegacyColor.Blue.alternative) {}
 }

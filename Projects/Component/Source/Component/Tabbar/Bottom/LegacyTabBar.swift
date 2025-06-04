@@ -13,64 +13,44 @@ public struct LegacyTabBar<Content: View>: View {
     }
     
     public var body: some View {
-        ZStack(alignment: .bottom) {
-            content
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .ignoresSafeArea(edges: .bottom)
-            
-            RoundedRectangle(cornerRadius: 20)
-                .foreground(LegacyColor.Background.normal)
-                .frame(height: 72)
-                .frame(maxWidth: .infinity)
-                .padding(.horizontal, 10)
-                .overlay {
-                    VStack {
-                        HStack(spacing: 35) {
-                            ForEach(LegacyTabItem.allCases, id: \.self) { item in
-                                LegacyNavigationCell(item: item, isSelected: item == selection) {
-                                    selection = item
+        ScrollViewReader { scrollViewProxy in
+            ZStack(alignment: .bottom) {
+                content
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .ignoresSafeArea(edges: .bottom)
+                
+                RoundedRectangle(cornerRadius: 20)
+                    .foreground(LegacyColor.Background.normal)
+                    .frame(height: 72)
+                    .frame(maxWidth: .infinity)
+                    .padding(.horizontal, 10)
+                    .overlay {
+                        VStack {
+                            HStack(spacing: 35) {
+                                ForEach(LegacyTabItem.allCases, id: \.self) { item in
+                                    LegacyNavigationCell(item: item, isSelected: item == selection) {
+                                        if selection == item {
+                                            withAnimation(.easeInOut(duration: 0.6)) {
+                                                scrollViewProxy.scrollTo(
+                                                    "ScrollToTop-\(item.rawValue)",
+                                                    anchor: .top
+                                                )
+                                            }
+                                        } else {
+                                            selection = item
+                                        }
+                                    }
+                                    
                                 }
                             }
                         }
                     }
-                }
-                .ignoresSafeArea(edges: .bottom)
-                .safeAreaInset(edge: .bottom) {
-                    Color.clear.frame(height: 20)
-                }
-        }
-        .ignoresSafeArea(.all, edges: .bottom)
-    }
-}
-
-
-public struct TestView : View {
-    @State private var hello: LegacyTabItem = .flag
-    public var body: some View {
-        LegacyTabBar(selection: $hello) {
-            switch hello {
-            case .flag:
-                TestView()
-            case .battle:
-                ScrollView {
-                    ForEach(1...100, id: \.self) { hello in
-                        RoundedRectangle(cornerRadius: 30)
-                            .frame(width: 400, height: 150)
+                    .ignoresSafeArea(edges: .bottom)
+                    .safeAreaInset(edge: .bottom) {
+                        Color.clear.frame(height: 20)
                     }
-                    .frame(maxWidth: .infinity)
-                }
-            case .shop:
-                EmptyView()
-            case .trophy:
-                EmptyView()
-            case .medal:
-                EmptyView()
             }
+            .ignoresSafeArea(.all, edges: .bottom)
         }
     }
-}
-
-
-#Preview {
-    TestView()
 }

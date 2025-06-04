@@ -44,20 +44,7 @@ public struct ProfileComponent: View {
                     .foreground(LegacyColor.Label.alternative)
                     .padding(.horizontal, 2)
                 
-                Text("자본주의")
-                    .font(.body2(.bold))
-                    .foreground(LegacyColor.Yellow.normal)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 32)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(lineWidth: 2)
-                            .foreground(LegacyColor.Yellow.normal)
-                    }
-                    .background(LegacyColor.Fill.normal)
-                    .clipShape(size: 8)
-                    .padding(.horizontal, 2)
-                    .padding(.trailing, 4)
+                TitleBadge("자본주의", size: .big)
             }
         }
     }

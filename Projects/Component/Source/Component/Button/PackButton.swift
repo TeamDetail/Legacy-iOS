@@ -27,7 +27,7 @@ public struct PackButton: View {
         Button {
             action()
         } label: {
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: 8) {
                 Text(title)
                     .font(.bitFont(size: 20))
                     .foreground(LegacyColor.Common.white)

@@ -9,6 +9,7 @@ import SwiftUI
 import Component
 import Shared
 import FlowKit
+import Data
 
 struct LegacyTopBar: View {
     @State private var showMenu = false
@@ -90,7 +91,7 @@ struct LegacyTopBar: View {
                     case .wrong:
                         print("메일")
                     case .logout:
-                        print("메일")
+                        Sign.logout()
                     }
                 }
                 .scaleEffect(showMenu ? 1.0 : 0.9, anchor: .top)

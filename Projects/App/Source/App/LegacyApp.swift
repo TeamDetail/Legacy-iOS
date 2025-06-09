@@ -16,7 +16,7 @@ struct LegacyApp: App {
     
     var body: some Scene {
         WindowGroup {
-            FlowPresenter(rootView: RootView())
+            SafeFlowPresenter(rootView: RootView())
                 .ignoresSafeArea()
                 .onOpenURL { url in
                     if AuthApi.isKakaoTalkLoginUrl(url) {

@@ -3,12 +3,17 @@ import Domain
 
 public enum AuthService: ServiceProtocol {
     case postLogin(_ request: AuthRequest)
-    case postReiuse(_ request: AuthRequest)
+    case postReiuse(_ request: RefreshRequest)
 }
 
 extension AuthService {
     public var host: String {
-        "/kakao/code"
+        switch self {
+        case .postLogin:
+            "/kakao/accessToken"
+        case .postReiuse:
+            "/auth/refresh"
+        }
     }
     
     public var path: String {

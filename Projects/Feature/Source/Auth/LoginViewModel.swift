@@ -5,9 +5,6 @@ import Data
 import Domain
 
 class LoginViewModel: ObservableObject {
-    @Published var accessToken: String?
-    @Published var refreshToken: String?
-    @Published var tokenResponse: TokenResponse?
     @Inject var authRepository: any AuthRepository
     
     func kakaoLogin() {
@@ -18,13 +15,11 @@ class LoginViewModel: ObservableObject {
                     return
                 }
                 
-//                let request = AuthRequest(accessToken: oauthToken.accessToken, refreshToken: oauthToken.refreshToken)
-//                
-//                Task {
-//                    await self.postLogin(request)
-//                }
-                print(oauthToken.accessToken)
-                print(oauthToken.refreshToken)
+                let request = AuthRequest(accessToken: oauthToken.accessToken, refreshToken: oauthToken.refreshToken)
+                
+                Task {
+                    await self.postLogin(request)
+                }
             }
         } else {
             UserApi.shared.loginWithKakaoAccount { oauthToken, error in
@@ -42,9 +37,15 @@ class LoginViewModel: ObservableObject {
         }
     }
     
+    @MainActor
     func postLogin(_ request: AuthRequest) async {
         do {
-            tokenResponse = try await authRepository.postLogin(request)
+            _ = try await authRepository.postLogin(
+                .init(
+                    accessToken: request.accessToken,
+                    refreshToken: request.refreshToken
+                )
+            )
         } catch {
             print(error.localizedDescription)
         }

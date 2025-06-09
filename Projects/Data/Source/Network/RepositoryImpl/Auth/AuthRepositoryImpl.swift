@@ -16,10 +16,16 @@ public struct AuthRepositoryImpl: AuthRepository {
     }
     
     public func postLogin(_ request: AuthRequest) async throws -> TokenResponse {
-        return try await dataSource.postLogin(request)
+        let data = try await dataSource.postLogin(request)
+        Sign.login(
+            accessToken: request.accessToken,
+            refreshToken: request.refreshToken
+        )
+        return data
     }
     
-    public func postReissue(_ request: AuthRequest) async throws -> TokenResponse {
-        return try await dataSource.postReiuse(request)
+    public func postReissue(_ request: RefreshRequest) async throws {
+        let data = try await dataSource.postReiuse(request)
+        Sign.reissue(data.accessToken, data.refreshToken)
     }
 }

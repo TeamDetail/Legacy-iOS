@@ -10,5 +10,5 @@ import Domain
 
 public protocol AuthRepository {
     func postLogin(_ request: AuthRequest) async throws -> TokenResponse
-    func postReissue(_ request: AuthRequest) async throws -> TokenResponse
+    func postReissue(_ request: RefreshRequest) async throws
 }

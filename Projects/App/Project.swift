@@ -52,6 +52,9 @@ let project = Project(
                                 "kakaob1cc10d264e3d7cb3022fab63c4632f3"
                             ]
                         ]
+                    ],
+                    "NSAppTransportSecurity": [
+                        "NSAllowsArbitraryLoads": true
                     ]
                 ]
             ),

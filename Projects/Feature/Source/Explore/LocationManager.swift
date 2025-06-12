@@ -1,6 +1,7 @@
 import Foundation
 import GoogleMaps
 
+//MARK: 현재 내위치 가져오기
 final class LocationManager: NSObject, ObservableObject {
     private let manager = CLLocationManager()
 
@@ -11,7 +12,7 @@ final class LocationManager: NSObject, ObservableObject {
         super.init()
         manager.delegate = self
         manager.desiredAccuracy = kCLLocationAccuracyBest
-        manager.distanceFilter = 10 //업뎃 미터
+        manager.distanceFilter = 10
     }
 
     func startUpdating() {

@@ -20,11 +20,13 @@ public struct RootView: View {
                 case .shop:
                     ShopView(tabItem: $selection)
                 case .medal:
-                    EmptyView()
+                    LegacyEmptyView()
                 case .flag:
                     ExploreView()
+                        .padding(.bottom, 100)
+                        .background(LegacyColor.Background.normal)
                 case .battle:
-                    EmptyView()
+                    LegacyEmptyView()
                 case .trophy:
                     LankingView(tabItem: $selection)
                 }

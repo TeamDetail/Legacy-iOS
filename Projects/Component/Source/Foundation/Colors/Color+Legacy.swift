@@ -146,7 +146,7 @@ extension LegacyColor.Fill : LegacyColorable, CaseIterable {
 extension LegacyColor.Background : LegacyColorable, CaseIterable {
     public var color: LegacyColor {
         switch self {
-        case .normal: .init(Color(0x1C1C1E))
+        case .normal: .init(P.neturalNormal)
         case .netural: .init(P.neutral10)
         case .alternative: .init(P.neutral7)
         }

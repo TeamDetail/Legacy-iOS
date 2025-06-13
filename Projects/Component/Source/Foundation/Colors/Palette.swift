@@ -103,6 +103,8 @@ public struct LegacyPalette : Sendable {
     public let yellowNormal = Color(0xD1B13F)
     public let yellowAlternative = Color(0x968341)
     public let yellowNetural = Color(0xEDB900)
+    
+    public let neturalNormal = Color(0x1C1C1E)
 }
 
 @available(macOS 12, iOS 15, *)
@@ -115,7 +117,8 @@ private let commons = [P.common0, P.common100]
 private let neutrals = [
     P.neutral5, P.neutral10, P.neutral15, P.neutral20, P.neutral25,
     P.neutral30, P.neutral40, P.neutral50, P.neutral60, P.neutral70,
-    P.neutral80, P.neutral90, P.neutral95, P.neutral97, P.neutral99
+    P.neutral80, P.neutral90, P.neutral95, P.neutral97, P.neutral99,
+    P.neturalNormal
 ]
 
 @available(macOS 12, iOS 15, *)

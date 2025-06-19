@@ -4,9 +4,13 @@ import Domain
 
 public extension DataSourceProtocol {
     var provider: MoyaProvider<Target> {
-        MoyaProvider<Target>(
+        .init(
             session: Moya.Session(interceptor: RemoteInterceptor()),
-            plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))]
+            plugins: [NetworkLoggerPlugin(
+                configuration: .init(
+                    logOptions: .verbose
+                )
+            )]
         )
     }
     

@@ -1,7 +1,6 @@
 import Foundation
 
-public struct BaseResponse<T: ResponseProtocol>: ResponseProtocol {
-    
+public struct BaseResponse<T: Decodable>: Decodable {
     public let status: Int
     public let data: T
     
@@ -10,4 +9,3 @@ public struct BaseResponse<T: ResponseProtocol>: ResponseProtocol {
         self.data = data
     }
 }
-

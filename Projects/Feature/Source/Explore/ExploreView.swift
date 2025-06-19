@@ -10,8 +10,10 @@ import SwiftUI
 import Component
 import GoogleMaps
 import CoreLocation
+import Domain
 
 public struct ExploreView: View {
+    @StateObject private var viewModel = ExploreViewModel()
     @StateObject private var locationManager = LocationManager()
     @State private var isZoomValid = false
     
@@ -30,6 +32,16 @@ public struct ExploreView: View {
                 ) { location in
                     print("좌하단: \(location.southWest.latitude), \(location.southWest.longitude)")
                     print("우상단: \(location.northEast.latitude), \(location.northEast.longitude)")
+                    Task {
+                        await viewModel.fetchMap(
+                            .init(
+                                minLat: location.southWest.latitude,
+                                maxLat: location.northEast.latitude,
+                                minLng: location.southWest.longitude,
+                                maxLng: location.northEast.longitude
+                            )
+                        )
+                    }
                 }
                 .ignoresSafeArea()
                 .overlay(alignment: .top) {

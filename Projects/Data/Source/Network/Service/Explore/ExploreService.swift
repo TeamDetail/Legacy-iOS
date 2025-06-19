@@ -9,7 +9,7 @@ import Moya
 import Domain
 
 public enum ExploreService: ServiceProtocol {
-    case fetchMap(_ request: ExploreRequest)
+    case fetchMap(_ request: MapBoundsRequest)
 }
 
 extension ExploreService {
@@ -28,14 +28,16 @@ extension ExploreService {
     
     public var method: Moya.Method {
         switch self {
-        case .fetchMap: .post
+        case .fetchMap: .get
         }
     }
     
     public var task: Moya.Task {
         switch self {
         case let .fetchMap(request):
-            request.toJSONParameters()
+            request.toRequestParameters(
+                encoding: URLEncoding.default
+            )
         }
     }
     
@@ -47,5 +49,4 @@ extension ExploreService {
     public var validationType: ValidationType {
         .none
     }
-    
 }

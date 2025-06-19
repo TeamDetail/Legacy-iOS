@@ -1,13 +1,13 @@
 //
-//  ExploreRequest.swift
+//  MapBounds.swift
 //  Domain
 //
-//  Created by 김은찬 on 6/17/25.
+//  Created by 김은찬 on 6/19/25.
 //
 
 import Foundation
 
-struct ExploreRequest: RequestProtocol {
+public struct MapBoundsRequest: RequestProtocol {
     public let minLat: Double
     public let maxLat: Double
     public let minLng: Double

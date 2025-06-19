@@ -17,5 +17,10 @@ public struct RepositoryAssembly: Assembly {
             let dataSource = resolver.resolve(AuthDataSource.self)!
             return AuthRepositoryImpl(dataSource: dataSource)
         }.inObjectScope(.container)
+        
+        container.register(ExploreRepository.self) { resolver in
+            let dataSource = resolver.resolve(ExploreDataSource.self)!
+            return ExploreRepositoryImpl(dataSource: dataSource)
+        }.inObjectScope(.container)
     }
 }

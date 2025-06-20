@@ -18,8 +18,8 @@ public struct AuthRepositoryImpl: AuthRepository {
     public func postLogin(_ request: AuthRequest) async throws -> TokenResponse {
         let data = try await dataSource.postLogin(request)
         Sign.login(
-            accessToken: request.accessToken,
-            refreshToken: request.refreshToken
+            accessToken: data.accessToken,
+            refreshToken: data.refreshToken
         )
         return data
     }

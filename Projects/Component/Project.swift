@@ -14,7 +14,8 @@ let project = Project(
             resources: ["Resource/**"],
             scripts: [.codeQuality],
             dependencies: [
-                .external(name: "Kingfisher")
+                .external(name: "Kingfisher"),
+                .external(name: "Shimmer")
             ]
         )
     ]

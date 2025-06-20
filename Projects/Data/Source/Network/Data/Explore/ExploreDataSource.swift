@@ -22,4 +22,9 @@ public struct ExploreDataSource: DataSourceProtocol {
         let response: BaseResponse<[RuinsPositionResponse]> = try await self.request(target: .fetchMap(request))
         return response.data
     }
+    
+    public func fetchRuinDeatil(_ id: Int) async throws -> RuinsDetailResponse {
+        let response: BaseResponse<RuinsDetailResponse> = try await self.request(target: .fetchRuinDeatil(id))
+        return response.data
+    }
 }

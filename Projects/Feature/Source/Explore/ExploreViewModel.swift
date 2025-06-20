@@ -12,6 +12,7 @@ import Data
 
 public class ExploreViewModel: ObservableObject {
     @Published var ruins: [RuinsPositionResponse]?
+    @Published var ruinDetail: RuinsDetailResponse?
     
     @Inject var exploreRepository: any ExploreRepository
     
@@ -26,12 +27,20 @@ public class ExploreViewModel: ObservableObject {
                     maxLng: location.maxLng
                 )
             )
-            guard let hello = ruins else { return }
-            print(hello)
-            
         } catch {
             print("Error occurred: \(error.localizedDescription)")
-            dump(error)
+        }
+    }
+    
+    @MainActor
+    func fetchRuinDeatil(_ id: Int) async {
+        do {
+            ruinDetail = try await exploreRepository.fetchRuinDeatil(
+                id
+            )
+            print(ruinDetail)
+        } catch {
+            print(error)
         }
     }
 }

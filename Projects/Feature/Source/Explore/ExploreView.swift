@@ -16,6 +16,7 @@ public struct ExploreView: View {
     @StateObject private var viewModel = ExploreViewModel()
     @StateObject private var locationManager = LocationManager()
     @State private var isZoomValid = false
+    @State private var showDetail = false
     
     public init() {}
     
@@ -28,6 +29,7 @@ public struct ExploreView: View {
             } else {
                 GMSMapViewRepresentable(
                     userLocation: locationManager.location,
+                    ruins: viewModel.ruins,
                     isZoomValid: $isZoomValid
                 ) { location in
                     print("좌하단: \(location.southWest.latitude), \(location.southWest.longitude)")
@@ -42,6 +44,15 @@ public struct ExploreView: View {
                             )
                         )
                     }
+                } onPolygonTap: { ruinsid in
+                    Task {
+                        await viewModel.fetchRuinDeatil(
+                            ruinsid
+                        )
+                        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                            showDetail = true
+                        }
+                    }
                 }
                 .ignoresSafeArea()
                 .overlay(alignment: .top) {
@@ -51,6 +62,29 @@ public struct ExploreView: View {
                             isPresented: $isZoomValid,
                             description: "줌을 많이 당기면 타일이\n보이지 않을수 있어요!"
                         )
+                    }
+                }
+                if let detail = viewModel.ruinDetail, showDetail {
+                    ZStack(alignment: .bottom) {
+                        Color.black.opacity(0.4)
+                            .ignoresSafeArea()
+                            .onTapGesture {
+                                withAnimation {
+                                    showDetail = false
+                                    viewModel.ruinDetail = nil
+                                }
+                            }
+                        
+                        RuinsDetailView(data: detail) {
+                            withAnimation {
+                                showDetail = false
+                                viewModel.ruinDetail = nil
+                            }
+                        }
+                        .padding(.horizontal, 6)
+                        .padding(.bottom, 4)
+                        .transition(.move(edge: .bottom).combined(with: .opacity))
+                        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: showDetail)
                     }
                 }
             }

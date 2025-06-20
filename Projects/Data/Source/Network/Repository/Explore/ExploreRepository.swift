@@ -10,4 +10,5 @@ import Domain
 
 public protocol ExploreRepository {
     func fetchMap(_ requst: MapBoundsRequest) async throws -> [RuinsPositionResponse]
+    func fetchRuinDeatil(_ id: Int) async throws -> RuinsDetailResponse
 }

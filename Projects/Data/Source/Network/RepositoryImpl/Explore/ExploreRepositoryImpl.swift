@@ -19,4 +19,9 @@ public struct ExploreRepositoryImpl: ExploreRepository {
         let data = try await dataSource.fetchRuins(requst)
         return data
     }
+    
+    public func fetchRuinDeatil(_ id: Int) async throws -> RuinsDetailResponse {
+        let data = try await dataSource.fetchRuinDeatil(id)
+        return data
+    }
 }

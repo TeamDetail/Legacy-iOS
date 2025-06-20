@@ -4,6 +4,10 @@ public struct LegacyPalette : Sendable {
     public init() {}
     public static let shared = LegacyPalette()
     
+    //MARK: Primary
+    public let primary = Color(0xA05AE8)
+    public let alternative = Color(0x6420AA)
+
     // MARK: - Common
     public let common0 = Color(0x000000)
     public let common100 = Color(0xFFFFFF)

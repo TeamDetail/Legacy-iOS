@@ -99,8 +99,8 @@ extension LegacyColor.Common : LegacyColorable, CaseIterable {
 extension LegacyColor.Primary : LegacyColorable, CaseIterable {
     public var color: LegacyColor {
         switch self {
-        case .normal: .init(Color(0xA05AE8))
-        case .alternative: .init(Color(0x6420AA).opacity(0.45))
+        case .normal: .init(P.primary)
+        case .alternative: .init(P.alternative.opacity(0.45))
         }
     }
 }

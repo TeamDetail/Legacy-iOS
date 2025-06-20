@@ -10,25 +10,25 @@ import Domain
 
 public enum ExploreService: ServiceProtocol {
     case fetchMap(_ request: MapBoundsRequest)
+    case fetchRuinDeatil(_ id: Int)
 }
 
 extension ExploreService {
     public var host: String {
-        switch self {
-        case .fetchMap:
-            "/ruins"
-        }
+        "/ruins"
     }
     
     public var path: String {
         switch self {
         case .fetchMap: "/map"
+        case .fetchRuinDeatil(let id): "\(id)"
         }
     }
     
     public var method: Moya.Method {
         switch self {
         case .fetchMap: .get
+        case .fetchRuinDeatil: .get
         }
     }
     
@@ -38,6 +38,7 @@ extension ExploreService {
             request.toRequestParameters(
                 encoding: URLEncoding.default
             )
+        case .fetchRuinDeatil(_ ): .requestPlain
         }
     }
     

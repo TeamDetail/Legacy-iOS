@@ -11,7 +11,7 @@ import Domain
 import Data
 
 
-public class ProfileViewModel: ObservableObject {
+public class UserViewModel: ObservableObject {
     @Published var userInfo: UserInfoResponse?
     
     @Inject var userRepository: any UserRepository

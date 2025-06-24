@@ -82,7 +82,7 @@ struct ErrorTopBar: View {
                     case .mail:
                         print("메일")
                     case .setting:
-                        flow.push((SettingView()))
+                        print("설정")
                     case .wrong:
                         print("메일")
                     case .logout:

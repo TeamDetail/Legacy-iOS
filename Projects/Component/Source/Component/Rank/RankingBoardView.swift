@@ -29,7 +29,7 @@ public struct RankingBoardView: View {
                 .font(.body1(.bold))
                 .foregroundColor(.white)
             
-            TitleBadge("자본주의")
+            TitleBadge("자본주의", color: LegacyColor.Purple.normal)
         }
         .padding()
         .background(LegacyColor.Background.normal)

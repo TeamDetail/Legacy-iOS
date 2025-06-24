@@ -13,7 +13,7 @@ import CoreLocation
 import Domain
 
 public struct ExploreView: View {
-    @StateObject private var userData = ProfileViewModel()
+    @StateObject private var userData = UserViewModel()
     @StateObject private var viewModel = ExploreViewModel()
     @StateObject private var locationManager = LocationManager()
     @State private var isZoomValid = false

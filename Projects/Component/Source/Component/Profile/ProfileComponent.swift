@@ -5,21 +5,47 @@
 //  Created by 김은찬 on 5/25/25.
 //
 
+import Domain
 import SwiftUI
+import Shimmer
 import Kingfisher
 
 public struct ProfileComponent: View {
+    let data: UserInfoResponse
     let action: () -> Void
-    public init(action: @escaping () -> Void) {
-        self.action = action
+    
+    public init(_ data: UserInfoResponse, editAction: @escaping () -> Void) {
+        self.data = data
+        self.action = editAction
     }
+    
     public var body: some View {
         HStack {
-            Circle()
-                .frame(width: 100, height: 100)
+            if let url = URL(string: data.imageUrl) {
+                KFImage(url)
+                    .placeholder { _ in
+                        RoundedRectangle(cornerRadius: 16)
+                            .fill(Color.gray.opacity(0.3))
+                            .frame(width: 140, height: 180)
+                            .redacted(reason: .placeholder)
+                            .shimmering()
+                    }
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 100, height: 100)
+                    .clipShape(size: 50)
+            } else {
+                Circle()
+                    .frame(width: 100, height: 100)
+                    .redacted(reason: .placeholder)
+                    .shimmering()
+            }
+            
+            
+            
             VStack(alignment: .leading, spacing: 6) {
                 HStack {
-                    Text("박재민입니다")
+                    Text(data.nickname)
                         .font(.title3(.bold))
                         .foreground(LegacyColor.Common.white)
                     
@@ -39,12 +65,16 @@ public struct ProfileComponent: View {
                     }
                 }
                 
-                Text("Lv.99")
+                Text("Lv.\(data.level)")
                     .font(.body1(.bold))
                     .foreground(LegacyColor.Label.alternative)
                     .padding(.horizontal, 2)
                 
-                TitleBadge("자본주의", size: .big)
+                if data.title.name == "" {
+                    TitleBadge("칭호를 얻어보세요!", color: LegacyColor.Label.disable, size: .big)
+                } else {
+                    TitleBadge(data.title.name, color: LegacyColor.Yellow.netural, size: .big)
+                }
             }
         }
     }

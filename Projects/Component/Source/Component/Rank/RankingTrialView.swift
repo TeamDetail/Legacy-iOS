@@ -22,7 +22,7 @@ public struct RankingTrialView: View {
                         .foreground(LegacyColor.Label.alternative)
                 }
                 
-                TitleBadge("자본주의", size: .medium)                    
+                TitleBadge("자본주의", color: LegacyColor.Purple.normal, size: .medium)                    
             }
             
             Text("180층")

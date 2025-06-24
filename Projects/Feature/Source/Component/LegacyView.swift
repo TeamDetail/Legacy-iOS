@@ -9,7 +9,7 @@ import SwiftUI
 import Component
 
 struct LegacyView<Content: View>: View {
-    @StateObject private var viewModel = ProfileViewModel()
+    @StateObject private var viewModel = UserViewModel()
     let content: Content
     
     init(@ViewBuilder content: () -> Content) {

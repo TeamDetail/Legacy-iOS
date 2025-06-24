@@ -6,23 +6,25 @@ public enum TitleBadgeSize {
 
 public struct TitleBadge: View {
     let title: String
+    let color: LegacyColorable
     let size: TitleBadgeSize
     
-    public init(_ title: String, size: TitleBadgeSize = .small) {
+    public init(_ title: String, color: LegacyColorable, size: TitleBadgeSize = .small) {
         self.title = title
+        self.color = color
         self.size = size
     }
     
     public var body: some View {
         Text(title)
             .font(font)
-            .foreground(LegacyColor.Yellow.normal)
+            .foreground(color)
             .frame(maxWidth: .infinity)
             .frame(height: height)
             .overlay {
                 RoundedRectangle(cornerRadius: 8)
                     .stroke(lineWidth: 2)
-                    .foreground(LegacyColor.Yellow.normal)
+                    .foreground(color)
             }
             .background(LegacyColor.Fill.normal)
             .clipShape(RoundedRectangle(cornerRadius: 8))

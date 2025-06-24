@@ -5,16 +5,26 @@
 //  Created by dgsw27 on 5/14/25.
 //
 
+import Domain
 import SwiftUI
-import Component
 import FlowKit
+import Component
 
 struct SettingView: View {
-    @State private var selection = 0
     @Flow var flow
+    let viewModel: UserInfoResponse?
+    @State private var selection = 0
+   
+    
     var body: some View {
         ScrollView {
-            ProfileComponent{ }
+            if let data = viewModel {
+                ProfileComponent(data) {
+                    
+                }
+            } else {
+                ProfileError()
+            }
             HStack {
                 CategoryButtonGroup(
                     categories: ["내 기록", "칭호", "도감"],
@@ -41,8 +51,4 @@ struct SettingView: View {
             flow.pop()
         }
     }
-}
-
-#Preview {
-    SettingView()
 }

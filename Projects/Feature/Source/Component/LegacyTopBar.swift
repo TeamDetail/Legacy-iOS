@@ -47,7 +47,7 @@ struct LegacyTopBar: View {
                     Text(data.nickname)
                         .font(.body2(.bold))
                         .foreground(LegacyColor.Label.normal)
-                    Text("\(data.level)")
+                    Text("Lv.\(data.level)")
                         .font(.caption2(.bold))
                         .foreground(LegacyColor.Label.alternative)
                 }
@@ -107,7 +107,7 @@ struct LegacyTopBar: View {
                     case .mail:
                         print("메일")
                     case .setting:
-                        flow.push(SettingView())
+                        flow.push(SettingView(viewModel: data))
                     case .wrong:
                         print("메일")
                     case .logout:

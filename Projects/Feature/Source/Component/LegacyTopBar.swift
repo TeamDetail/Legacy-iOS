@@ -36,6 +36,11 @@ struct LegacyTopBar: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 44, height: 44)
                         .clipShape(size: 50)
+                } else {
+                    Circle()
+                        .frame(width: 44, height: 44)
+                        .redacted(reason: .placeholder)
+                        .shimmering()
                 }
                 
                 VStack(alignment: .leading) {

@@ -15,6 +15,7 @@ public struct UserDataSource: DataSourceProtocol {
     
     public init() {
         self.provider = MoyaProvider<UserService>(
+            session: Moya.Session(interceptor: RemoteInterceptor()),
             plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))]
         )
     }

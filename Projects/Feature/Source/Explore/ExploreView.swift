@@ -65,7 +65,7 @@ public struct ExploreView: View {
                         }
                         LegacyErrorAlert(
                             isPresented: $isZoomValid,
-                            description: "줌을 많이 당기면 화면이\n 멈출 수도 있어요!"
+                            description: "줌을 많이 당기면 화면이\n멈출 수도 있어요!"
                         )
                     }
                 }

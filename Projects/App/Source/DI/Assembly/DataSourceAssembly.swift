@@ -19,5 +19,9 @@ public struct DataSourceAssembly: Assembly {
         container.register(ExploreDataSource.self) { _ in
             ExploreDataSource()
         }.inObjectScope(.container)
+        
+        container.register(UserDataSource.self) { _ in
+            UserDataSource()
+        }.inObjectScope(.container)
     }
 }

@@ -22,5 +22,10 @@ public struct RepositoryAssembly: Assembly {
             let dataSource = resolver.resolve(ExploreDataSource.self)!
             return ExploreRepositoryImpl(dataSource: dataSource)
         }.inObjectScope(.container)
+        
+        container.register(UserRepository.self) { resolver in
+            let dataSource = resolver.resolve(UserDataSource.self)!
+            return UserRepositoryImpl(dataSource: dataSource)
+        }.inObjectScope(.container)
     }
 }

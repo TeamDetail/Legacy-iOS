@@ -9,6 +9,7 @@ import SwiftUI
 import Component
 
 struct LegacyView<Content: View>: View {
+    @StateObject private var viewModel = ProfileViewModel()
     let content: Content
     
     init(@ViewBuilder content: () -> Content) {
@@ -20,9 +21,18 @@ struct LegacyView<Content: View>: View {
             content
                 .padding(.top, 80)
                 .overlay(alignment: .top) {
-                    LegacyTopBar()
-                        .padding(.top, 10)
+                    if let data = viewModel.userInfo {
+                        LegacyTopBar(data: data)
+                            .padding(.top, 10)
+                    } else {
+                        ErrorTopBar()
+                    }
                 }
+        }
+        .onAppear {
+            Task {
+                await viewModel.fetchMyinfo()
+            }
         }
         .background(LegacyColor.Background.alternative)
     }

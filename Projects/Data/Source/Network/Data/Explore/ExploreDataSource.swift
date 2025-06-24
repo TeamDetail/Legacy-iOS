@@ -14,8 +14,10 @@ public struct ExploreDataSource: DataSourceProtocol {
     
     public let provider: MoyaProvider<ExploreService>
     
-    public init(provider: MoyaProvider<ExploreService> = MoyaProvider<ExploreService>()) {
-        self.provider = provider
+    public init() {
+        self.provider = MoyaProvider<ExploreService>(
+            plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))]
+        )
     }
     
     public func fetchRuins(_ request: MapBoundsRequest) async throws -> [RuinsPositionResponse] {

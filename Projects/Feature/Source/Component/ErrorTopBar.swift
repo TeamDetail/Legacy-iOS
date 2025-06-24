@@ -1,48 +1,28 @@
-//
-//  LegacyTopBar.swift
-//  Feature
-//
-//  Created by dgsw30 on 5/5/25.
-//
-
 import Data
 import Domain
-import Shared
 import SwiftUI
 import FlowKit
 import Shimmer
 import Component
-import Kingfisher
 
-struct LegacyTopBar: View {
-    @Flow var flow
+struct ErrorTopBar: View {
     @State private var showMenu = false
     @State private var buttonFrame: CGRect = .zero
-    let data: UserInfoResponse
+    @Flow var flow
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
             HStack {
-                if let url = URL(string: data.imageUrl) {
-                    KFImage(url)
-                        .placeholder { _ in
-                            RoundedRectangle(cornerRadius: 16)
-                                .fill(Color.gray.opacity(0.3))
-                                .frame(width: 140, height: 180)
-                                .redacted(reason: .placeholder)
-                                .shimmering()
-                        }
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 44, height: 44)
-                        .clipShape(size: 50)
-                }
+                Circle()
+                    .frame(width: 44, height: 44)
+                    .redacted(reason: .placeholder)
+                    .shimmering()
                 
                 VStack(alignment: .leading) {
-                    Text(data.nickname)
+                    Text("unknown")
                         .font(.body2(.bold))
                         .foreground(LegacyColor.Label.normal)
-                    Text("\(data.level)")
+                    Text("Lv.0")
                         .font(.caption2(.bold))
                         .foreground(LegacyColor.Label.alternative)
                 }
@@ -51,7 +31,7 @@ struct LegacyTopBar: View {
                 
                 HStack {
                     Image(icon: .coin)
-                    Text("\(data.credit)")
+                    Text("0")
                         .font(.bitFont(size: 16))
                         .foreground(LegacyColor.Yellow.normal)
                 }
@@ -102,7 +82,7 @@ struct LegacyTopBar: View {
                     case .mail:
                         print("메일")
                     case .setting:
-                        flow.push(SettingView())
+                        flow.push((SettingView()))
                     case .wrong:
                         print("메일")
                     case .logout:
@@ -124,3 +104,5 @@ struct LegacyTopBar: View {
         }
     }
 }
+
+

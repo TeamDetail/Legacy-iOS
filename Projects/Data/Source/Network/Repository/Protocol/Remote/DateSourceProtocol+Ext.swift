@@ -3,18 +3,14 @@ import Foundation
 import Domain
 
 public extension DataSourceProtocol {
-    var provider: MoyaProvider<Target> {
-        .init(
-            session: Moya.Session(interceptor: RemoteInterceptor()),
-            plugins: [NetworkLoggerPlugin(
-                configuration: .init(
-                    logOptions: .verbose
-                )
-            )]
-        )
-    }
+//    var provider: MoyaProvider<Target> {
+//        .init(
+//            session: Moya.Session(interceptor: RemoteInterceptor()),
+//            plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))]
+//        )
+//    }
     
-    func request<T: Decodable>(target: Target) async throws -> BaseResponse<T> {
+    func request<T: Decodable>(target: MoyaProvider<Target>.Target) async throws -> BaseResponse<T> {
         let response = try await withCheckedThrowingContinuation { continuation in
             provider.request(target) { result in
                 switch result {

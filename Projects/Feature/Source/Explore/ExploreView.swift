@@ -13,6 +13,7 @@ import CoreLocation
 import Domain
 
 public struct ExploreView: View {
+    @StateObject private var userData = ProfileViewModel()
     @StateObject private var viewModel = ExploreViewModel()
     @StateObject private var locationManager = LocationManager()
     @State private var isZoomValid = false
@@ -57,10 +58,14 @@ public struct ExploreView: View {
                 .ignoresSafeArea()
                 .overlay(alignment: .top) {
                     VStack {
-                        LegacyTopBar()
+                        if let data = userData.userInfo {
+                            LegacyTopBar(data: data)
+                        } else {
+                            ErrorTopBar()
+                        }
                         LegacyErrorAlert(
                             isPresented: $isZoomValid,
-                            description: "줌을 많이 당기면 타일이\n보이지 않을수 있어요!"
+                            description: "줌을 많이 당기면 화면이\n 멈출 수도 있어요!"
                         )
                     }
                 }
@@ -94,6 +99,11 @@ public struct ExploreView: View {
         }
         .onDisappear {
             locationManager.stopUpdating()
+        }
+        .onAppear {
+            Task {
+                await userData.fetchMyinfo()
+            }
         }
     }
 }

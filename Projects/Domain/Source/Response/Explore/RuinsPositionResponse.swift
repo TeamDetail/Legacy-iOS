@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct RuinsPositionResponse: Decodable {
+public struct RuinsPositionResponse: ResponseProtocol {
     public let ruinsId: Int
     public let latitude: Double
     public let longitude: Double

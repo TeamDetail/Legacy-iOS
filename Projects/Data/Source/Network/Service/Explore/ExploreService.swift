@@ -41,13 +41,4 @@ extension ExploreService {
         case .fetchRuinDeatil(_ ): .requestPlain
         }
     }
-    
-    
-    public var headers: [String: String]? {
-        ["Content-Type": "application/json"]
-    }
-    
-    public var validationType: ValidationType {
-        .none
-    }
 }

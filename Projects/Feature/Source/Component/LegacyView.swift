@@ -23,7 +23,7 @@ struct LegacyView<Content: View>: View {
                 .overlay(alignment: .top) {
                     if let data = viewModel.userInfo {
                         LegacyTopBar(data: data)
-                            .padding(.top, 10)
+                            .padding(.bottom, 10)
                     } else {
                         ErrorTopBar()
                     }

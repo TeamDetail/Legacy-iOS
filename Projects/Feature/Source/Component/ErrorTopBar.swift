@@ -22,9 +22,14 @@ struct ErrorTopBar: View {
                     Text("unknown")
                         .font(.body2(.bold))
                         .foreground(LegacyColor.Label.normal)
+                        .redacted(reason: .placeholder)
+                        .shimmering()
+                    
                     Text("Lv.0")
                         .font(.caption2(.bold))
                         .foreground(LegacyColor.Label.alternative)
+                        .redacted(reason: .placeholder)
+                        .shimmering()
                 }
                 
                 Spacer()

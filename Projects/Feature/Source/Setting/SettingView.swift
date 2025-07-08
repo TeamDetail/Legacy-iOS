@@ -14,7 +14,7 @@ struct SettingView: View {
     @Flow var flow
     let viewModel: UserInfoResponse?
     @State private var selection = 0
-   
+    
     
     var body: some View {
         ScrollView {
@@ -35,7 +35,13 @@ struct SettingView: View {
             .padding(.top, 20)
             
             if selection == 0 {
-                
+                if let data = viewModel {
+                    ActivityRecordView(data: data)
+                } else {
+                    LegacyLoadingView(
+                        description: ""
+                    )
+                }
             }
             
             if selection == 1 {

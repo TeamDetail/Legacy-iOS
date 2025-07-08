@@ -1,6 +1,6 @@
 import SwiftUI
 
-public struct ProgressBar: View {
+public struct QuizProgressBar: View {
     enum ProgressColor: Int {
         case one = 1
         case two = 2

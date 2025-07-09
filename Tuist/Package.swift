@@ -26,7 +26,7 @@ let package = Package(
         .package(url: "https://github.com/Swinject/Swinject.git", from: "2.8.0"),
         .package(url: "https://github.com/Mercen-Lee/FlowKit", branch: "main"),
         .package(url: "https://github.com/googlemaps/ios-maps-sdk", from: "9.4.0"),
-        .package(url: "https://github.com/eunchan2815/FlexibleKit", from: "1.0.1"),
+        .package(url: "https://github.com/eunchan2815/FlexibleKit", from: "1.0.5"),
         .package(url: "https://github.com/kakao/kakao-ios-sdk", from: "2.24.2"),
         .package(url: "https://github.com/onevcat/Kingfisher", from: "8.3.2"),
         .package(url: "https://github.com/markiv/SwiftUI-Shimmer", from: "1.5.1")

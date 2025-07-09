@@ -27,7 +27,7 @@ public struct TitleBadge: View {
                     .foreground(color)
             }
             .background(LegacyColor.Fill.normal)
-            .clipShape(RoundedRectangle(cornerRadius: 8))
+            .clipShape(size: 8)
             .padding(horizontalPadding)
     }
     

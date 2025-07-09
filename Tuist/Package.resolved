@@ -1,5 +1,5 @@
 {
-  "originHash" : "dc878a5a40dbb249249a96fe8c4298997a4741daac45a5fff3afce21e053ef46",
+  "originHash" : "dd22b8103dcba7158d893296566a57335cddc13e1f3d04ec3e51bc774384a1fb",
   "pins" : [
     {
       "identity" : "alamofire",
@@ -15,8 +15,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/eunchan2815/FlexibleKit",
       "state" : {
-        "revision" : "a1c2c45b14bf5933ecebb678bac4d07d13650d2f",
-        "version" : "1.0.1"
+        "revision" : "6717a8a6ccbf94ca689fb2fe1e7ff61c38b01438",
+        "version" : "1.0.5"
       }
     },
     {

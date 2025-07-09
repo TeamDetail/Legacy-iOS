@@ -68,8 +68,8 @@ public struct ProfileComponent: View {
                     .foreground(LegacyColor.Label.alternative)
                     .padding(.horizontal, 2)
                 
-                if data.title.name == "" {
-                    TitleBadge("칭호를 얻어보세요!", color: LegacyColor.Label.disable, size: .big)
+                if data.title.name == "칭호가 없습니다" {
+                    //MARK: Empty
                 } else {
                     TitleBadge(data.title.name, color: LegacyColor.Yellow.netural, size: .big)
                 }

@@ -87,7 +87,8 @@ public struct ExploreView: View {
                             }
                         }
                         .padding(.horizontal, 6)
-                        .padding(.bottom, 4)
+                        //                        .padding(.bottom, 4) //MARK: google Map 보여줄때
+                        .padding(.bottom, 120) //TODO: 쓰레기 코드
                         .transition(.move(edge: .bottom).combined(with: .opacity))
                         .animation(.spring(response: 0.4, dampingFraction: 0.8), value: showDetail)
                     }

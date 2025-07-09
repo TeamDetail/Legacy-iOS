@@ -10,15 +10,15 @@ import SwiftUI
 public struct LegacyErrorAlert: View {
     @Binding var isPresented: Bool
     let description: String
-
+    
     @State private var showIcon = false
     @State private var showText = false
-
+    
     public init(isPresented: Binding<Bool>, description: String) {
         self._isPresented = isPresented
         self.description = description
     }
-
+    
     public var body: some View {
         ZStack {
             if isPresented {
@@ -29,7 +29,7 @@ public struct LegacyErrorAlert: View {
                         .scaleEffect(showIcon ? 1.0 : 0.5)
                         .opacity(showIcon ? 1.0 : 0)
                         .animation(.spring(response: 0.4, dampingFraction: 0.6).delay(0.05), value: showIcon)
-
+                    
                     Text(description)
                         .font(.body1(.bold))
                         .foregroundColor(.white)
@@ -54,6 +54,11 @@ public struct LegacyErrorAlert: View {
                 .onAppear {
                     showIcon = true
                     showText = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                        withAnimation {
+                            isPresented = false
+                        }
+                    }
                 }
                 .onDisappear {
                     showIcon = false

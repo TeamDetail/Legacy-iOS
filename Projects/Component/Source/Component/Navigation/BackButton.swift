@@ -8,8 +8,11 @@
 import SwiftUI
 
 public struct BackButton: ViewModifier {
+    let title: String
     let action: () -> Void
-    public init(action: @escaping () -> Void) {
+    
+    public init(title: String, action: @escaping () -> Void) {
+        self.title = title
         self.action = action
     }
     
@@ -22,7 +25,7 @@ public struct BackButton: ViewModifier {
         } label: {
             HStack {
                 Image(systemName: "chevron.left")
-                Text("프로필")
+                Text(title)
             }
             .font(.heading1(.bold))
             .foreground(LegacyColor.Common.white)

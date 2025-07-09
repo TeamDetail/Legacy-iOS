@@ -37,6 +37,7 @@ struct SettingView: View {
             if selection == 0 {
                 if let data = viewModel {
                     ActivityRecordView(data: data)
+                        .padding(.top, 8)
                 } else {
                     LegacyLoadingView(
                         description: ""
@@ -53,7 +54,7 @@ struct SettingView: View {
             }
         }
         .padding(.horizontal, 10)
-        .backButton {
+        .backButton(title: "프로필") {
             flow.pop()
         }
     }

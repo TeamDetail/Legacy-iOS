@@ -17,7 +17,7 @@ public struct ActivityRecordView: View {
     
     public var body: some View {
         VStack(spacing: 20) {
-            HStack {
+            HStack(spacing: 8) {
                 Text("숙련")
                     .font(.heading2(.bold))
                     .foreground(LegacyColor.Common.white)
@@ -29,26 +29,35 @@ public struct ActivityRecordView: View {
                     currentExp: CGFloat(data.exp),
                     maxExp: 13000
                 )
-                .frame(width: 300, height: 40)
             }
-            .padding(.horizontal, 14)
+            .padding(.horizontal, 12)
             
-            HStack {
+            HStack(spacing: 8) {
                 Text("시련")
+                    .font(.heading2(.bold))
+                    .foreground(LegacyColor.Common.white)
                 
-                //TODO: 시련 ProgressBar
+                FloorProgressBar(
+                    currentFloor: CGFloat(data.maxFloor),
+                    maxFloor: 150
+                )
             }
-            .padding(.horizontal, 14)
+            .padding(.horizontal, 12)
             
-            HStack {
+            HStack(spacing: 8) {
                 Text("탐험")
+                    .font(.heading2(.bold))
+                    .foreground(LegacyColor.Common.white)
                 
-                //TODO: 탐험 ProgressBar
+                ExploreProgressBar(
+                    currentCard: 0, //TODO: 이거 추가해야함
+                    maxCard: 300
+                )
             }
-            .padding(.horizontal, 14)
+            .padding(.horizontal, 12)
         }
         .padding()
-        .background(LegacyColor.Fill.normal)
+        .background(LegacyColor.Background.netural)
         .clipShape(size: 16)
     }
 }

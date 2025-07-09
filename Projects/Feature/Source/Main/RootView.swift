@@ -24,8 +24,8 @@ public struct RootView: View {
                 case .flag:
                     ExploreView()
                     //MARK: showing google mark
-                        .padding(.bottom, 100)
-                        .background(LegacyColor.Background.normal)
+//                        .padding(.bottom, 100)
+//                        .background(LegacyColor.Background.normal)
                 case .battle:
                     LegacyEmptyView()
                 case .trophy:

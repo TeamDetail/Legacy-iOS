@@ -41,8 +41,6 @@ public struct ProfileComponent: View {
                     .shimmering()
             }
             
-            
-            
             VStack(alignment: .leading, spacing: 6) {
                 HStack {
                     Text(data.nickname)

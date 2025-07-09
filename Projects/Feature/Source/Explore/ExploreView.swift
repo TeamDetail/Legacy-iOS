@@ -33,8 +33,8 @@ public struct ExploreView: View {
                     ruins: viewModel.ruins,
                     isZoomValid: $isZoomValid
                 ) { location in
-                    print("좌하단: \(location.southWest.latitude), \(location.southWest.longitude)")
-                    print("우상단: \(location.northEast.latitude), \(location.northEast.longitude)")
+                    //                    print("좌하단: \(location.southWest.latitude), \(location.southWest.longitude)")
+                    //                    print("우상단: \(location.northEast.latitude), \(location.northEast.longitude)")
                     Task {
                         await viewModel.fetchMap(
                             .init(

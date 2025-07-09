@@ -1,19 +1,18 @@
 //
-//  LevelProgressBar.swift
+//  FloorProgressBar.swift
 //  Component
 //
-//  Created by 김은찬 on 7/8/25.
+//  Created by 김은찬 on 7/9/25.
 //
 
 import SwiftUI
 
-public struct LevelProgressBar: View {
-    let level: Int
-    let currentExp: CGFloat
-    let maxExp: CGFloat
+public struct FloorProgressBar: View {
+    let currentFloor: CGFloat
+    let maxFloor: CGFloat
     
     var progress: CGFloat {
-        min(currentExp / maxExp, 1.0)
+        min(currentFloor / maxFloor, 1.0)
     }
     
     public var body: some View {
@@ -28,22 +27,19 @@ public struct LevelProgressBar: View {
                 let filledWidth = width * progress
                 
                 Rectangle()
-                    .foreground(LegacyColor.Red.alternative)
+                    .foreground(LegacyColor.Primary.normal)
                     .frame(width: filledWidth, height: height)
                     .clipShape(waveClippedShape(width: filledWidth, height: height))
             }
             .clipShape(size: 20)
-            .frame(height: 40) 
+            .frame(height: 40)
             
-            HStack(spacing: 8) {
-                Text("Lv. \(level)")
+            HStack {
+                Text("최고 \(Int(currentFloor))층")
                     .font(.headline(.bold))
                     .foreground(LegacyColor.Common.white)
-                
-                Text("(\(Int(currentExp)) / \(Int(maxExp)))")
-                    .font(.caption2(.bold))
-                    .foreground(LegacyColor.Label.alternative)
             }
+            .padding(4)
         }
     }
 }

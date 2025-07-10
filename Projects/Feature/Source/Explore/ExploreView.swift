@@ -36,6 +36,7 @@ public struct ExploreView: View {
                     //                    print("좌하단: \(location.southWest.latitude), \(location.southWest.longitude)")
                     //                    print("우상단: \(location.northEast.latitude), \(location.northEast.longitude)")
                     Task {
+                        //MARK: 유적지 정보 불러오기
                         await viewModel.fetchMap(
                             .init(
                                 minLat: location.southWest.latitude,
@@ -45,6 +46,7 @@ public struct ExploreView: View {
                             )
                         )
                     }
+                    //MARK: 유적지 Tab
                 } onPolygonTap: { ruinsid in
                     Task {
                         await viewModel.fetchRuinDeatil(
@@ -93,6 +95,17 @@ public struct ExploreView: View {
                         .animation(.spring(response: 0.4, dampingFraction: 0.8), value: showDetail)
                     }
                 }
+            }
+        }
+        .onChange(of: locationManager.location) { newLocation in
+            guard let newLocation else { return }
+            Task {
+                await viewModel.createBlock(
+                    .init(
+                        latitude: newLocation.coordinate.latitude,
+                        longitude: newLocation.coordinate.longitude
+                    )
+                )
             }
         }
         .task {

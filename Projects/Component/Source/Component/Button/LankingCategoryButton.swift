@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+//MARK: 안써서 일단 보류
 public struct LankingCategoryButton: View {
     let category: String
     let select: Bool

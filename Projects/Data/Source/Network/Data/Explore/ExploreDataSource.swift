@@ -30,4 +30,9 @@ public struct ExploreDataSource: DataSourceProtocol {
         let response: BaseResponse<RuinsDetailResponse> = try await self.request(target: .fetchRuinDeatil(id))
         return response.data
     }
+    
+    public func createBlock(_ request: CreateBlockRequest) async throws -> CreateBlockResponse {
+        let response: BaseResponse<CreateBlockResponse> = try await self.request(target: .createBlock(request))
+        return response.data
+    }
 }

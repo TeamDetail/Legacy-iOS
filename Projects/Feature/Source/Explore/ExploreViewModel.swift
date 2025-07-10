@@ -38,7 +38,20 @@ public class ExploreViewModel: ObservableObject {
             ruinDetail = try await exploreRepository.fetchRuinDeatil(
                 id
             )
-            print(ruinDetail)
+        } catch {
+            print(error)
+        }
+    }
+    
+    @MainActor
+    func createBlock(_ location: CreateBlockRequest) async {
+        do {
+            try await exploreRepository.createBlock(
+                .init(
+                    latitude: location.latitude,
+                    longitude: location.longitude
+                )
+            )
         } catch {
             print(error)
         }

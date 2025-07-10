@@ -4,45 +4,31 @@ import Shared
 
 struct LankingView: View {
     @Binding var tabItem: LegacyTabItem
-    @State private var selection: ShopEnum = .trial
+    @State private var selection = 0
     
     var body: some View {
         LegacyView {
             LegacyScrollView(title: "랭킹", icon: .trophy, item: tabItem) {
-                HStack {
-                    CategoryButton(category: "시련", select: selection == .trial) {
-                        selection = .trial
+                VStack(spacing: 16) {
+                    HStack {
+                        CategoryButtonGroup(
+                            categories: ["카드 팩", "크래딧 충전"],
+                            selection: $selection
+                        )
+                        
+                        Spacer()
                     }
-                    CategoryButton(category: "탐험", select: selection == .adventure) {
-                        selection = .adventure
-                    }
-                    CategoryButton(category: "숙련", select: selection == .skill) {
-                        selection = .skill
-                    }
+                    .padding(.horizontal, 14)
                     
-                    Spacer()
-                    
-                    LankingCategoryButton(category: "친구", select: selection == .friend) {
-                        selection = .friend
-                    }
-                    LankingCategoryButton(category: "전체", select: selection == .all) {
-                        selection = .all
-                    }
-                }
-                .padding(.horizontal, 14)
-                
-                switch selection {
-                case .trial:
-                    ScrollView {
-                        //                        RankingTrialView()
+                    if selection == 0 {
                         RankingBoardView()
-                            .padding(.bottom, 80)
+                    } else {
+                        LegacyLoadingView(
+                            description: ""
+                        )
                     }
-                default:
-                    EmptyView()
                 }
             }
-            .padding(.top, 8)
         }
     }
 }

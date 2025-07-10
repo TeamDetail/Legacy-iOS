@@ -24,4 +24,7 @@ public struct ExploreRepositoryImpl: ExploreRepository {
         let data = try await dataSource.fetchRuinDeatil(id)
         return data
     }
+    public func createBlock(_ request: CreateBlockRequest) async throws {
+        let data = try await dataSource.createBlock(request)
+    }
 }

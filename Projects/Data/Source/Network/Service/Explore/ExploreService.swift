@@ -11,6 +11,7 @@ import Domain
 public enum ExploreService: ServiceProtocol {
     case fetchMap(_ request: MapBoundsRequest)
     case fetchRuinDeatil(_ id: Int)
+    case createBlock(_ requset: CreateBlockRequest)
 }
 
 extension ExploreService {
@@ -22,6 +23,7 @@ extension ExploreService {
         switch self {
         case .fetchMap: "/map"
         case .fetchRuinDeatil(let id): "\(id)"
+        case .createBlock: "/block"
         }
     }
     
@@ -29,6 +31,7 @@ extension ExploreService {
         switch self {
         case .fetchMap: .get
         case .fetchRuinDeatil: .get
+        case .createBlock: .post
         }
     }
     
@@ -39,6 +42,11 @@ extension ExploreService {
                 encoding: URLEncoding.default
             )
         case .fetchRuinDeatil(_ ): .requestPlain
+        case let .createBlock(request):
+            request.toRequestParameters(
+                encoding: URLEncoding.default
+            )
         }
+        
     }
 }

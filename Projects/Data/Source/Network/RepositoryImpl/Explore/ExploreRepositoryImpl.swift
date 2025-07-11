@@ -9,6 +9,7 @@ import Foundation
 import Domain
 
 public struct ExploreRepositoryImpl: ExploreRepository {
+    
     let dataSource: ExploreDataSource
     
     public init(dataSource: ExploreDataSource) {
@@ -24,7 +25,14 @@ public struct ExploreRepositoryImpl: ExploreRepository {
         let data = try await dataSource.fetchRuinDeatil(id)
         return data
     }
-    public func createBlock(_ request: CreateBlockRequest) async throws {
+    
+    public func createBlock(_ request: CreateBlockRequest) async throws -> CreateBlockResponse {
         let data = try await dataSource.createBlock(request)
+        return data
+    }
+    
+    public func fetchMyBlock() async throws -> [CreateBlockResponse] {
+        let data = try await dataSource.fetchMyBlock()
+        return data
     }
 }

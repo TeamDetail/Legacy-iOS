@@ -13,6 +13,7 @@ import Data
 public class ExploreViewModel: ObservableObject {
     @Published var ruins: [RuinsPositionResponse]?
     @Published var ruinDetail: RuinsDetailResponse?
+    @Published var myBlocks: [CreateBlockResponse]?
     
     @Inject var exploreRepository: any ExploreRepository
     
@@ -46,14 +47,24 @@ public class ExploreViewModel: ObservableObject {
     @MainActor
     func createBlock(_ location: CreateBlockRequest) async {
         do {
-            try await exploreRepository.createBlock(
+            _ = try await exploreRepository.createBlock(
                 .init(
                     latitude: location.latitude,
                     longitude: location.longitude
                 )
             )
+            await fetchMyBlock()
         } catch {
-            print(error)
+            print("블록 생성 에러\(error.localizedDescription)")
+        }
+    }
+    
+    @MainActor
+    func fetchMyBlock() async {
+        do {
+            myBlocks = try await exploreRepository.fetchMyBlock()
+        } catch {
+            print("블록 에러\(error.localizedDescription)")
         }
     }
 }

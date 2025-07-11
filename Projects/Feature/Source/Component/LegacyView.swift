@@ -9,6 +9,7 @@ import SwiftUI
 import Component
 
 struct LegacyView<Content: View>: View {
+    @State private var showMenu = false
     @StateObject private var viewModel = UserViewModel()
     let content: Content
     
@@ -22,8 +23,11 @@ struct LegacyView<Content: View>: View {
                 .padding(.top, 80)
                 .overlay(alignment: .top) {
                     if let data = viewModel.userInfo {
-                        LegacyTopBar(data: data)
-                            .padding(.bottom, 10)
+                        LegacyTopBar(
+                            showMenu: $showMenu,
+                            data: data
+                        )
+                        .padding(.bottom, 10)
                     } else {
                         ErrorTopBar()
                     }
@@ -32,6 +36,11 @@ struct LegacyView<Content: View>: View {
         .onAppear {
             Task {
                 await viewModel.fetchMyinfo()
+            }
+        }
+        .onTapGesture {
+            withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
+                showMenu = false
             }
         }
         .background(LegacyColor.Background.alternative)

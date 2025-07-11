@@ -16,7 +16,7 @@ import Kingfisher
 
 struct LegacyTopBar: View {
     @Flow var flow
-    @State private var showMenu = false
+    @Binding var showMenu: Bool
     @State private var buttonFrame: CGRect = .zero
     let data: UserInfoResponse
     
@@ -120,11 +120,6 @@ struct LegacyTopBar: View {
                 .padding(.top, 7)
                 .padding(.trailing, 16)
                 .padding(.horizontal, 4)
-            }
-        }
-        .onTapGesture {
-            withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
-                showMenu = false
             }
         }
     }

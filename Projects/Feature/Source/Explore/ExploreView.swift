@@ -1,11 +1,3 @@
-//
-//  ContentView.swift
-//  Feature
-//
-//  Created by dgsw30 on 5/5/25.
-//
-
-
 import SwiftUI
 import Component
 import GoogleMaps
@@ -18,6 +10,7 @@ public struct ExploreView: View {
     @StateObject private var locationManager = LocationManager()
     @State private var isZoomValid = false
     @State private var showDetail = false
+    @State private var showMenu = false
     
     public init() {}
     
@@ -31,10 +24,9 @@ public struct ExploreView: View {
                 GMSMapViewRepresentable(
                     userLocation: locationManager.location,
                     ruins: viewModel.ruins,
+                    myBlocks: viewModel.myBlocks,
                     isZoomValid: $isZoomValid
                 ) { location in
-                    //                    print("좌하단: \(location.southWest.latitude), \(location.southWest.longitude)")
-                    //                    print("우상단: \(location.northEast.latitude), \(location.northEast.longitude)")
                     Task {
                         //MARK: 유적지 정보 불러오기
                         await viewModel.fetchMap(
@@ -56,12 +48,21 @@ public struct ExploreView: View {
                             showDetail = true
                         }
                     }
+                } onMapTap: {
+                    if showMenu {
+                        withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
+                            showMenu = false
+                        }
+                    }
                 }
                 .ignoresSafeArea()
                 .overlay(alignment: .top) {
                     VStack {
                         if let data = userData.userInfo {
-                            LegacyTopBar(data: data)
+                            LegacyTopBar(
+                                showMenu: $showMenu,
+                                data: data
+                            )
                         } else {
                             ErrorTopBar()
                         }
@@ -72,33 +73,17 @@ public struct ExploreView: View {
                     }
                 }
                 if let detail = viewModel.ruinDetail, showDetail {
-                    ZStack(alignment: .bottom) {
-                        Color.black.opacity(0.4)
-                            .ignoresSafeArea()
-                            .onTapGesture {
-                                withAnimation {
-                                    showDetail = false
-                                    viewModel.ruinDetail = nil
-                                }
-                            }
-                        
-                        RuinsDetailView(data: detail) {
-                            withAnimation {
-                                showDetail = false
-                                viewModel.ruinDetail = nil
-                            }
-                        }
-                        .padding(.horizontal, 6)
-                        //                        .padding(.bottom, 4) //MARK: google Map 보여줄때
-                        .padding(.bottom, 120) //TODO: 쓰레기 코드
-                        .transition(.move(edge: .bottom).combined(with: .opacity))
-                        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: showDetail)
-                    }
+                    RuinsDetailOverlay(
+                        detail: detail,
+                        showDetail: $showDetail,
+                        viewModel: viewModel
+                    )
                 }
             }
         }
         .onChange(of: locationManager.location) { newLocation in
-            guard let newLocation else { return }
+            guard let newLocation, newLocation.horizontalAccuracy < 100 else { return }
+            
             Task {
                 await viewModel.createBlock(
                     .init(
@@ -116,12 +101,9 @@ public struct ExploreView: View {
         }
         .onAppear {
             Task {
+                await viewModel.fetchMyBlock()
                 await userData.fetchMyinfo()
             }
         }
     }
-}
-
-#Preview {
-    ExploreView()
 }

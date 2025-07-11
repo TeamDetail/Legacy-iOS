@@ -17,10 +17,7 @@ extension AuthService {
     }
     
     public var path: String {
-        switch self {
-        case .postLogin: return ""
-        case .postReiuse: return ""
-        }
+        ""
     }
     
     public var method: Moya.Method {

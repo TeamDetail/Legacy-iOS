@@ -8,18 +8,20 @@ import CoreLocation
 struct GMSMapViewRepresentable: UIViewRepresentable {
     let userLocation: CLLocation?
     let ruins: [RuinsPositionResponse]?
+    let myBlocks: [CreateBlockResponse]?
     
     @Binding var isZoomValid: Bool
     let onBoundsChange: (_ bounds: GMSCoordinateBounds) -> Void
     let onPolygonTap: (_ ruinsId: Int) -> Void
+    let onMapTap: (() -> Void)?
     
     func makeCoordinator() -> Coordinator {
         Coordinator(
             isZoomValid: $isZoomValid,
             onBoundsChange: onBoundsChange,
-            onPolygonTap: onPolygonTap
+            onPolygonTap: onPolygonTap,
+            onMapTap: onMapTap
         )
-        
     }
     
     func makeUIView(context: Context) -> GMSMapView {
@@ -49,6 +51,7 @@ struct GMSMapViewRepresentable: UIViewRepresentable {
         
         mapView.clear()
         
+        //MARK: 유적지 표시
         for ruin in ruins ?? [] {
             let rect = makeRectangle(from: LatLng(lat: ruin.latitude, lng: ruin.longitude))
             let path = GMSMutablePath()
@@ -64,6 +67,22 @@ struct GMSMapViewRepresentable: UIViewRepresentable {
             polygon.isTappable = true // 탭했을때
             polygon.map = mapView
         }
+        
+        //MARK: 내블록 표시
+        for block in myBlocks ?? [] {
+            let rect = makeRectangle(from: LatLng(lat: block.latitude, lng: block.longitude))
+            let path = GMSMutablePath()
+            rect.points.forEach { point in
+                path.add(CLLocationCoordinate2D(latitude: point.lat, longitude: point.lng))
+            }
+            
+            let polygon = GMSPolygon(path: path)
+            polygon.strokeColor = UIColor(LegacyPalette.shared.greenAlternative)
+            polygon.fillColor = UIColor(LegacyPalette.shared.greenNormal)
+            polygon.strokeWidth = 1.5
+            polygon.map = mapView
+        }
+        
     }
     
     class Coordinator: NSObject, GMSMapViewDelegate {
@@ -72,15 +91,18 @@ struct GMSMapViewRepresentable: UIViewRepresentable {
         @Binding var isZoomValid: Bool
         var hasMovedToUserLocation = false
         let onPolygonTap: (Int) -> Void
+        let onMapTap: (() -> Void)?
         
         init(
             isZoomValid: Binding<Bool>,
             onBoundsChange: @escaping (_ bounds: GMSCoordinateBounds) -> Void,
-            onPolygonTap: @escaping (Int) -> Void
+            onPolygonTap: @escaping (Int) -> Void,
+            onMapTap: (() -> Void)? = nil
         ) {
             self._isZoomValid = isZoomValid
             self.onBoundsChange = onBoundsChange
             self.onPolygonTap = onPolygonTap
+            self.onMapTap = onMapTap
         }
         
         func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
@@ -95,6 +117,10 @@ struct GMSMapViewRepresentable: UIViewRepresentable {
                 print("Polygon tapped: ruinsId = \(ruinsId)")
                 onPolygonTap(ruinsId)
             }
+        }
+        
+        func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
+            onMapTap?()
         }
     }
 }

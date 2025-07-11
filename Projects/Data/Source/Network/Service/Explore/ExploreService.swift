@@ -12,18 +12,25 @@ public enum ExploreService: ServiceProtocol {
     case fetchMap(_ request: MapBoundsRequest)
     case fetchRuinDeatil(_ id: Int)
     case createBlock(_ requset: CreateBlockRequest)
+    case fetchMyBlock
 }
 
 extension ExploreService {
     public var host: String {
-        "/ruins"
+        switch self {
+        case .fetchMap, .fetchRuinDeatil:
+            return "/ruins"
+        case .createBlock, .fetchMyBlock:
+            return "/block"
+        }
     }
     
     public var path: String {
         switch self {
         case .fetchMap: "/map"
-        case .fetchRuinDeatil(let id): "\(id)"
-        case .createBlock: "/block"
+        case .fetchRuinDeatil(let id): "/\(id)"
+        case .createBlock: ""
+        case .fetchMyBlock: "/user/me"
         }
     }
     
@@ -32,6 +39,7 @@ extension ExploreService {
         case .fetchMap: .get
         case .fetchRuinDeatil: .get
         case .createBlock: .post
+        case .fetchMyBlock: .get
         }
     }
     
@@ -42,11 +50,8 @@ extension ExploreService {
                 encoding: URLEncoding.default
             )
         case .fetchRuinDeatil(_ ): .requestPlain
-        case let .createBlock(request):
-            request.toRequestParameters(
-                encoding: URLEncoding.default
-            )
+        case let .createBlock(request): .requestJSONEncodable(request)
+        case .fetchMyBlock: .requestPlain
         }
-        
     }
 }

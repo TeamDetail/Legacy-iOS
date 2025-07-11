@@ -14,7 +14,10 @@ public struct StatsData: ResponseProtocol {
     public let dropCount: Int
     
     public init(
-        snowflakeCapacity: Int, storeRestock: Int, creditCollect: Int, dropCount: Int
+        snowflakeCapacity: Int,
+        storeRestock: Int,
+        creditCollect: Int,
+        dropCount: Int
     ) {
         self.snowflakeCapacity = snowflakeCapacity
         self.storeRestock = storeRestock

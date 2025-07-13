@@ -6,10 +6,16 @@ import Shimmer
 public struct RuinsDetailView: View {
     public let data: RuinsDetailResponse
     public var onClose: (() -> Void)? = nil
+    public let action: () -> Void
     
-    public init(data: RuinsDetailResponse, onClose: (() -> Void)? = nil) {
+    public init(
+        data: RuinsDetailResponse,
+        onClose: (() -> Void)? = nil,
+        action: @escaping () -> Void
+    ) {
         self.data = data
         self.onClose = onClose
+        self.action = action
     }
     
     public var body: some View {
@@ -82,7 +88,7 @@ public struct RuinsDetailView: View {
             }
             
             Button {
-                print("탐험 시작!")
+                action()
             } label: {
                 Text("퀴즈 풀고 탐험하기")
                     .frame(maxWidth: .infinity)

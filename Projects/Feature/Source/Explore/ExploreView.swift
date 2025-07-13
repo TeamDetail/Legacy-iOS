@@ -5,6 +5,7 @@ import CoreLocation
 import Domain
 
 public struct ExploreView: View {
+    @StateObject private var quizData = QuizViewModel()
     @StateObject private var userData = UserViewModel()
     @StateObject private var viewModel = ExploreViewModel()
     @StateObject private var locationManager = LocationManager()
@@ -77,7 +78,11 @@ public struct ExploreView: View {
                         detail: detail,
                         showDetail: $showDetail,
                         viewModel: viewModel
-                    )
+                    ) {
+                        Task {
+                            await quizData.fetchQuiz(detail.ruinsId)
+                        }
+                    }
                 }
             }
         }
@@ -85,6 +90,8 @@ public struct ExploreView: View {
             guard let newLocation, newLocation.horizontalAccuracy < 100 else { return }
             
             Task {
+                print("latitude임\(newLocation.coordinate.latitude)")
+                print("longitude임\(newLocation.coordinate.longitude)")
                 await viewModel.createBlock(
                     .init(
                         latitude: newLocation.coordinate.latitude,

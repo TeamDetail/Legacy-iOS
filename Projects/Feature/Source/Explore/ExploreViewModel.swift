@@ -47,12 +47,13 @@ public class ExploreViewModel: ObservableObject {
     @MainActor
     func createBlock(_ location: CreateBlockRequest) async {
         do {
-            _ = try await exploreRepository.createBlock(
+            let data = try await exploreRepository.createBlock(
                 .init(
                     latitude: location.latitude,
                     longitude: location.longitude
                 )
             )
+            print("보낸 블록\(data)")
             await fetchMyBlock()
         } catch {
             print("블록 생성 에러\(error.localizedDescription)")
@@ -63,6 +64,7 @@ public class ExploreViewModel: ObservableObject {
     func fetchMyBlock() async {
         do {
             myBlocks = try await exploreRepository.fetchMyBlock()
+            print("내 블록\(myBlocks)")
         } catch {
             print("블록 에러\(error.localizedDescription)")
         }

@@ -13,6 +13,7 @@ struct RuinsDetailOverlay: View {
     let detail: RuinsDetailResponse
     @Binding var showDetail: Bool
     let viewModel: ExploreViewModel
+    let action: () -> Void
     
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -22,9 +23,11 @@ struct RuinsDetailOverlay: View {
                     dismissDetail()
                 }
             
-            RuinsDetailView(data: detail) {
+            RuinsDetailView(data: detail, onClose: {
                 dismissDetail()
-            }
+            }, action: {
+                action()
+            })
             .padding(.horizontal, 6)
             //                        .padding(.bottom, 4) //MARK: google Map 보여줄때
             .padding(.bottom, 120) // TODO: 추후 동적으로 계산하도록 개선

@@ -17,4 +17,25 @@ public struct UserInfoResponse: ResponseProtocol {
     public let record: RecordData
     public let imageUrl: String
     public let title: TitleData
+    
+    public init(
+        userId: Int,
+        nickname: String,
+        level: Int, exp: Int,
+        credit: Int,
+        stats: StatsData,
+        record: RecordData,
+        imageUrl: String,
+        title: TitleData
+    ) {
+        self.userId = userId
+        self.nickname = nickname
+        self.level = level
+        self.exp = exp
+        self.credit = credit
+        self.stats = stats
+        self.record = record
+        self.imageUrl = imageUrl
+        self.title = title
+    }
 }

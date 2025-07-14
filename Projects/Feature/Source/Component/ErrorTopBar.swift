@@ -94,6 +94,7 @@ struct ErrorTopBar: View {
                         Sign.logout()
                     }
                 }
+                .id(UUID())
                 .scaleEffect(showMenu ? 1.0 : 0.9, anchor: .top)
                 .opacity(showMenu ? 1.0 : 0)
                 .animation(.spring(response: 0.35, dampingFraction: 0.7), value: showMenu)

@@ -9,9 +9,9 @@ import SwiftUI
 import Component
 
 struct ShopView: View {
+    @State private var selection = 0
     @Binding var tabItem: LegacyTabItem
     @StateObject private var viewModel = ShopViewModel()
-    @State private var selection = 0
     let columns = [
         GridItem(.flexible()),
         GridItem(.flexible())
@@ -57,6 +57,9 @@ struct ShopView: View {
                     }
                 }
             }
+        }
+        .onAppear {
+            SoundPlayer.shared.marketSound()
         }
     }
 }

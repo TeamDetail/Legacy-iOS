@@ -54,6 +54,9 @@ struct LoginView: View {
         .sheet(isPresented: $showWebView) {
             FlexibleWebView(url: "https://youtube.com")
         }
+        .onAppear {
+            SoundPlayer.shared.loginSound()
+        }
     }
 }
 

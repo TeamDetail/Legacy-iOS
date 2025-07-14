@@ -18,24 +18,32 @@ struct LegacyTopBar: View {
     @Flow var flow
     @Binding var showMenu: Bool
     @State private var buttonFrame: CGRect = .zero
+    @State private var showAnimation = false
     let data: UserInfoResponse
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
             HStack {
                 if let url = URL(string: data.imageUrl) {
-                    KFImage(url)
-                        .placeholder { _ in
-                            RoundedRectangle(cornerRadius: 16)
-                                .fill(Color.gray.opacity(0.3))
-                                .frame(width: 140, height: 180)
-                                .redacted(reason: .placeholder)
-                                .shimmering()
+                    Button {
+                        withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
+                            HapticManager.instance.impact(style: .soft)
+                            flow.push(ProfileView(viewModel: data))
                         }
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 44, height: 44)
-                        .clipShape(size: 50)
+                    } label: {
+                        KFImage(url)
+                            .placeholder { _ in
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(Color.gray.opacity(0.3))
+                                    .frame(width: 140, height: 180)
+                                    .redacted(reason: .placeholder)
+                                    .shimmering()
+                            }
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 44, height: 44)
+                            .clipShape(size: 50)
+                    }
                 } else {
                     Circle()
                         .frame(width: 44, height: 44)
@@ -65,7 +73,7 @@ struct LegacyTopBar: View {
                 .clipShape(size: 12)
                 
                 Button {
-                    withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
+                    withAnimation(.spring(dampingFraction: 0.75)) {
                         HapticManager.instance.impact(style: .soft)
                         showMenu.toggle()
                     }
@@ -107,13 +115,14 @@ struct LegacyTopBar: View {
                     case .mail:
                         print("메일")
                     case .setting:
-                        flow.push(SettingView(viewModel: data))
+                        flow.push(SettingView())
                     case .wrong:
                         print("메일")
                     case .logout:
                         Sign.logout()
                     }
                 }
+                .id(UUID())
                 .scaleEffect(showMenu ? 1.0 : 0.9, anchor: .top)
                 .opacity(showMenu ? 1.0 : 0)
                 .animation(.spring(response: 0.35, dampingFraction: 0.7), value: showMenu)

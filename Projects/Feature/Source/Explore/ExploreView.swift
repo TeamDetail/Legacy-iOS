@@ -90,8 +90,8 @@ public struct ExploreView: View {
             guard let newLocation, newLocation.horizontalAccuracy < 100 else { return }
             
             Task {
-                print("latitude임\(newLocation.coordinate.latitude)")
-                print("longitude임\(newLocation.coordinate.longitude)")
+                //                print("latitude임\(newLocation.coordinate.latitude)")
+                //                print("longitude임\(newLocation.coordinate.longitude)")
                 await viewModel.createBlock(
                     .init(
                         latitude: newLocation.coordinate.latitude,
@@ -111,6 +111,7 @@ public struct ExploreView: View {
                 await viewModel.fetchMyBlock()
                 await userData.fetchMyinfo()
             }
+            SoundPlayer.shared.mainSound()
         }
     }
 }

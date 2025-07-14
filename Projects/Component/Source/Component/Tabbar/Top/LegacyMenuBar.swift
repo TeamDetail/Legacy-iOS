@@ -3,11 +3,11 @@ import SwiftUI
 public struct LegacyMenuBar: View {
     public let action: (LegacyMenuItem) -> Void
     @State private var showAnimation = false
-
+    
     public init(action: @escaping (LegacyMenuItem) -> Void) {
         self.action = action
     }
-
+    
     public var body: some View {
         VStack(spacing: 16) {
             ForEach(Array(LegacyMenuItem.allCases.enumerated()), id: \.element) { index, item in
@@ -24,7 +24,7 @@ public struct LegacyMenuBar: View {
                 .offset(y: showAnimation ? 0 : 20)
                 .animation(
                     .spring(response: 0.4, dampingFraction: 0.7)
-                        .delay(Double(index) * 0.05),
+                    .delay(Double(index) * 0.05),
                     value: showAnimation
                 )
             }

@@ -11,6 +11,7 @@ public enum RecordItemEnum: String {
     case maxScore
     case allBlocks
     case ruinsBlocks
+    case usedCredit
     //TODO: 사용한 크레딧 구현
     
     var title: String {
@@ -21,6 +22,8 @@ public enum RecordItemEnum: String {
             "탐험한 일반 블록 수"
         case .ruinsBlocks:
             "탐험한 유적지 블록 수"
+        case .usedCredit:
+            "사용한 크레딧"
         }
     }
     
@@ -32,6 +35,8 @@ public enum RecordItemEnum: String {
             "블록"
         case .ruinsBlocks:
             "블록"
+        case .usedCredit:
+            "크레딧"
         }
     }
 }

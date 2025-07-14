@@ -40,7 +40,7 @@ public struct ActivityRecordView: View {
                 Spacer()
                 
                 FloorProgressBar(
-                    currentFloor: CGFloat(data.maxFloor),
+                    currentFloor: CGFloat(data.record.maxFloor),
                     maxFloor: 150
                 )
             }
@@ -54,7 +54,7 @@ public struct ActivityRecordView: View {
                 Spacer()
                 
                 ExploreProgressBar(
-                    currentCard: 0, //TODO: 이거 추가해야함
+                    currentCard: CGFloat(data.record.shiningCardCount),
                     maxCard: 300
                 )
             }
@@ -67,18 +67,23 @@ public struct ActivityRecordView: View {
         
         VStack(spacing: 8) {
             RecordItem(
-                data: data.maxScore,
+                data: data.record.maxScore,
                 recordType: .maxScore
             )
             
             RecordItem(
-                data: data.allBlocks,
+                data: data.record.allBlocks,
                 recordType: .allBlocks
             )
             
             RecordItem(
-                data: data.ruinsBlocks,
+                data: data.record.ruinsBlocks,
                 recordType: .ruinsBlocks
+            )
+            
+            RecordItem(
+                data: 0,
+                recordType: .usedCredit
             )
         }
         .padding(.top, 6)

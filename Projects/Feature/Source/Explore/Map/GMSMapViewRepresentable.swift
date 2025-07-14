@@ -1,5 +1,6 @@
 import SwiftUI
 import Domain
+import Shared
 import Component
 import GoogleMaps
 import CoreLocation
@@ -25,10 +26,31 @@ struct GMSMapViewRepresentable: UIViewRepresentable {
     }
     
     func makeUIView(context: Context) -> GMSMapView {
-        let mapView = GMSMapView()
+        //MARK: init하기 위한 더미 좌표
+        let defaultLat = 37.5665
+        let defaultLng = 126.9780
+        let latitude = userLocation?.coordinate.latitude ?? defaultLat
+        let longitude = userLocation?.coordinate.longitude ?? defaultLng
+        
+        let camera = GMSCameraPosition(
+            latitude: latitude,
+            longitude: longitude,
+            zoom: 15
+        )
+        
+        let mapOptions = GMSMapViewOptions()
+        mapOptions.camera = camera
+        mapOptions.mapID = GMSMapID(identifier: mapApiKey)
+        
+        //MARK: deprecated 메서드 대신 init(options:) 사용
+        let mapView = GMSMapView(options: mapOptions)
+        
+        mapView.setMinZoom(10.0, maxZoom: 20.0)
+        
         mapView.isMyLocationEnabled = true
         mapView.settings.myLocationButton = true
         
+        //MARK: Coordinator 연결
         context.coordinator.mapView = mapView
         mapView.delegate = context.coordinator
         
@@ -107,14 +129,13 @@ struct GMSMapViewRepresentable: UIViewRepresentable {
         
         func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
             let bounds = GMSCoordinateBounds(region: mapView.projection.visibleRegion())
-            isZoomValid = position.zoom <= 15.5
+            isZoomValid = position.zoom <= 10
             onBoundsChange(bounds)
         }
         
         func mapView(_ mapView: GMSMapView, didTap overlay: GMSOverlay) {
             if let polygon = overlay as? GMSPolygon,
                let ruinsId = polygon.userData as? Int {
-                print("Polygon tapped: ruinsId = \(ruinsId)")
                 onPolygonTap(ruinsId)
             }
         }

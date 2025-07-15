@@ -68,9 +68,7 @@ public struct ProfileComponent: View {
                     .foreground(LegacyColor.Label.alternative)
                     .padding(.horizontal, 2)
                 
-                if data.title.name == "칭호가 없습니다" {
-                    //MARK: Empty
-                } else {
+                if !data.title.name.isEmpty {
                     TitleBadge(data.title.name, color: LegacyColor.Yellow.netural, size: .big)
                 }
             }

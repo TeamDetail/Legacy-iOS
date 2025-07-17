@@ -11,14 +11,7 @@ import Domain
 public struct UserDataSource: DataSourceProtocol {
     public typealias Target = UserService
     
-    public let provider: MoyaProvider<UserService>
-    
-    public init() {
-        self.provider = MoyaProvider<UserService>(
-            session: Moya.Session(interceptor: RemoteInterceptor.shared),
-            plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))]
-        )
-    }
+    public init() {}
     
     public func fetchMyinfo() async throws -> UserInfoResponse {
         let response: BaseResponse<UserInfoResponse> = try await self.request(target: .fetchMyinfo)

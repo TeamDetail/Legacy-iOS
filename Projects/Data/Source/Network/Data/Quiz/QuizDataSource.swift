@@ -12,17 +12,15 @@ import Moya
 public struct QuizDataSource: DataSourceProtocol {
     public typealias Target = QuizService
     
-    public let provider: MoyaProvider<QuizService>
+    public init() {}
     
-    public init() {
-        self.provider = MoyaProvider<QuizService>(
-            session: Moya.Session(interceptor: RemoteInterceptor.shared),
-            plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))]
-        )
+    public func fetchQuiz(_ id: Int) async throws -> [QuizResponse] {
+        let response: BaseResponse<[QuizResponse]> = try await self.request(target: .fetchQuiz(id))
+        return response.data
     }
     
-    public func fetchQuiz(_ id: Int) async throws -> QuizResponse {
-        let response: BaseResponse<QuizResponse> = try await self.request(target: .fetchQuiz(id))
+    public func checkQuiz(_ request: [CheckQuizRequest]) async throws -> CheckQuizResponse {
+        let response: BaseResponse<CheckQuizResponse> = try await self.request(target: .checkQuiz(request))
         return response.data
     }
 }

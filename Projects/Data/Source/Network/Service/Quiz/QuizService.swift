@@ -10,6 +10,7 @@ import Domain
 
 public enum QuizService: ServiceProtocol {
     case fetchQuiz(_ id: Int)
+    case checkQuiz(_ request: [CheckQuizRequest])
 }
 
 extension QuizService {
@@ -20,18 +21,21 @@ extension QuizService {
     public var path: String {
         switch self {
         case let .fetchQuiz(id): "/\(id)"
+        case .checkQuiz: "/check"
         }
     }
     
     public var method: Moya.Method {
         switch self {
         case .fetchQuiz: .get
+        case .checkQuiz: .post
         }
     }
     
     public var task: Moya.Task {
         switch self {
         case .fetchQuiz: .requestPlain
+        case let .checkQuiz(request): .requestJSONEncodable(request)
         }
     }
 }

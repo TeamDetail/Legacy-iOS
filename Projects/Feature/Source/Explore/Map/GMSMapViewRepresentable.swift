@@ -40,7 +40,7 @@ struct GMSMapViewRepresentable: UIViewRepresentable {
         
         let mapOptions = GMSMapViewOptions()
         mapOptions.camera = camera
-        mapOptions.mapID = GMSMapID(identifier: mapApiKey)
+        mapOptions.mapID = GMSMapID(identifier: mapId)
         
         //MARK: deprecated 메서드 대신 init(options:) 사용
         let mapView = GMSMapView(options: mapOptions)
@@ -73,23 +73,6 @@ struct GMSMapViewRepresentable: UIViewRepresentable {
         
         mapView.clear()
         
-        //MARK: 유적지 표시
-        for ruin in ruins ?? [] {
-            let rect = makeRectangle(from: LatLng(lat: ruin.latitude, lng: ruin.longitude))
-            let path = GMSMutablePath()
-            rect.points.forEach { point in
-                path.add(CLLocationCoordinate2D(latitude: point.lat, longitude: point.lng))
-            }
-            
-            let polygon = GMSPolygon(path: path)
-            polygon.strokeColor = UIColor(LegacyPalette.shared.primary)
-            polygon.fillColor = UIColor(LegacyPalette.shared.purpleNetural)
-            polygon.strokeWidth = 1.5
-            polygon.userData = ruin.ruinsId
-            polygon.isTappable = true // 탭했을때
-            polygon.map = mapView
-        }
-        
         //MARK: 내블록 표시
         for block in myBlocks ?? [] {
             let rect = makeRectangle(from: LatLng(lat: block.latitude, lng: block.longitude))
@@ -105,6 +88,22 @@ struct GMSMapViewRepresentable: UIViewRepresentable {
             polygon.map = mapView
         }
         
+        //MARK: 유적지 표시
+        for ruin in ruins ?? [] {
+            let rect = makeRectangle(from: LatLng(lat: ruin.latitude, lng: ruin.longitude))
+            let path = GMSMutablePath()
+            rect.points.forEach { point in
+                path.add(CLLocationCoordinate2D(latitude: point.lat, longitude: point.lng))
+            }
+            
+            let polygon = GMSPolygon(path: path)
+            polygon.strokeColor = UIColor(LegacyPalette.shared.primary)
+            polygon.fillColor = UIColor(LegacyPalette.shared.purpleNetural)
+            polygon.strokeWidth = 1.5
+            polygon.userData = ruin.ruinsId
+            polygon.isTappable = true // 탭했을때
+            polygon.map = mapView
+        } 
     }
     
     class Coordinator: NSObject, GMSMapViewDelegate {

@@ -12,14 +12,7 @@ import Moya
 public struct ExploreDataSource: DataSourceProtocol {
     public typealias Target = ExploreService
     
-    public let provider: MoyaProvider<ExploreService>
-    
-    public init() {
-        self.provider = MoyaProvider<ExploreService>(
-            session: Moya.Session(interceptor: RemoteInterceptor.shared),
-            plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))]
-        )
-    }
+    public init() {}
     
     public func fetchRuins(_ request: MapBoundsRequest) async throws -> [RuinsPositionResponse] {
         let response: BaseResponse<[RuinsPositionResponse]> = try await self.request(target: .fetchMap(request))

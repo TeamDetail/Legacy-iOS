@@ -39,6 +39,7 @@ public class ExploreViewModel: ObservableObject {
             ruinDetail = try await exploreRepository.fetchRuinDeatil(
                 id
             )
+            print("tlqkf\(id)")
         } catch {
             print(error)
         }

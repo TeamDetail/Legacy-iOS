@@ -88,7 +88,10 @@ public struct RuinsDetailView: View {
             }
             
             Button {
-                action()
+                withAnimation(.spring(duration: 0.2)) {
+                    HapticManager.instance.impact(style: .soft)
+                    action()
+                }
             } label: {
                 Text("퀴즈 풀고 탐험하기")
                     .frame(maxWidth: .infinity)

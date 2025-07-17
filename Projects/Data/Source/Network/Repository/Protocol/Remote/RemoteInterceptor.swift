@@ -12,9 +12,9 @@ import Domain
 
 final class RemoteInterceptor: RequestInterceptor {
     static let shared = RemoteInterceptor()
-
+    
     private init() {}
-
+    
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, any Error>) -> Void) {
         guard let accessToken = Sign.accessToken else {
             completion(.success(urlRequest))
@@ -55,11 +55,15 @@ final class RemoteInterceptor: RequestInterceptor {
                 try await authRepository.postReissue(
                     .init(refreshToken: refreshToken)
                 )
-                completion(.retry)
+                DispatchQueue.main.async {
+                    completion(.retry)
+                }
             } catch {
-                print("❌ 재발급 실패: \(error)")
-                completion(.doNotRetryWithError(error))
-                Sign.logout()
+                DispatchQueue.main.async {
+                    completion(.doNotRetryWithError(error))
+                    Sign.logout()
+                    print("토큰 재발급 실패")
+                }
             }
         }
     }

@@ -116,7 +116,8 @@ struct ShopView: View {
             }
         }
         .onAppear {
-            SoundPlayer.shared.marketSound()
+            //MARK: 상점 브금 로그인 브금으로 대채
+            SoundPlayer.shared.loginSound()
         }
     }
 }

@@ -16,8 +16,13 @@ public struct QuizRepositorylmpl: QuizRepository {
         self.dataSource = dataSource
     }
     
-    public func fetchQuiz(_ id: Int) async throws -> QuizResponse {
+    public func fetchQuiz(_ id: Int) async throws -> [QuizResponse] {
         let data = try await dataSource.fetchQuiz(id)
+        return data
+    }
+    
+    public func checkQuiz(_ requst: [CheckQuizRequest]) async throws -> CheckQuizResponse {
+        let data = try await dataSource.checkQuiz(requst)
         return data
     }
 }

@@ -46,7 +46,7 @@ struct QuizView: View {
                         Text(name)
                             .font(.body1(.medium))
                             .foreground(LegacyColor.Label.alternative)
-                            .padding(.vertical, 20)
+                            .padding(.vertical, 15)
                         
                         Text(quiz.quizProblem)
                             .font(.title3(.bold))
@@ -54,7 +54,7 @@ struct QuizView: View {
                     }
                     .padding(.bottom, 25)
                     
-                    VStack {
+                    VStack{
                         ForEach(quiz.optionValue.indices, id: \.self) { idx in
                             QuizProblem(
                                 isSelected: selectedIndex == idx,
@@ -63,6 +63,7 @@ struct QuizView: View {
                                 selectedIndices[currentIndex] = idx
                             }
                         }
+                        .padding(.vertical, 4)
                     }
                     .padding(.vertical, 25)
                     
@@ -103,6 +104,7 @@ struct QuizView: View {
                     LegacyLoadingView(description: "퀴즈 로딩중...")
                 }
                 
+                Spacer()
                 Spacer()
                 Spacer()
             }

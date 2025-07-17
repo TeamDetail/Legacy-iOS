@@ -25,7 +25,10 @@ public struct AuthRepositoryImpl: AuthRepository {
     }
     
     public func postReissue(_ request: RefreshRequest) async throws {
-        let data = try await dataSource.postReiuse(request)
-        Sign.reissue(data.accessToken, data.refreshToken)
+        let data = try await dataSource.postReissue(request)
+        Sign.reissue(
+            data.accessToken,
+            data.refreshToken
+        )
     }
 }

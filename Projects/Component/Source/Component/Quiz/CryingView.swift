@@ -25,7 +25,7 @@ public struct CryingView: View {
                 
                 Image(icon: .crying)
                 
-                Text("전부 맞추지 못했어요...")
+                Text("문제를 맞추지 못했어요...")
                     .font(.title2(.bold))
                     .foreground(LegacyColor.Common.white)
                 

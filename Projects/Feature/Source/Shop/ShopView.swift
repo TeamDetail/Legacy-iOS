@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Component
+import Data
 
 struct ShopView: View {
     @State private var selection = 0
@@ -116,7 +117,7 @@ struct ShopView: View {
             }
         }
         .onAppear {
-            //MARK: 상점 브금 로그인 브금으로 대채
+            //MARK: 상점 브금 로그인 브금으로 대체
             SoundPlayer.shared.loginSound()
         }
     }

@@ -14,6 +14,9 @@ public struct FinishQuizView: View {
     public let data: RuinsDetailResponse
     let onDismiss: () -> Void
     
+    @State private var isShaking = false
+    @State private var shakePhase = 0
+    
     public init(
         data: RuinsDetailResponse,
         onDismiss: @escaping () -> Void
@@ -64,6 +67,17 @@ public struct FinishQuizView: View {
                         alignment: .topLeading
                     )
                     .padding(.vertical, 8)
+                    
+                    .rotationEffect(Angle(degrees: rotationDegree(for: shakePhase)))
+                    .scaleEffect(isShaking ? 1.05 : 1.0)
+                    .animation(.easeInOut(duration: 0.12), value: shakePhase)
+                    .animation(.easeInOut(duration: 0.12), value: isShaking)
+                    .onTapGesture {
+                        guard !isShaking else { return }
+                        isShaking = true
+                        shakePhase = 0
+                        startShaking()
+                    }
                 }
                 
                 Text("카드를 획득했어요!")
@@ -73,10 +87,45 @@ public struct FinishQuizView: View {
                 Spacer()
             }
         }
+        .onDisappear {
+            stopShaking()
+        }
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
                 onDismiss()
             }
+        }
+    }
+    
+    func rotationDegree(for phase: Int) -> Double {
+        switch phase % 4 {
+        case 0: return 0
+        case 1: return -0.5
+        case 2: return 0.5
+        case 3: return 0
+        default: return 0
+        }
+    }
+    
+    @State private var shakeTimer: Timer?
+    
+    func startShaking() {
+        shakeTimer = Timer.scheduledTimer(withTimeInterval: 0.12, repeats: true) { _ in
+            withAnimation {
+                shakePhase += 1
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.75) {
+            stopShaking()
+        }
+    }
+    
+    func stopShaking() {
+        shakeTimer?.invalidate()
+        shakeTimer = nil
+        withAnimation {
+            isShaking = false
+            shakePhase = 0
         }
     }
 }

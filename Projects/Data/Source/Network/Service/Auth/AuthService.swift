@@ -3,7 +3,7 @@ import Domain
 
 public enum AuthService: ServiceProtocol {
     case postLogin(_ request: AuthRequest)
-    case postReiuse(_ request: RefreshRequest)
+    case postReissue(_ request: RefreshRequest)
 }
 
 extension AuthService {
@@ -11,7 +11,7 @@ extension AuthService {
         switch self {
         case .postLogin:
             "/kakao/accessToken"
-        case .postReiuse:
+        case .postReissue:
             "/auth/refresh"
         }
     }
@@ -23,7 +23,7 @@ extension AuthService {
     public var method: Moya.Method {
         switch self {
         case .postLogin: .post
-        case .postReiuse: .post
+        case .postReissue: .post
         }
     }
     
@@ -31,7 +31,7 @@ extension AuthService {
         switch self {
         case let .postLogin(request):
             request.toJSONParameters()
-        case let .postReiuse(request):
+        case let .postReissue(request):
             request.toJSONParameters()
         }
     }

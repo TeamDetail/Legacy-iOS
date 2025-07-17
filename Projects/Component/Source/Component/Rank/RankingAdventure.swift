@@ -1,19 +1,29 @@
 import SwiftUI
+import Shimmer
 
-public struct RankingTrialView: View {
-    public init(){}
+public struct RankingAdventure: View {
+    let rank: Int
+    let name: String
+    
+    public init(rank: Int, name: String) {
+        self.rank = rank
+        self.name = name
+    }
+    
     public var body: some View {
         HStack {
-            Text("180")
+            Text("\(rank)")
                 .font(.bitFont(size: 28))
                 .foreground(LegacyColor.Common.white)
             
             Circle()
                 .frame(width: 48, height: 48)
+                .redacted(reason: .placeholder)
+                .shimmering()
             
             VStack(alignment: .leading, spacing: 4) {
                 HStack {
-                    Text("박재민")
+                    Text(name)
                         .font(.headline(.bold))
                         .foreground(LegacyColor.Common.white)
                     
@@ -22,12 +32,13 @@ public struct RankingTrialView: View {
                         .foreground(LegacyColor.Label.alternative)
                 }
                 
-                TitleBadge("자본주의", color: LegacyColor.Purple.normal, size: .medium)                    
+                TitleBadge("팀원들", color: LegacyColor.Yellow.alternative)
+                    .padding(.horizontal, 20)
             }
             
-            Text("180층")
-                .font(.bitFont(size: 28))
-                .foreground(LegacyColor.Yellow.netural)
+            Text("50블록")
+                .font(.bitFont(size: 18))
+                .foreground(LegacyColor.Primary.normal)
         }
         .padding(.horizontal, 20)
     }

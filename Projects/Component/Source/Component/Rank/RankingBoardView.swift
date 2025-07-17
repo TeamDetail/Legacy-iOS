@@ -6,30 +6,42 @@
 //
 
 import SwiftUI
+import Shimmer
 
 public struct RankingBoardView: View {
-    public init(){}
-    //TODO: 수정
+    let lank: String
+    let name: String
+    let title: String
+    let strokeColor: LegacyColorable
+    
+    public init(lank: String, name: String, title: String, strokeColor: LegacyColorable) {
+        self.lank = lank
+        self.name = name
+        self.title = title
+        self.strokeColor = strokeColor
+    }
+    
+    //TODO: 실제 데이터로 수정
     public var body: some View {
         VStack(spacing: 8) {
-            Image("penguin")
-                .resizable()
+            Circle()
                 .frame(width: 60, height: 60)
-                .clipShape(Circle())
+                .redacted(reason: .placeholder)
+                .shimmering()
             
-            Text("1위")
+            Text(lank)
                 .font(.title3(.bold))
-                .foreground(LegacyColor.Purple.normal)
+                .foreground(strokeColor)
             
-            Text("999층")
+            Text("999블록")
                 .font(.body1(.bold))
                 .foreground(LegacyColor.Yellow.normal)
             
-            Text("김민규")
+            Text(name)
                 .font(.body1(.bold))
-                .foregroundColor(.white)
+                .foreground(LegacyColor.Common.white)
             
-            TitleBadge("자본주의", color: LegacyColor.Purple.normal)
+            TitleBadge(title, color: LegacyColor.Yellow.alternative)
         }
         .padding()
         .background(LegacyColor.Background.normal)
@@ -37,13 +49,9 @@ public struct RankingBoardView: View {
         .overlay(
             RoundedRectangle(cornerRadius: 20)
                 .stroke(lineWidth: 2)
-                .foreground(LegacyColor.Purple.normal)
+                .foreground(strokeColor)
         )
         .shadow(color: .black.opacity(0.4), radius: 10, x: 0, y: 5)
-        .padding(.horizontal, 150)
+        .padding(.horizontal, 12)
     }
-}
-
-#Preview {
-    RankingBoardView()
 }

@@ -12,8 +12,8 @@ public struct RuinsDetailResponse: ResponseProtocol {
     public let ruinsImage: String
     public let category: String
     public let name: String
-    public let chineseName: String
-    public let englishName: String
+    public let chineseName: String?
+    public let englishName: String?
     public let location: String
     public let detailAddress: String
     public let periodName: String
@@ -22,8 +22,19 @@ public struct RuinsDetailResponse: ResponseProtocol {
     public let manager: String
     
     public init(
-        ruinsId: Int, ruinsImage: String, category: String, name: String, chineseName: String, englishName: String, location: String, detailAddress: String, periodName: String, specifiedDate: String, owner: String, manager: String)
-    {
+        ruinsId: Int,
+        ruinsImage: String,
+        category: String,
+        name: String,
+        chineseName: String?,
+        englishName: String?,
+        location: String,
+        detailAddress: String,
+        periodName: String,
+        specifiedDate: String,
+        owner: String,
+        manager: String
+    ) {
         self.ruinsId = ruinsId
         self.ruinsImage = ruinsImage
         self.category = category

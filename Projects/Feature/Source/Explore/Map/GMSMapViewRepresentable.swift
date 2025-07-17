@@ -99,7 +99,7 @@ struct GMSMapViewRepresentable: UIViewRepresentable {
             }
             
             let polygon = GMSPolygon(path: path)
-            polygon.strokeColor = UIColor(LegacyPalette.shared.greenAlternative)
+            polygon.strokeColor = UIColor(LegacyPalette.shared.green40)
             polygon.fillColor = UIColor(LegacyPalette.shared.greenNormal)
             polygon.strokeWidth = 1.5
             polygon.map = mapView

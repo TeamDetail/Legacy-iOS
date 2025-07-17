@@ -45,11 +45,15 @@ struct ProfileView: View {
             }
             
             if selection == 1 {
-                
+                LegacyLoadingView(
+                    description: ""
+                )
             }
             
             if selection == 2 {
-                
+                LegacyLoadingView(
+                    description: ""
+                )
             }
         }
         .padding(.horizontal, 10)

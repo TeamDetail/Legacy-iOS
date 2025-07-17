@@ -16,7 +16,7 @@ public struct QuizDataSource: DataSourceProtocol {
     
     public init() {
         self.provider = MoyaProvider<QuizService>(
-            session: Moya.Session(interceptor: RemoteInterceptor()),
+            session: Moya.Session(interceptor: RemoteInterceptor.shared),
             plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))]
         )
     }

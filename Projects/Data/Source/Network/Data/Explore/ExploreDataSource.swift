@@ -16,7 +16,7 @@ public struct ExploreDataSource: DataSourceProtocol {
     
     public init() {
         self.provider = MoyaProvider<ExploreService>(
-            session: Moya.Session(interceptor: RemoteInterceptor()),
+            session: Moya.Session(interceptor: RemoteInterceptor.shared),
             plugins: [NetworkLoggerPlugin(configuration: .init(logOptions: .verbose))]
         )
     }

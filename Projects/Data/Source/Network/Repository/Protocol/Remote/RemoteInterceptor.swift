@@ -11,6 +11,10 @@ import Alamofire
 import Domain
 
 final class RemoteInterceptor: RequestInterceptor {
+    static let shared = RemoteInterceptor()
+
+    private init() {}
+
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, any Error>) -> Void) {
         guard let accessToken = Sign.accessToken else {
             completion(.success(urlRequest))
@@ -30,6 +34,7 @@ final class RemoteInterceptor: RequestInterceptor {
         
         guard request.retryCount <= 3 else {
             print("❌ RemoteInterceptor - RetryCount가 3보다 큽니다")
+            completion(.doNotRetry)
             return
         }
         
@@ -52,7 +57,9 @@ final class RemoteInterceptor: RequestInterceptor {
                 )
                 completion(.retry)
             } catch {
-                print("22 \(error)")
+                print("❌ 재발급 실패: \(error)")
+                completion(.doNotRetryWithError(error))
+                Sign.logout()
             }
         }
     }

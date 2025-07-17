@@ -29,6 +29,7 @@ public struct RootView: View {
             }
             .onAppear {
                 print(Sign.accessToken)
+                print(Sign.refreshToken)
             }
         } else {
             LoginView()

@@ -35,7 +35,7 @@ public struct RuinsDetailView: View {
                         .font(.body2(.medium))
                         .foreground(LegacyColor.Label.alternative)
                     
-                    Text("\(data.ruinsId)  \(data.name)")
+                    Text("#\(data.ruinsId)\n \(data.name)")
                         .font(.headline(.medium))
                         .foreground(LegacyColor.Common.white)
                     

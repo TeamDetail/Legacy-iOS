@@ -22,6 +22,7 @@ class LoginViewModel: ObservableObject {
                 }
             }
         } else {
+            //MARK: 웹로그인
             UserApi.shared.loginWithKakaoAccount { oauthToken, error in
                 guard let oauthToken = oauthToken else {
                     print("OAuthToken이 nil입니다.")

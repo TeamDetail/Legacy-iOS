@@ -119,7 +119,8 @@ struct LegacyTopBar: View {
                     case .wrong:
                         print("메일")
                     case .logout:
-                        Sign.logout()
+                        UserDefaults.standard.removeObject(forKey: "accessToken")
+                        UserDefaults.standard.removeObject(forKey: "refreshToken")
                     }
                 }
                 .id(UUID())

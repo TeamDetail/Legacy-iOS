@@ -44,11 +44,10 @@ public struct ExploreView: View {
                         )
                     }
                 } onPolygonTap: { ruinsId in
+                    HapticManager.instance.impact(style: .light)
                     Task {
                         await viewModel.fetchRuinDeatil(ruinsId)
-                        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                            showDetail = true
-                        }
+                        showDetail = true
                     }
                 } onMapTap: {
                     if showMenu {
@@ -72,6 +71,12 @@ public struct ExploreView: View {
                     }
                 }
                 
+                //MARK: 유적지 상세 보기시 로딩
+                if viewModel.isLoadingDetail {
+                    LoadingRuins()
+                }
+                
+                // 상세 정보 오버레이
                 if let detail = viewModel.ruinDetail, showDetail {
                     RuinsDetailOverlay(
                         detail: detail,

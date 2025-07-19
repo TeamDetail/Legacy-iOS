@@ -29,18 +29,18 @@ struct RuinsDetailOverlay: View {
                 action()
             })
             .padding(.horizontal, 6)
-            //                        .padding(.bottom, 4) //MARK: google Map 보여줄때
-            .padding(.bottom, 120) // TODO: 추후 동적으로 계산하도록 개선
-            .transition(.move(edge: .bottom).combined(with: .opacity))
-            .animation(.spring(response: 0.4, dampingFraction: 0.8), value: showDetail)
+            .padding(.bottom, 120)
         }
+        .transition(.move(edge: .bottom).combined(with: .opacity))
+        .animation(.easeOut(duration: 0.25), value: showDetail)
     }
     
     private func dismissDetail() {
-        withAnimation {
+        withAnimation(.easeOut(duration: 0.2)) {
             showDetail = false
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { //TODO: cleanData 함수만들기
             viewModel.ruinDetail = nil
         }
     }
 }
-

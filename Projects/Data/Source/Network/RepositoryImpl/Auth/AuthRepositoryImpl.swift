@@ -17,18 +17,22 @@ public struct AuthRepositoryImpl: AuthRepository {
     
     public func postLogin(_ request: AuthRequest) async throws -> TokenResponse {
         let data = try await dataSource.postLogin(request)
-        Sign.login(
-            accessToken: data.accessToken,
-            refreshToken: data.refreshToken
-        )
+        //        Sign.login(
+        //            accessToken: data.accessToken,
+        //            refreshToken: data.refreshToken
+        //        )
+        UserDefaults.standard.setValue(data.accessToken, forKey: "accessToken")
+        UserDefaults.standard.setValue(data.refreshToken, forKey: "refreshToken")
         return data
     }
     
     public func postReissue(_ request: RefreshRequest) async throws {
         let data = try await dataSource.postReissue(request)
-        Sign.reissue(
-            data.accessToken,
-            data.refreshToken
-        )
+        //        Sign.reissue(
+        //            data.accessToken,
+        //            data.refreshToken
+        //        )
+        UserDefaults.standard.setValue(data.accessToken, forKey: "accessToken")
+        UserDefaults.standard.setValue(data.refreshToken, forKey: "refreshToken")
     }
 }

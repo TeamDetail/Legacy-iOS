@@ -26,13 +26,7 @@ public struct FinishQuizView: View {
     }
     
     public var body: some View {
-        ZStack {
-            Color.black.opacity(0.8)
-                .ignoresSafeArea()
-                .onTapGesture {
-                    onDismiss()
-                }
-            
+        LegacyModalView(onDismiss) {
             VStack {
                 Spacer()
                 

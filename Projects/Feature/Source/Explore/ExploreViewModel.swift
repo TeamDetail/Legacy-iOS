@@ -14,6 +14,7 @@ public class ExploreViewModel: ObservableObject {
     @Published var ruins: [RuinsPositionResponse]?
     @Published var ruinDetail: RuinsDetailResponse?
     @Published var myBlocks: [CreateBlockResponse]?
+    @Published var isLoadingDetail = false
     
     @Inject var exploreRepository: any ExploreRepository
     
@@ -35,11 +36,12 @@ public class ExploreViewModel: ObservableObject {
     
     @MainActor
     func fetchRuinDeatil(_ id: Int) async {
+        isLoadingDetail = true
         do {
             ruinDetail = try await exploreRepository.fetchRuinDeatil(
                 id
             )
-            print("tlqkf\(id)")
+            isLoadingDetail = false
         } catch {
             print(error)
         }
@@ -54,7 +56,6 @@ public class ExploreViewModel: ObservableObject {
                     longitude: location.longitude
                 )
             )
-//            print("보낸 블록\(data)")
             await fetchMyBlock()
         } catch {
             print("블록 생성 에러\(error.localizedDescription)")
@@ -65,7 +66,6 @@ public class ExploreViewModel: ObservableObject {
     func fetchMyBlock() async {
         do {
             myBlocks = try await exploreRepository.fetchMyBlock()
-//            print("내 블록\(myBlocks)")
         } catch {
             print("블록 에러\(error.localizedDescription)")
         }

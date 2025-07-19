@@ -16,19 +16,15 @@ final class RemoteInterceptor: RequestInterceptor {
     private init() {}
     
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, any Error>) -> Void) {
-        guard let accessToken = Sign.accessToken else {
-            print("❌ [adapt] accessToken 없음")
-            completion(.success(urlRequest))
-            return
+        var urlRequest = urlRequest
+        if let accessToken = UserDefaults.standard.string(forKey: "accessToken") {
+            urlRequest.setValue("Bearer " + accessToken, forHTTPHeaderField: "Authorization")
+            print("저장")
+        } else {
+            print("엑세스 저장 x")
         }
-        
-        var modifiedRequest = urlRequest
-        modifiedRequest.setValue("Bearer " + accessToken, forHTTPHeaderField: "Authorization")
-        
-        print("✅ [adapt] Authorization 헤더 설정: Bearer \(accessToken)")
-        completion(.success(modifiedRequest))
+        completion(.success(urlRequest))
     }
-    
     
     func retry(_ request: Request, for session: Session, dueTo error: any Error, completion: @escaping (RetryResult) -> Void) {
         guard let response = request.task?.response as? HTTPURLResponse else {
@@ -36,18 +32,8 @@ final class RemoteInterceptor: RequestInterceptor {
             return
         }
         
-        guard request.retryCount <= 3 else {
-            print("❌ RemoteInterceptor - RetryCount가 3보다 큽니다")
-            completion(.doNotRetry)
-            return
-        }
-        
-        if response.statusCode == 200 {
-            completion(.doNotRetry)
-            return
-        }
-        
-        guard response.statusCode == 401, let refreshToken = Sign.refreshToken else {
+        guard response.statusCode == 401,
+              let refreshToken = UserDefaults.standard.string(forKey: "refreshToken") else {
             completion(.doNotRetryWithError(error))
             return
         }
@@ -56,18 +42,17 @@ final class RemoteInterceptor: RequestInterceptor {
         
         Task {
             do {
-                try await authRepository.postReissue(.init(refreshToken: refreshToken))
-                print("✅ [retry] 재발급 후 accessToken:", Sign.accessToken ?? "없음")
-                print("✅ [retry] 재발급 후 refreshToken:", Sign.refreshToken ?? "없음")
-                DispatchQueue.main.async {
-                    completion(.retry)
-                }
+                try await authRepository.postReissue(
+                    .init(
+                        refreshToken: refreshToken
+                    )
+                )
+                completion(.retry)
             } catch {
-                DispatchQueue.main.async {
-                    completion(.doNotRetryWithError(error))
-                    Sign.logout()
-                    print("토큰 재발급 실패")
-                }
+                UserDefaults.standard.removeObject(forKey: "accessToken")
+                UserDefaults.standard.removeObject(forKey: "refreshToken")
+                print(error.localizedDescription)
+                completion(.doNotRetryWithError(error))
             }
         }
     }

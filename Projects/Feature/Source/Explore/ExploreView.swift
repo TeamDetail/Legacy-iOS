@@ -119,7 +119,6 @@ public struct ExploreView: View {
                     }
                 )
                 .zIndex(1000)
-                .transition(.opacity.combined(with: .scale))
             }
             
             if showClap {
@@ -130,7 +129,6 @@ public struct ExploreView: View {
                     }
                 }
                 .zIndex(1500)
-                .transition(.opacity.combined(with: .scale))
             }
         }
         .overlay {
@@ -142,7 +140,6 @@ public struct ExploreView: View {
                         }
                     }
                     .zIndex(2000)
-                    .transition(.opacity.combined(with: .scale))
                 }
                 
                 if showCrying, let detail = viewModel.ruinDetail {
@@ -153,7 +150,6 @@ public struct ExploreView: View {
                         }
                     }
                     .zIndex(2000)
-                    .transition(.opacity.combined(with: .scale))
                 }
             }
         }
@@ -175,6 +171,8 @@ public struct ExploreView: View {
             locationManager.stopUpdating()
         }
         .onAppear {
+            //MARK: 지울것
+            locationManager.setTestLocation()
             Task {
                 await viewModel.fetchMyBlock()
                 await userData.fetchMyinfo()

@@ -19,7 +19,7 @@ public struct ClapView: View {
     
     public var body: some View {
         LegacyModalView(action) {
-            VStack(spacing: 20) {
+            VStack(spacing: 15) {
                 Spacer()
                 
                 Image(icon: .clap)
@@ -41,7 +41,7 @@ public struct ClapView: View {
             .padding(.vertical, 40)
         }
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            delayRun(2) {
                 action()
             }
         }

@@ -54,7 +54,7 @@ public struct LegacyErrorAlert: View {
                 .onAppear {
                     showIcon = true
                     showText = true
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                    delayRun(2) {
                         withAnimation {
                             isPresented = false
                         }

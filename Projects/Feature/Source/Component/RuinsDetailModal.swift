@@ -39,7 +39,7 @@ struct RuinsDetailOverlay: View {
         withAnimation(.easeOut(duration: 0.2)) {
             showDetail = false
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { //TODO: cleanData 함수만들기
+        delayRun(0.2) {
             viewModel.ruinDetail = nil
         }
     }

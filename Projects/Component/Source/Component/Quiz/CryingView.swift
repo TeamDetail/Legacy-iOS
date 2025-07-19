@@ -15,7 +15,7 @@ public struct CryingView: View {
     public var body: some View {
         LegacyModalView(action) {
             
-            VStack(spacing: 20) {
+            VStack(spacing: 30) {
                 Spacer()
                 
                 Image(icon: .crying)

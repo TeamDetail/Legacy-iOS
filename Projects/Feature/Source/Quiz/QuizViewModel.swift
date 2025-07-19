@@ -6,13 +6,17 @@ import Alamofire
 import Shared
 
 public class QuizViewModel: ObservableObject {
+    // MARK: - 퀴즈 데이터
     @Published var quizList: [QuizResponse]?
     @Published var quizResponse: CheckQuizResponse?
     @Published var clearQuiz = false
     @Published var wrongNumbers: [Int] = []
+    @Published var isLoadingQuiz = false
     
     @Inject var quizRepository: any QuizRepository
     
+    
+    // MARK: - 나중에 지울것
     @MainActor
     func reset(_ id: Int) async {
         let parameters = ["userId": id]
@@ -30,27 +34,20 @@ public class QuizViewModel: ObservableObject {
     
     @MainActor
     func fetchQuiz(_ id: Int) async {
+        isLoadingQuiz = true
         do {
             quizList = try await quizRepository.fetchQuiz(id)
         } catch {
-            print(error)
+            print("❌ Error fetching quiz: \(error)")
         }
+        isLoadingQuiz = false
     }
     
     @MainActor
-    func checkQuiz(_ quizId: Int, selectedIndices: [Int: Int]) async {
-        guard let quizzes = quizList else { return }
-        
-        var checkRequests: [CheckQuizRequest] = []
-        for (questionIndex, selectedOptionIndex) in selectedIndices.sorted(by: { $0.key < $1.key }) {
-            guard questionIndex < quizzes.count else { continue }
-            let quiz = quizzes[questionIndex]
-            let selectedAnswer = quiz.optionValue[selectedOptionIndex]
-            checkRequests.append(CheckQuizRequest(quizId: quiz.quizId, answerOption: selectedAnswer))
-        }
-        
+    func checkQuiz(_ checkRequests: [CheckQuizRequest], stateViewModel: QuizStateViewModel) async {
         do {
             let response = try await quizRepository.checkQuiz(checkRequests)
+            self.quizResponse = response
             self.clearQuiz = response.blockGiven
             
             var wrongs: [Int] = []
@@ -60,6 +57,12 @@ public class QuizViewModel: ObservableObject {
                 }
             }
             self.wrongNumbers = wrongs
+            
+            if clearQuiz {
+                stateViewModel.completeQuiz()
+            } else {
+                stateViewModel.failQuiz()
+            }
         } catch {
             print("❌ Error checking quizzes: \(error)")
         }

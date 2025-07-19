@@ -5,20 +5,16 @@ import CoreLocation
 import Domain
 
 public struct ExploreView: View {
-    @StateObject private var quizData = QuizViewModel()
+    @StateObject private var quizViewModel = QuizViewModel()
+    @StateObject private var quizStateViewModel = QuizStateViewModel()
     @StateObject private var userData = UserViewModel()
     @StateObject private var viewModel = ExploreViewModel()
     @StateObject private var locationManager = LocationManager()
     
-    // MARK: - State
-    @State private var wrongNumbers: [Int] = []
+    // MARK: - 최소한의 State
     @State private var isZoomValid = false
     @State private var showDetail = false
     @State private var showMenu = false
-    @State private var showQuiz = false
-    @State private var showFinishView = false
-    @State private var showClap = false
-    @State private var showCrying = false
     
     public init() {}
     
@@ -71,7 +67,7 @@ public struct ExploreView: View {
                     }
                 }
                 
-                //MARK: 유적지 상세 보기시 로딩
+                // 유적지 상세 로딩
                 if viewModel.isLoadingDetail {
                     LoadingRuins()
                 }
@@ -84,74 +80,22 @@ public struct ExploreView: View {
                         viewModel: viewModel
                     ) {
                         Task {
-                            await quizData.fetchQuiz(detail.ruinsId)
-                            withAnimation {
-                                showQuiz = true
-                                showDetail = false
-                            }
+                            await quizViewModel.fetchQuiz(detail.ruinsId)
+                            await quizViewModel.reset(userData.userInfo?.userId ?? 0) //MARK: 서버 고쳐지면 지울것
+                            quizStateViewModel.startQuiz()
+                            showDetail = false
                         }
                     }
                 }
             }
             
-            if showQuiz, let detail = viewModel.ruinDetail {
-                QuizView(
-                    userId: userData.userInfo?.userId ?? 0,
-                    quizId: detail.ruinsId,
-                    name: detail.name,
-                    onDismiss: {
-                        withAnimation {
-                            showQuiz = false
-                        }
-                    },
-                    onComplete: {
-                        withAnimation {
-                            showQuiz = false
-                            showClap = true
-                        }
-                    },
-                    onFailure: { wrongs in
-                        withAnimation {
-                            wrongNumbers = wrongs
-                            showQuiz = false
-                            showCrying = true
-                        }
-                    }
-                )
-                .zIndex(1000)
-            }
-            
-            if showClap {
-                ClapView {
-                    withAnimation {
-                        showClap = false
-                        showFinishView = true
-                    }
-                }
-                .zIndex(1500)
-            }
-        }
-        .overlay {
-            Group {
-                if showFinishView, let reward = viewModel.ruinDetail {
-                    FinishQuizView(data: reward) {
-                        withAnimation {
-                            showFinishView = false
-                        }
-                    }
-                    .zIndex(2000)
-                }
-                
-                if showCrying, let detail = viewModel.ruinDetail {
-                    CryingView(wrongNumbers: wrongNumbers) {
-                        withAnimation {
-                            showCrying = false
-                            showQuiz = true
-                        }
-                    }
-                    .zIndex(2000)
-                }
-            }
+            // 퀴즈 플로우 전체
+            QuizFlowOverlay(
+                quizViewModel: quizViewModel,
+                stateViewModel: quizStateViewModel,
+                userData: userData, //MARK: 얘도 서버 고쳐지면 나중에 삭제
+                ruinDetail: viewModel.ruinDetail
+            )
         }
         .onChange(of: locationManager.location) { newLocation in
             guard let newLocation, newLocation.horizontalAccuracy < 100 else { return }
@@ -171,8 +115,7 @@ public struct ExploreView: View {
             locationManager.stopUpdating()
         }
         .onAppear {
-            //MARK: 지울것
-            locationManager.setTestLocation()
+            locationManager.setTestLocation() //MARK: 지울것
             Task {
                 await viewModel.fetchMyBlock()
                 await userData.fetchMyinfo()

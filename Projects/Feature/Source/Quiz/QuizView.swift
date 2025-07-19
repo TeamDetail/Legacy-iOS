@@ -3,109 +3,118 @@ import Domain
 import Component
 
 struct QuizView: View {
-    @StateObject var viewModel = QuizViewModel()
-    @State private var currentIndex = 0
-    @State private var selectedIndices: [Int: Int] = [:]
+    @ObservedObject var quizViewModel: QuizViewModel
+    @ObservedObject var stateViewModel: QuizStateViewModel
     
-    let userId: Int
     let quizId: Int
     let name: String
-    let onDismiss: () -> Void
-    let onComplete: () -> Void
-    let onFailure: (_ wrongNumbers: [Int]) -> Void
     
     var body: some View {
         LegacyModalView {
             VStack {
                 Color.clear
-                    .frame(height: 30)
-                
-                if let quizzes = viewModel.quizList {
+                    .frame(height: 40)
+                if let quizzes = quizViewModel.quizList {
                     if quizzes.isEmpty {
                         QuizNotExist {
-                            onDismiss()
+                            stateViewModel.dismissQuiz()
                         }
-                    } else if quizzes.indices.contains(currentIndex) {
+                    } else {
                         VStack {
-                            let quiz = quizzes[currentIndex]
-                            let selectedIndex = selectedIndices[currentIndex]
+                            ProgressIndicator(
+                                totalCount: quizzes.count,
+                                currentIndex: stateViewModel.currentIndex
+                            )
                             
-                            ProgressIndicator(totalCount: quizzes.count, currentIndex: currentIndex) //MARK: Progress
-                            
-                            VStack(spacing: 20) {
-                                Text("Q\(currentIndex + 1)")
-                                    .font(.title2(.bold))
-                                    .foreground(LegacyColor.Common.white)
+                            if quizzes.indices.contains(stateViewModel.currentIndex) {
+                                let quiz = quizzes[stateViewModel.currentIndex]
+                                let selectedIndex = stateViewModel.getCurrentSelectedIndex()
                                 
-                                Text(name)
-                                    .font(.body1(.medium))
-                                    .foreground(LegacyColor.Label.alternative)
+                                //MARK: 문제
+                                VStack(spacing: 20) {
+                                    Text("Q\(stateViewModel.currentIndex + 1)")
+                                        .font(.title2(.bold))
+                                        .foreground(LegacyColor.Common.white)
+                                    
+                                    Text(name)
+                                        .font(.body1(.medium))
+                                        .foreground(LegacyColor.Label.alternative)
+                                        .multilineTextAlignment(.center)
+                                        .lineLimit(2)
+                                    
+                                    Text(quiz.quizProblem)
+                                        .font(.title3(.bold))
+                                        .foreground(LegacyColor.Common.white)
+                                        .multilineTextAlignment(.center)
+                                        .padding(.horizontal, 8)
+                                }
                                 
-                                Text(quiz.quizProblem)
-                                    .font(.title3(.bold))
-                                    .foreground(LegacyColor.Common.white)
-                                    .multilineTextAlignment(.center)
-                            }
-                            
-                            VStack {
-                                ForEach(quiz.optionValue.indices, id: \.self) { idx in
-                                    QuizProblem(
-                                        isSelected: selectedIndex == idx,
-                                        description: quiz.optionValue[idx]
+                                //MARK: 문제목록
+                                VStack {
+                                    ForEach(quiz.optionValue.indices, id: \.self) { idx in
+                                        QuizProblem(
+                                            isSelected: selectedIndex == idx,
+                                            description: quiz.optionValue[idx]
+                                        ) {
+                                            stateViewModel.selectOption(at: idx)
+                                        }
+                                    }
+                                    .padding(.vertical, 4)
+                                }
+                                .padding(.vertical, 25)
+                                
+                                HStack(spacing: 8) {
+                                    QuizButton(
+                                        title: stateViewModel.currentIndex == 0 ? "나가기" : "뒤로가기",
+                                        buttonType: .small
                                     ) {
-                                        selectedIndices[currentIndex] = idx
+                                        if stateViewModel.currentIndex == 0 {
+                                            Task {
+                                                stateViewModel.dismissQuiz()
+                                            }
+                                        } else {
+                                            stateViewModel.previousQuestion()
+                                        }
                                     }
-                                }
-                                .padding(.vertical, 4)
-                            }
-                            .padding(.vertical, 25)
-                            
-                            HStack(spacing: 8) {
-                                if currentIndex == 0 {
-                                    QuizButton(title: "나가기", buttonType: .small) {
-                                        onDismiss()
+                                    
+                                    //MARK: Hint
+                                    QuizButton(
+                                        title: "힌트 확인하기",
+                                        buttonType: .medium
+                                    ) {
+                                        // TODO: 힌트 구현
                                     }
-                                } else {
-                                    QuizButton(title: "뒤로가기", buttonType: .small) {
-                                        currentIndex -= 1
-                                    }
-                                }
-                                
-                                QuizButton(title: "힌트 확인하기", buttonType: .medium) {
-                                    //TODO: 구현
-                                }
-                                
-                                QuizButton(
-                                    title: currentIndex + 1 < quizzes.count ? "다음" : "완료",
-                                    buttonType: .small
-                                ) {
-                                    if currentIndex + 1 < quizzes.count {
-                                        currentIndex += 1
-                                    } else {
-                                        Task {
-                                            await viewModel.checkQuiz(quizId, selectedIndices: selectedIndices)
-                                            if viewModel.clearQuiz {
-                                                onComplete()
-                                            } else {
-                                                onFailure(viewModel.wrongNumbers)
+                                    
+                                    QuizButton(
+                                        title: stateViewModel.isLastQuestion(totalQuestions: quizzes.count) ? "완료" : "다음",
+                                        buttonType: .small
+                                    ) {
+                                        if stateViewModel.isLastQuestion(totalQuestions: quizzes.count) {
+                                            Task {
+                                                await quizViewModel.checkQuiz(stateViewModel.getAllSelectedAnswers(from: quizzes), stateViewModel: stateViewModel)
+                                            }
+                                        } else {
+                                            withAnimation(.easeInOut(duration: 0.2)) {
+                                                stateViewModel.nextQuestion(totalQuestions: quizzes.count)
                                             }
                                         }
                                     }
+                                    .disabled(!stateViewModel.hasSelectedOption())
+                                    .animation(.easeInOut(duration: 0.15), value: stateViewModel.hasSelectedOption())
                                 }
-                                .disabled(selectedIndex == nil)
                             }
                         }
                         Spacer()
                     }
-                } else {
-                    LegacyLoadingView(description: "퀴즈 로딩중...")
+                }
+                
+                if quizViewModel.isLoadingQuiz {
+                    LegacyLoadingView(
+                        description: "퀴즈를 불러오는 중..."
+                    )
                 }
             }
             .padding(.horizontal, 16)
-        }
-        .task {
-            await viewModel.reset(userId)
-            await viewModel.fetchQuiz(quizId)
         }
     }
 }

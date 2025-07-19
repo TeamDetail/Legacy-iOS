@@ -32,5 +32,10 @@ public struct RepositoryAssembly: Assembly {
             let dataSource = resolver.resolve(QuizDataSource.self)!
             return QuizRepositorylmpl(dataSource: dataSource)
         }.inObjectScope(.container)
+        
+        container.register(RankRepository.self) { resolver in
+            let dataSource = resolver.resolve(RankDataSource.self)!
+            return RankRepositorylmpl(dataSource: dataSource)
+        }.inObjectScope(.container)
     }
 }

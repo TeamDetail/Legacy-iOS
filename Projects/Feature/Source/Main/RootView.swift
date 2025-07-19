@@ -24,7 +24,7 @@ public struct RootView: View {
                 case .battle:
                     LegacyEmptyView()
                 case .trophy:
-                    LankingView(tabItem: $selection)
+                    RankingView(tabItem: $selection)
                 }
             }
         } else {

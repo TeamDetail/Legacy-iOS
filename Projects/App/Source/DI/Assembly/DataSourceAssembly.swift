@@ -27,5 +27,9 @@ public struct DataSourceAssembly: Assembly {
         container.register(QuizDataSource.self) { _ in
             QuizDataSource()
         }.inObjectScope(.container)
+        
+        container.register(RankDataSource.self) { _ in
+            RankDataSource()
+        }.inObjectScope(.container)
     }
 }

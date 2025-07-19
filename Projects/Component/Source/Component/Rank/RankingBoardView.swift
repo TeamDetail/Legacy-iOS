@@ -1,57 +1,60 @@
-//
-//  RankingBoardView.swift
-//  Component
-//
-//  Created by 김은찬 on 6/4/25.
-//
-
 import SwiftUI
 import Shimmer
+import Domain
+import Kingfisher
 
 public struct RankingBoardView: View {
-    let lank: String
-    let name: String
-    let title: String
-    let strokeColor: LegacyColorable
+    let rank: Int
+    let data: RankResponse
     
-    public init(lank: String, name: String, title: String, strokeColor: LegacyColorable) {
-        self.lank = lank
-        self.name = name
-        self.title = title
-        self.strokeColor = strokeColor
+    public init(rank: Int, data: RankResponse) {
+        self.rank = rank
+        self.data = data
     }
     
-    //TODO: 실제 데이터로 수정
     public var body: some View {
-        VStack(spacing: 8) {
-            Circle()
-                .frame(width: 60, height: 60)
-                .redacted(reason: .placeholder)
-                .shimmering()
-            
-            Text(lank)
-                .font(.title3(.bold))
-                .foreground(strokeColor)
-            
-            Text("999블록")
-                .font(.body1(.bold))
-                .foreground(LegacyColor.Yellow.normal)
-            
-            Text(name)
-                .font(.body1(.bold))
+        HStack {
+            Text("\(rank)")
+                .font(.bitFont(size: 28))
                 .foreground(LegacyColor.Common.white)
+            //                .frame(width: 30, alignment: .leading)
+                .padding(.trailing, 10)
             
-            TitleBadge(title, color: LegacyColor.Yellow.alternative)
+            if let url = URL(string: data.imageUrl) {
+                KFImage(url)
+                    .placeholder { _ in
+                        Circle()
+                            .fill(Color.gray.opacity(0.3))
+                            .frame(width: 48, height: 48)
+                            .redacted(reason: .placeholder)
+                            .shimmering()
+                    }
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(width: 48, height: 48)
+                    .clipShape(size: 300)
+            }
+            
+            VStack(alignment: .leading, spacing: 6) {
+                HStack {
+                    Text(data.nickname)
+                        .font(.headline(.bold))
+                        .foreground(LegacyColor.Common.white)
+                    
+                    Spacer()
+                }
+                .padding(.horizontal, 8)
+                
+                if !data.title.name.isEmpty {
+                    TitleBadge(data.title.name, color: LegacyColor.Yellow.alternative)
+                        .frame(width: 140, alignment: .leading)
+                }
+            }
+            
+            Text("\(data.allBlocks)")
+                .font(.bitFont(size: 18))
+                .foreground(LegacyColor.Primary.normal)
         }
-        .padding()
-        .background(LegacyColor.Background.normal)
-        .cornerRadius(20)
-        .overlay(
-            RoundedRectangle(cornerRadius: 20)
-                .stroke(lineWidth: 2)
-                .foreground(strokeColor)
-        )
-        .shadow(color: .black.opacity(0.4), radius: 10, x: 0, y: 5)
-        .padding(.horizontal, 12)
+        .padding(.horizontal, 20)
     }
 }

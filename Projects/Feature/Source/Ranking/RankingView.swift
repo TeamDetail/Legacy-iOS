@@ -24,32 +24,25 @@ struct RankingView: View {
                     if selection == 0 {
                         VStack {
                             HStack(spacing: 0) {
-                                //                                let top3 = Array(rankingList.prefix(3))
-                                //                                RankingBoardView(
-                                //                                    lank: "2위",
-                                //                                    name: "박재민",
-                                //                                    title: "짱짱맨",
-                                //                                    strokeColor: LegacyColor.Red.netural
-                                //                                )
-                                //
-                                //                                RankingBoardView(
-                                //                                    lank: "1위",
-                                //                                    name: "김은찬",
-                                //                                    title: "나르샤 팀장",
-                                //                                    strokeColor: LegacyColor.Purple.netural
-                                //                                )
-                                //                                .padding(.bottom, 40)
-                                //
-                                //                                RankingBoardView(
-                                //                                    lank: "3위",
-                                //                                    name: "김성한",
-                                //                                    title: "정박수",
-                                //                                    strokeColor: LegacyColor.Blue.netural
-                                //                                )
-                                LoadingTopLankingview()
-                                LoadingTopLankingview()
-                                    .padding(.bottom, 40)
-                                LoadingTopLankingview()
+                                if let data = viewModel.rankingList {
+                                    let top3 = Array(data.prefix(3))
+                                    
+                                    if top3.count > 1 {
+                                        TopRankersView(rankType: .two, data: top3[1])
+                                    }
+                                    if top3.count > 0 {
+                                        TopRankersView(rankType: .one, data: top3[0])
+                                    }
+                                    if top3.count > 2 {
+                                        TopRankersView(rankType: .three, data: top3[2])
+                                    }
+                                    
+                                } else {
+                                    LoadingTopLankingview()
+                                    LoadingTopLankingview()
+                                        .padding(.bottom, 40)
+                                    LoadingTopLankingview()
+                                }
                             }
                             .padding(.horizontal, 12)
                         }
@@ -67,10 +60,10 @@ struct RankingView: View {
                                 }
                             }
                         }
-                        .padding(.vertical, 14)
+                        .padding(.vertical, 20)
                         .background(LegacyColor.Background.netural)
                         .clipShape(size: 16)
-                        .padding(.horizontal, 8)
+                        .padding(.horizontal, 12)
                     } else {
                         LegacyLoadingView(
                             description: ""

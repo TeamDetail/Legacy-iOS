@@ -21,8 +21,12 @@ public extension DataSourceProtocol {
                 }
             }
         }
+        
+        if response.statusCode >= 400 {
+            let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: response.data)
+            throw errorResponse
+        }
+        
         return try JSONDecoder().decode(BaseResponse<T>.self, from: response.data)
     }
 }
-
-

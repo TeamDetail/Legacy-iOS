@@ -15,46 +15,59 @@ final class RemoteInterceptor: RequestInterceptor {
     
     private init() {}
     
+    private var isRefreshing = false
+    private var requestsToRetry: [(RetryResult) -> Void] = []
+    
+    private let notReissuePaths = ["/auth/refresh", "/kakao/accessToken"]
+    
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, any Error>) -> Void) {
-        var urlRequest = urlRequest
-        if let accessToken = UserDefaults.standard.string(forKey: "accessToken") {
-            urlRequest.setValue("Bearer " + accessToken, forHTTPHeaderField: "Authorization")
-            print("저장")
-        } else {
-            print("엑세스 저장 x")
+        var request = urlRequest
+        
+        if notReissuePaths.contains(where: { request.url?.absoluteString.contains($0) == true }) {
+            completion(.success(request))
+            return
         }
-        completion(.success(urlRequest))
+        
+        if let token = UserDefaults.standard.string(forKey: "accessToken") {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+        completion(.success(request))
     }
     
     func retry(_ request: Request, for session: Session, dueTo error: any Error, completion: @escaping (RetryResult) -> Void) {
-        guard let response = request.task?.response as? HTTPURLResponse else {
+        guard let response = request.response, response.statusCode == 401 else {
             completion(.doNotRetryWithError(error))
             return
         }
         
-        guard response.statusCode == 401,
-              let refreshToken = UserDefaults.standard.string(forKey: "refreshToken") else {
+        guard let refreshToken = UserDefaults.standard.string(forKey: "refreshToken") else {
             completion(.doNotRetryWithError(error))
             return
         }
         
-        @Inject var authRepository: any AuthRepository
+        requestsToRetry.append(completion)
+        
+        guard !isRefreshing else { return }
+        
+        isRefreshing = true
         
         Task {
+            @Inject var authRepository: any AuthRepository
+            
             do {
+                print("재발급 하기 전의 아이\(refreshToken)")
                 try await authRepository.postReissue(
-                    .init(
-                        refreshToken: refreshToken
-                    )
+                    .init(refreshToken: refreshToken)
                 )
-//                UserDefaults.standard.setValue(data.accessToken, forKey: "accessToken")
-//                UserDefaults.standard.setValue(data.refreshToken, forKey: "refreshToken")
-                completion(.retry)
+                isRefreshing = false
+                requestsToRetry.forEach { $0(.retry) }
+                requestsToRetry.removeAll()
             } catch {
+                isRefreshing = false
                 UserDefaults.standard.removeObject(forKey: "accessToken")
                 UserDefaults.standard.removeObject(forKey: "refreshToken")
-                print(error.localizedDescription)
-                completion(.doNotRetryWithError(error))
+                requestsToRetry.forEach { $0(.doNotRetryWithError(error)) }
+                requestsToRetry.removeAll()
             }
         }
     }

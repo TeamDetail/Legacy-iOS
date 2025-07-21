@@ -22,7 +22,7 @@ public struct LankingCategoryButton: View {
     public var body: some View {
         Button {
             withAnimation(.spring(duration: 0.2)) {
-                HapticManager.instance.impact(style: .soft)
+                HapticManager.instance.impact(style: .light)
                 action()
             }
         } label: {

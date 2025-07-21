@@ -66,7 +66,7 @@ struct RankingView: View {
                                 }
                             }
                         }
-                        .padding(.vertical, 20)
+                        .padding(.vertical, 16)
                         .background(LegacyColor.Background.netural)
                         .clipShape(size: 16)
                         .padding(.horizontal, 12)
@@ -78,7 +78,7 @@ struct RankingView: View {
                 }
             }
             .refreshable {
-                //TODO: refreshable Protocol
+                await viewModel.onRefresh()
             }
         }
         .onAppear {

@@ -19,7 +19,6 @@ public struct BackButton: ViewModifier {
     public func body(content: Content) -> some View {
         Button {
             withAnimation(.spring(duration: 0.2)) {
-                HapticManager.instance.impact(style: .soft)
                 action()
             }
         } label: {

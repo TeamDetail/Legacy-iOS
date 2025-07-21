@@ -15,7 +15,7 @@ public struct RankingBoardView: View {
     public var body: some View {
         HStack {
             Text("\(rank)")
-                .font(.bitFont(size: 28))
+                .font(.bitFont(size: 26))
                 .foreground(LegacyColor.Common.white)
                 .frame(width: 40, alignment: .center)
             

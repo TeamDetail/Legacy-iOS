@@ -10,7 +10,7 @@ import DIContainer
 import Domain
 import Data
 
-public class RankingViewModel: ObservableObject {
+public class RankingViewModel: ObservableObject, Refreshable {
     @Published var rankingList: [RankResponse]?
     
     @Inject var rankingRepository: any RankRepository
@@ -22,5 +22,15 @@ public class RankingViewModel: ObservableObject {
         } catch {
             print(error.localizedDescription)
         }
+    }
+    
+    @MainActor
+    func onRefresh() async {
+        clearData()
+        await fetchRanking()
+    }
+    
+    func clearData() {
+        rankingList = nil
     }
 }

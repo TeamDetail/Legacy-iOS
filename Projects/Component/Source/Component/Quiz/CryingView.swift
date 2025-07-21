@@ -31,7 +31,6 @@ public struct CryingView: View {
                 
                 Button {
                     withAnimation(.spring()) {
-                        HapticManager.instance.impact(style: .soft)
                         action()
                     }
                 } label: {

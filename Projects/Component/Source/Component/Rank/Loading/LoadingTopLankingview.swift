@@ -20,35 +20,37 @@ public struct LoadingTopLankingview: View {
                 .redacted(reason: .placeholder)
                 .shimmering()
             
-            Text("1")
-                .font(.title3(.bold))
-                .foreground(LegacyColor.Label.alternative)
-                .redacted(reason: .placeholder)
-                .shimmering()
-            
-            Text("100")
-                .font(.body1(.bold))
-                .foreground(LegacyColor.Yellow.normal)
-                .redacted(reason: .placeholder)
-                .shimmering()
-            
-            Text("김은찬")
-                .font(.body1(.bold))
-                .foreground(LegacyColor.Common.white)
-                .redacted(reason: .placeholder)
-                .shimmering()
+            VStack(spacing: 6) {
+                Text("1위")
+                    .font(.title3(.bold))
+                    .foreground(LegacyColor.Label.alternative)
+                    .redacted(reason: .placeholder)
+                    .shimmering()
+                
+                Text("100")
+                    .font(.body1(.bold))
+                    .foreground(LegacyColor.Yellow.normal)
+                    .redacted(reason: .placeholder)
+                    .shimmering()
+                
+                Text("김은찬")
+                    .font(.body1(.bold))
+                    .foreground(LegacyColor.Common.white)
+                    .redacted(reason: .placeholder)
+                    .shimmering()
+            }
+            .multilineTextAlignment(.center)
+            .padding(.vertical, 14)
         }
-        .padding()
-        .padding(.vertical, 14)
+        .frame(width: 100, height: 230)
         .background(LegacyColor.Background.normal)
-        .cornerRadius(20)
+        .clipShape(size: 20)
         .overlay(
             RoundedRectangle(cornerRadius: 20)
                 .stroke(lineWidth: 2)
                 .foreground(LegacyColor.Label.alternative)
         )
         .shadow(color: .black.opacity(0.4), radius: 10, x: 0, y: 5)
-        .padding(.horizontal, 12)
     }
 }
 

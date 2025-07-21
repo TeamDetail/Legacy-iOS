@@ -17,21 +17,22 @@ public struct RankingBoardView: View {
             Text("\(rank)")
                 .font(.bitFont(size: 28))
                 .foreground(LegacyColor.Common.white)
-                .frame(width: 50, alignment: .leading)
+                .frame(width: 40, alignment: .center)
             
             if let url = URL(string: data.imageUrl) {
                 KFImage(url)
                     .placeholder { _ in
                         Circle()
                             .fill(Color.gray.opacity(0.3))
-                            .frame(width: 48, height: 48)
+                            .frame(width: 45, height: 45)
                             .redacted(reason: .placeholder)
                             .shimmering()
                     }
                     .resizable()
                     .aspectRatio(contentMode: .fit)
-                    .frame(width: 48, height: 48)
+                    .frame(width: 45, height: 45)
                     .clipShape(size: 300)
+                    .padding(.leading, 8)
             }
             
             VStack(alignment: .leading, spacing: 6) {
@@ -52,8 +53,9 @@ public struct RankingBoardView: View {
             
             Text("\(data.allBlocks)블록")
                 .font(.bitFont(size: 18))
-                .foreground(LegacyColor.Primary.normal)
+                .foregroundStyle(blockColor(for: data.allBlocks))
         }
+        .frame(height: 65)
         .padding(.horizontal, 12)
     }
 }

@@ -36,31 +36,37 @@ public struct TopRankersView: View {
                     .clipShape(size: 300)
             }
             
-            Text(rankType.ranking)
-                .font(.title3(.bold))
-                .foreground(rankType.strokeColor)
+            VStack(spacing: 6) {
+                Text(rankType.ranking)
+                    .font(.title3(.bold))
+                    .foreground(rankType.strokeColor)
+                
+                Text("\(data.allBlocks)블록")
+                    .font(.body1(.bold))
+                    .foreground(LegacyColor.Yellow.normal)
+                
+                Text(data.nickname)
+                    .font(.body1(.bold))
+                    .foreground(LegacyColor.Common.white)
+                    .lineLimit(1)
+                    .truncationMode(.tail)
+            }
+            .multilineTextAlignment(.center)
+            .padding(.vertical, 14)
             
-            Text("\(data.allBlocks)블록")
-                .font(.body1(.bold))
-                .foreground(LegacyColor.Yellow.normal)
-            
-            Text(data.nickname)
-                .font(.body1(.bold))
-                .foreground(LegacyColor.Common.white)
             
             if !data.title.name.isEmpty {
                 TitleBadge(data.title.name, color: LegacyColor.Yellow.alternative)
             }
         }
-        .padding()
+        .frame(width: 100, height: 230)
         .background(LegacyColor.Background.normal)
-        .cornerRadius(20)
+        .clipShape(size: 20)
         .overlay(
             RoundedRectangle(cornerRadius: 20)
                 .stroke(lineWidth: 2)
                 .foreground(rankType.strokeColor)
         )
         .shadow(color: .black.opacity(0.4), radius: 10, x: 0, y: 5)
-        .padding(.horizontal, 12)
     }
 }

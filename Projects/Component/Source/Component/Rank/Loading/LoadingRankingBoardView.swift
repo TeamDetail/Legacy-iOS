@@ -22,7 +22,7 @@ public struct LoadingRankingBoardView: View {
             
             Circle()
                 .fill(Color.gray.opacity(0.3))
-                .frame(width: 48, height: 48)
+                .frame(width: 45, height: 45)
                 .redacted(reason: .placeholder)
                 .shimmering()
             
@@ -45,6 +45,7 @@ public struct LoadingRankingBoardView: View {
                 .redacted(reason: .placeholder)
                 .shimmering()
         }
+        .frame(height: 65)
         .padding(.horizontal, 20)
     }
 }

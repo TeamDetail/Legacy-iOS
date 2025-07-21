@@ -26,11 +26,11 @@ public enum TopRankEnum {
     var ranking: String {
         switch self {
         case .one:
-            return "1"
+            return "1위"
         case .two:
-            return "2"
+            return "2위"
         case .three:
-            return "3"
+            return "3위"
         }
     }
 }

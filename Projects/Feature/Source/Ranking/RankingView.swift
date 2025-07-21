@@ -27,22 +27,27 @@ struct RankingView: View {
                                 if let data = viewModel.rankingList {
                                     let top3 = Array(data.prefix(3))
                                     
-                                    if top3.count > 1 {
-                                        TopRankersView(rankType: .two, data: top3[1])
-                                    }
-                                    if top3.count > 0 {
-                                        TopRankersView(rankType: .one, data: top3[0])
-                                            .padding(.bottom, 40)
-                                    }
-                                    if top3.count > 2 {
-                                        TopRankersView(rankType: .three, data: top3[2])
+                                    HStack(spacing: 16) {
+                                        if top3.count > 1 {
+                                            TopRankersView(rankType: .two, data: top3[1])
+                                        }
+                                        if top3.count > 0 {
+                                            TopRankersView(rankType: .one, data: top3[0])
+                                                .padding(.bottom, 40)
+                                        }
+                                        if top3.count > 2 {
+                                            TopRankersView(rankType: .three, data: top3[2])
+                                        }
                                     }
                                     
                                 } else {
-                                    LoadingTopLankingview()
-                                    LoadingTopLankingview()
-                                        .padding(.bottom, 40)
-                                    LoadingTopLankingview()
+                                    HStack(spacing: 16) {
+                                        LoadingTopLankingview()
+                                        LoadingTopLankingview()
+                                            .padding(.bottom, 40)
+                                        LoadingTopLankingview()
+                                    }
+                                    .padding(.horizontal, 14)
                                 }
                             }
                             .padding(.horizontal, 12)
@@ -71,6 +76,9 @@ struct RankingView: View {
                         )
                     }
                 }
+            }
+            .refreshable {
+                //TODO: refreshable Protocol
             }
         }
         .onAppear {

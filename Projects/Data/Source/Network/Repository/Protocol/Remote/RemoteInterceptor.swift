@@ -10,7 +10,7 @@ import DIContainer
 import Alamofire
 import Domain
 
-final class RemoteInterceptor: RequestInterceptor {
+final class RemoteInterceptor: RequestInterceptor, @unchecked Sendable  {
     static let shared = RemoteInterceptor()
     
     private init() {}
@@ -18,7 +18,9 @@ final class RemoteInterceptor: RequestInterceptor {
     private var isRefreshing = false
     private var requestsToRetry: [(RetryResult) -> Void] = []
     
-    private let notReissuePaths = ["/auth/refresh", "/kakao/accessToken"]
+    private let notReissuePaths = [
+        "/auth/refresh", "/kakao/accessToken"
+    ]
     
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, any Error>) -> Void) {
         var request = urlRequest

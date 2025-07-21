@@ -28,7 +28,7 @@ final class RemoteInterceptor: RequestInterceptor {
             return
         }
         
-        if let token = UserDefaults.standard.string(forKey: "accessToken") {
+        if let token = Sign.accessToken {
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
         completion(.success(request))
@@ -40,7 +40,7 @@ final class RemoteInterceptor: RequestInterceptor {
             return
         }
         
-        guard let refreshToken = UserDefaults.standard.string(forKey: "refreshToken") else {
+        guard let refreshToken = Sign.refreshToken else {
             completion(.doNotRetryWithError(error))
             return
         }
@@ -55,7 +55,7 @@ final class RemoteInterceptor: RequestInterceptor {
             @Inject var authRepository: any AuthRepository
             
             do {
-                print("재발급 하기 전의 아이\(refreshToken)")
+                print("재발급 하기전\(refreshToken)")
                 try await authRepository.postReissue(
                     .init(refreshToken: refreshToken)
                 )
@@ -64,8 +64,7 @@ final class RemoteInterceptor: RequestInterceptor {
                 requestsToRetry.removeAll()
             } catch {
                 isRefreshing = false
-                UserDefaults.standard.removeObject(forKey: "accessToken")
-                UserDefaults.standard.removeObject(forKey: "refreshToken")
+                Sign.logout()
                 requestsToRetry.forEach { $0(.doNotRetryWithError(error)) }
                 requestsToRetry.removeAll()
             }

@@ -91,8 +91,7 @@ struct ErrorTopBar: View {
                     case .wrong:
                         print("메일")
                     case .logout:
-                        UserDefaults.standard.removeObject(forKey: "accessToken")
-                        UserDefaults.standard.removeObject(forKey: "refreshToken")
+                        Sign.logout()
                     }
                 }
                 .id(UUID())

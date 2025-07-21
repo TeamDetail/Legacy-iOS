@@ -10,64 +10,65 @@ import DIContainer
 import Alamofire
 import Domain
 
-final class RemoteInterceptor: RequestInterceptor {
+final class RemoteInterceptor: RequestInterceptor, @unchecked Sendable  {
     static let shared = RemoteInterceptor()
     
     private init() {}
     
+    private var isRefreshing = false
+    private var requestsToRetry: [(RetryResult) -> Void] = []
+    
+    private let notReissuePaths = [
+        "/auth/refresh", "/kakao/accessToken"
+    ]
+    
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, any Error>) -> Void) {
-        guard let accessToken = Sign.accessToken else {
-            print("❌ [adapt] accessToken 없음")
-            completion(.success(urlRequest))
+        var request = urlRequest
+        
+        if notReissuePaths.contains(where: { request.url?.absoluteString.contains($0) == true }) {
+            completion(.success(request))
             return
         }
         
-        var modifiedRequest = urlRequest
-        modifiedRequest.setValue("Bearer " + accessToken, forHTTPHeaderField: "Authorization")
-        
-        print("✅ [adapt] Authorization 헤더 설정: Bearer \(accessToken)")
-        completion(.success(modifiedRequest))
+        if let token = Sign.accessToken {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+        completion(.success(request))
     }
     
-    
     func retry(_ request: Request, for session: Session, dueTo error: any Error, completion: @escaping (RetryResult) -> Void) {
-        guard let response = request.task?.response as? HTTPURLResponse else {
+        guard let response = request.response, response.statusCode == 401 else {
             completion(.doNotRetryWithError(error))
             return
         }
         
-        guard request.retryCount <= 3 else {
-            print("❌ RemoteInterceptor - RetryCount가 3보다 큽니다")
-            completion(.doNotRetry)
-            return
-        }
-        
-        if response.statusCode == 200 {
-            completion(.doNotRetry)
-            return
-        }
-        
-        guard response.statusCode == 401, let refreshToken = Sign.refreshToken else {
+        guard let refreshToken = Sign.refreshToken else {
             completion(.doNotRetryWithError(error))
             return
         }
         
-        @Inject var authRepository: any AuthRepository
+        requestsToRetry.append(completion)
+        
+        guard !isRefreshing else { return }
+        
+        isRefreshing = true
         
         Task {
+            @Inject var authRepository: any AuthRepository
+            
             do {
-                try await authRepository.postReissue(.init(refreshToken: refreshToken))
-                print("✅ [retry] 재발급 후 accessToken:", Sign.accessToken ?? "없음")
-                print("✅ [retry] 재발급 후 refreshToken:", Sign.refreshToken ?? "없음")
-                DispatchQueue.main.async {
-                    completion(.retry)
-                }
+                print("재발급 하기전\(refreshToken)")
+                try await authRepository.postReissue(
+                    .init(refreshToken: refreshToken)
+                )
+                isRefreshing = false
+                requestsToRetry.forEach { $0(.retry) }
+                requestsToRetry.removeAll()
             } catch {
-                DispatchQueue.main.async {
-                    completion(.doNotRetryWithError(error))
-                    Sign.logout()
-                    print("토큰 재발급 실패")
-                }
+                isRefreshing = false
+                Sign.logout()
+                requestsToRetry.forEach { $0(.doNotRetryWithError(error)) }
+                requestsToRetry.removeAll()
             }
         }
     }

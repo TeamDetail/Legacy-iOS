@@ -43,3 +43,12 @@ extension LocationManager: CLLocationManagerDelegate {
         }
     }
 }
+
+
+//MARK: Test
+extension LocationManager {
+    func setTestLocation() {
+        self.location = CLLocation(latitude: 35.66184787, longitude: 128.41389286)
+        self.isLoading = false
+    }
+}

@@ -50,10 +50,7 @@ public struct ProfileComponent: View {
                     Spacer()
                     
                     Button {
-                        withAnimation(.spring(duration: 0.2)) {
-                            HapticManager.instance.impact(style: .soft)
-                            action()
-                        }
+                        action()
                     } label: {
                         Image(icon: .pen)
                             .frame(width: 32, height: 32)

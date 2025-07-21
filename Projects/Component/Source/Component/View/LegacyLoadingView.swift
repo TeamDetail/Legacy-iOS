@@ -18,9 +18,6 @@ public struct LegacyLoadingView: View {
     
     public var body: some View {
         ZStack {
-            //TODO: 나중에 삭제
-            //            LegacyPalette.shared.neturalNormal
-            //                .ignoresSafeArea()
             VStack {
                 HStack(spacing: 10) {
                     ForEach(0..<3) { index in

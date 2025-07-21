@@ -30,5 +30,7 @@ public struct AuthRepositoryImpl: AuthRepository {
             data.accessToken,
             data.refreshToken
         )
+        print("재발급후\(data.accessToken)")
+        print("재발급후\(data.refreshToken)")
     }
 }

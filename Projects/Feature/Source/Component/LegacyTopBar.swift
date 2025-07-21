@@ -27,7 +27,6 @@ struct LegacyTopBar: View {
                 if let url = URL(string: data.imageUrl) {
                     Button {
                         withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
-                            HapticManager.instance.impact(style: .soft)
                             flow.push(ProfileView(viewModel: data))
                         }
                     } label: {

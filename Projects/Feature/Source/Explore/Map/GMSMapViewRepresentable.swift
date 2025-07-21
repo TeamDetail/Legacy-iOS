@@ -50,6 +50,14 @@ struct GMSMapViewRepresentable: UIViewRepresentable {
         mapView.isMyLocationEnabled = true
         mapView.settings.myLocationButton = true
         
+        // MARK: 위치 버튼을 탭바 위로 올리기 위한 패딩 설정
+        mapView.padding = UIEdgeInsets(
+            top: 0,
+            left: 0,
+            bottom: 70,
+            right: 0
+        )
+        
         //MARK: Coordinator 연결
         context.coordinator.mapView = mapView
         mapView.delegate = context.coordinator
@@ -103,7 +111,7 @@ struct GMSMapViewRepresentable: UIViewRepresentable {
             polygon.userData = ruin.ruinsId
             polygon.isTappable = true // 탭했을때
             polygon.map = mapView
-        } 
+        }
     }
     
     class Coordinator: NSObject, GMSMapViewDelegate {

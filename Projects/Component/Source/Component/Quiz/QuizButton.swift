@@ -9,16 +9,12 @@ import SwiftUI
 
 public struct QuizButton: View {
     let title: String
-    let color: LegacyColorable
-    let strokeColor: LegacyColorable
-    let width: CGFloat
+    let buttonType: QuizEnum
     let action: () -> Void
     
-    public init(title: String, color: LegacyColorable, strokeColor: LegacyColorable, width: CGFloat, action: @escaping () -> Void) {
+    public init(title: String, buttonType: QuizEnum, action: @escaping () -> Void) {
         self.title = title
-        self.color = color
-        self.strokeColor = strokeColor
-        self.width = width
+        self.buttonType = buttonType
         self.action = action
     }
     
@@ -31,13 +27,13 @@ public struct QuizButton: View {
         } label: {
             Text(title)
                 .font(.caption1(.bold))
-                .foreground(color)
-                .frame(width: width, height: 40)
+                .foreground(buttonType.color)
+                .frame(width: buttonType.width, height: 40)
                 .background(LegacyColor.Fill.normal)
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
                         .stroke(lineWidth: 2)
-                        .foreground(strokeColor)
+                        .foreground(buttonType.stroke)
                 )
                 .clipShape(size: 12)
         }

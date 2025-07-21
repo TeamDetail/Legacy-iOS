@@ -13,14 +13,9 @@ public struct CryingView: View {
     }
     
     public var body: some View {
-        ZStack {
-            Color.black.opacity(0.8)
-                .ignoresSafeArea()
-                .onTapGesture {
-                    action()
-                }
+        LegacyModalView(action) {
             
-            VStack(spacing: 20) {
+            VStack(spacing: 30) {
                 Spacer()
                 
                 Image(icon: .crying)
@@ -36,7 +31,6 @@ public struct CryingView: View {
                 
                 Button {
                     withAnimation(.spring()) {
-                        HapticManager.instance.impact(style: .soft)
                         action()
                     }
                 } label: {

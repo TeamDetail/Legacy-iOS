@@ -24,12 +24,8 @@ public struct RootView: View {
                 case .battle:
                     LegacyEmptyView()
                 case .trophy:
-                    LankingView(tabItem: $selection)
+                    RankingView(tabItem: $selection)
                 }
-            }
-            .onAppear {
-                print("현재 엑세스\(Sign.accessToken)")
-                print("현재 리프래쉬\(Sign.refreshToken)")
             }
         } else {
             LoginView()

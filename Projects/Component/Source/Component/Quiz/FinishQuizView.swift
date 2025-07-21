@@ -26,14 +26,8 @@ public struct FinishQuizView: View {
     }
     
     public var body: some View {
-        ZStack {
-            Color.black.opacity(0.8)
-                .ignoresSafeArea()
-                .onTapGesture {
-                    onDismiss()
-                }
-            
-            VStack {
+        LegacyModalView(onDismiss) {
+            VStack(spacing: 20) {
                 Spacer()
                 
                 if let url = URL(string: data.ruinsImage) {
@@ -91,7 +85,7 @@ public struct FinishQuizView: View {
             stopShaking()
         }
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            delayRun(5) {
                 onDismiss()
             }
         }
@@ -115,7 +109,7 @@ public struct FinishQuizView: View {
                 shakePhase += 1
             }
         }
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.75) {
+        delayRun(2) {
             stopShaking()
         }
     }

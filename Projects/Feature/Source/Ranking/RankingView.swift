@@ -32,6 +32,7 @@ struct RankingView: View {
                                     }
                                     if top3.count > 0 {
                                         TopRankersView(rankType: .one, data: top3[0])
+                                            .padding(.bottom, 40)
                                     }
                                     if top3.count > 2 {
                                         TopRankersView(rankType: .three, data: top3[2])

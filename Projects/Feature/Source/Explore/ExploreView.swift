@@ -16,7 +16,14 @@ public struct ExploreView: View {
     @State private var showDetail = false
     @State private var showMenu = false
     
-    public init() {}
+    //MARK: 탭바 숨기는 바인딩
+    @Binding var isTabBarHidden: Bool
+    
+    public init (
+        _ isTabBarHidden: Binding<Bool>
+    ) {
+        self._isTabBarHidden = isTabBarHidden
+    }
     
     public var body: some View {
         ZStack {
@@ -77,6 +84,7 @@ public struct ExploreView: View {
                     RuinsDetailOverlay(
                         detail: detail,
                         showDetail: $showDetail,
+                        isTabBarHidden: $isTabBarHidden,
                         viewModel: viewModel
                     ) {
                         Task {
@@ -84,6 +92,12 @@ public struct ExploreView: View {
                             await quizViewModel.reset(userData.userInfo?.userId ?? 0) //MARK: 서버 고쳐지면 지울것
                             quizStateViewModel.startQuiz()
                             showDetail = false
+                        }
+                    }
+                    
+                    .onAppear {
+                        withAnimation(.easeInOut(duration: 0.2)) {
+                            isTabBarHidden = true
                         }
                     }
                 }
@@ -108,6 +122,11 @@ public struct ExploreView: View {
                 )
             }
         }
+        .onChange(of: quizStateViewModel.shouldHideTabBar) { shouldHide in
+            withAnimation(.easeInOut(duration: 0.2)) {
+                isTabBarHidden = shouldHide
+            }
+        }
         .task {
             locationManager.startUpdating()
         }
@@ -115,7 +134,7 @@ public struct ExploreView: View {
             locationManager.stopUpdating()
         }
         .onAppear {
-            locationManager.setTestLocation() //MARK: 지울것
+            //            locationManager.setTestLocation() //MARK: 테스트 할 때 사용
             Task {
                 await viewModel.fetchMyBlock()
                 await userData.fetchMyinfo()

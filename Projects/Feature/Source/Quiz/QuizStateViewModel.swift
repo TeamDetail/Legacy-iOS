@@ -19,17 +19,22 @@ public class QuizStateViewModel: ObservableObject {
     @Published var currentIndex = 0
     @Published var selectedIndices: [Int: Int] = [:]
     
+    // MARK: - 탭바 숨김 상태 관리
+    @Published var shouldHideTabBar = false
+    
     // MARK: - Quiz Flow Management
     @MainActor
     func startQuiz() {
         resetQuizState()
         showQuiz = true
+        shouldHideTabBar = true
     }
     
     @MainActor
     func dismissQuiz() {
         showQuiz = false
         resetQuizState()
+        shouldHideTabBar = false
     }
     
     @MainActor
@@ -53,6 +58,7 @@ public class QuizStateViewModel: ObservableObject {
     @MainActor
     func hideResult() {
         showFinishView = false
+        shouldHideTabBar = false
     }
     
     @MainActor
@@ -60,12 +66,14 @@ public class QuizStateViewModel: ObservableObject {
         showCrying = false
         resetQuizProgress()
         showQuiz = true
+        shouldHideTabBar = true
     }
     
     @MainActor
     func dismissFailure() {
         showCrying = false
         resetQuizState()
+        shouldHideTabBar = false
     }
     
     // MARK: - Quiz Progress Management

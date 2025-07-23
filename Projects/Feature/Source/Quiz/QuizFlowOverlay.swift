@@ -39,10 +39,11 @@ struct QuizFlowOverlay: View {
             
             //MARK: 실패 화면
             if stateViewModel.showCrying {
-                CryingView(wrongNumbers: quizViewModel.wrongNumbers) {
+                CryingView(dismiss: {
+                    stateViewModel.dismissFailure()
+                }, wrongNumbers: quizViewModel.wrongNumbers) {
                     stateViewModel.retryQuiz()
                 }
-                .zIndex(2000)
             }
         }
     }

@@ -80,6 +80,10 @@ public struct FinishQuizView: View {
                 
                 Spacer()
             }
+            .frame(width: 370, height: 640)
+            .clipShape(size: 20)
+            .padding(.horizontal, 16)
+            .background(LegacyColor.Background.normal)
         }
         .onDisappear {
             stopShaking()

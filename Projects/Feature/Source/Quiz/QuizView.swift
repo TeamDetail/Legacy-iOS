@@ -43,7 +43,7 @@ struct QuizView: View {
                                         .lineLimit(2)
                                     
                                     Text(quiz.quizProblem)
-                                        .font(.title3(.bold))
+                                        .font(.heading1(.bold))
                                         .foreground(LegacyColor.Common.white)
                                         .multilineTextAlignment(.center)
                                         .padding(.horizontal, 8)
@@ -102,6 +102,7 @@ struct QuizView: View {
                                     .disabled(!stateViewModel.hasSelectedOption())
                                     .animation(.easeInOut(duration: 0.15), value: stateViewModel.hasSelectedOption())
                                 }
+                                .padding(.bottom, 30)
                             }
                         }
                         Spacer()
@@ -115,6 +116,7 @@ struct QuizView: View {
                 }
             }
             .padding(.horizontal, 16)
+            .background(LegacyColor.Background.normal)
         }
     }
 }

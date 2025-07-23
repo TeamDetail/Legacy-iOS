@@ -37,8 +37,10 @@ public struct ClapView: View {
                 
                 Spacer()
             }
-            .padding(.horizontal, 20)
-            .padding(.vertical, 40)
+            .frame(width: 370, height: 640)
+            .clipShape(size: 20)
+            .padding(.horizontal, 16)
+            .background(LegacyColor.Background.normal)
         }
         .onAppear {
             delayRun(2) {

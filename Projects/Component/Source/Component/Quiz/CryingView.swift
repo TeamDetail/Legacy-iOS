@@ -6,14 +6,20 @@ import Domain
 public struct CryingView: View {
     let wrongNumbers: [Int]
     let action: () -> Void
+    let dismiss: () -> Void
     
-    public init(wrongNumbers: [Int], action: @escaping () -> Void) {
+    public init(
+        dismiss: @escaping () -> Void,
+        wrongNumbers: [Int],
+        action: @escaping () -> Void
+    ) {
         self.wrongNumbers = wrongNumbers
         self.action = action
+        self.dismiss = dismiss
     }
     
     public var body: some View {
-        LegacyModalView(action) {
+        LegacyModalView(dismiss) {
             
             VStack(spacing: 30) {
                 Spacer()
@@ -49,8 +55,10 @@ public struct CryingView: View {
                 
                 Spacer()
             }
-            .padding(.horizontal, 20)
-            .padding(.vertical, 40)
+            .frame(width: 370, height: 640)
+            .clipShape(size: 20)
+            .padding(.horizontal, 16)
+            .background(LegacyColor.Background.normal)
         }
     }
 }

@@ -12,6 +12,7 @@ import Component
 struct RuinsDetailOverlay: View {
     let detail: RuinsDetailResponse
     @Binding var showDetail: Bool
+    @Binding var isTabBarHidden: Bool
     let viewModel: ExploreViewModel
     let action: () -> Void
     
@@ -20,6 +21,7 @@ struct RuinsDetailOverlay: View {
             Color.black.opacity(0.4)
                 .ignoresSafeArea()
                 .onTapGesture {
+                    isTabBarHidden = false
                     dismissDetail()
                 }
             
@@ -29,7 +31,7 @@ struct RuinsDetailOverlay: View {
                 action()
             })
             .padding(.horizontal, 6)
-            .padding(.bottom, 120)
+            .padding(.bottom, 40)
         }
         .transition(.move(edge: .bottom).combined(with: .opacity))
         .animation(.easeOut(duration: 0.25), value: showDetail)

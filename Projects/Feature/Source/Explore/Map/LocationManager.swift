@@ -45,7 +45,7 @@ extension LocationManager: CLLocationManagerDelegate {
 }
 
 
-//MARK: Test
+//MARK: 대소고로 위치 지정 Test
 extension LocationManager {
     func setTestLocation() {
         self.location = CLLocation(latitude: 35.66184787, longitude: 128.41389286)

@@ -21,13 +21,16 @@ public struct LegacyModalView<Content: View>: View {
     
     public var body: some View {
         ZStack {
-            Color.black.opacity(0.8)
+            Color.black.opacity(0.7)
                 .ignoresSafeArea()
                 .onTapGesture {
                     dismiss?()
                 }
             
             content
+                .frame(width: 370, height: 640)
+                .clipShape(size: 20)
+                .padding(5)
         }
     }
 }

@@ -19,11 +19,8 @@ public struct CategoryButton: View {
     }
     
     public var body: some View {
-        Button {
-            withAnimation(.spring(duration: 0.2)) {
-                HapticManager.instance.impact(style: .light)
-                action()
-            }
+        AnimationButton {
+            action()
         } label: {
             Text(category)
                 .font(.caption1(.bold))
@@ -33,6 +30,7 @@ public struct CategoryButton: View {
                 .background(select ? LegacyColor.Primary.normal : LegacyColor.Line.netural)
                 .clipShape(size: 50)
         }
+        
     }
 }
 

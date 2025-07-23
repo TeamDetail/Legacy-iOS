@@ -96,9 +96,7 @@ public struct ExploreView: View {
                     }
                     
                     .onAppear {
-                        withAnimation(.easeInOut(duration: 0.2)) {
-                            isTabBarHidden = true
-                        }
+                        isTabBarHidden = true
                     }
                 }
             }
@@ -123,9 +121,7 @@ public struct ExploreView: View {
             }
         }
         .onChange(of: quizStateViewModel.shouldHideTabBar) { shouldHide in
-            withAnimation(.easeInOut(duration: 0.2)) {
-                isTabBarHidden = shouldHide
-            }
+            isTabBarHidden = shouldHide
         }
         .task {
             locationManager.startUpdating()

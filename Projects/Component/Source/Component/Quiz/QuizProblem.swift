@@ -19,11 +19,9 @@ public struct QuizProblem: View {
     }
     
     public var body: some View {
-        Button {
-            withAnimation(.spring(duration: 0.2)) {
-                HapticManager.instance.impact(style: .soft)
-                action()
-            }
+        AnimationButton {
+            HapticManager.instance.impact(style: .rigid)
+            action()
         } label: {
             VStack {
                 Text(description)

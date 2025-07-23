@@ -6,11 +6,9 @@ public struct LegacyNavigationCell: View {
     let action: () -> Void
     
     public var body: some View {
-        Button {
-            withAnimation(.spring(duration: 0.2)) {
-                HapticManager.instance.impact(style: .soft)
-                action()
-            }
+        AnimationButton {
+            HapticManager.instance.impact(style: .light)
+            action()
         } label: {
             VStack(spacing: 2) {
                 item.icon

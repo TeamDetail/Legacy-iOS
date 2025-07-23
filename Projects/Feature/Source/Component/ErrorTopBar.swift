@@ -46,7 +46,7 @@ struct ErrorTopBar: View {
                 
                 Button {
                     withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
-                        HapticManager.instance.impact(style: .soft)
+                        HapticManager.instance.impact(style: .light)
                         showMenu.toggle()
                     }
                 } label: {

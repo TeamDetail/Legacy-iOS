@@ -19,11 +19,8 @@ public struct QuizButton: View {
     }
     
     public var body: some View {
-        Button {
-            withAnimation(.spring(duration: 0.2)) {
-                HapticManager.instance.impact(style: .soft)
-                action()
-            }
+        AnimationButton {
+            action()
         } label: {
             Text(title)
                 .font(.caption1(.bold))

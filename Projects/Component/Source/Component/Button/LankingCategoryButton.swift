@@ -20,11 +20,9 @@ public struct LankingCategoryButton: View {
     }
     
     public var body: some View {
-        Button {
-            withAnimation(.spring(duration: 0.2)) {
-                HapticManager.instance.impact(style: .light)
-                action()
-            }
+        AnimationButton {
+            HapticManager.instance.impact(style: .light)
+            action()
         } label: {
             Text(category)
                 .font(.caption1(.bold))

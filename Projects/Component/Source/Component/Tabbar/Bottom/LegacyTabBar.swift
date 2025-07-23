@@ -53,7 +53,6 @@ public struct LegacyTabBar<Content: View>: View {
                         .safeAreaInset(edge: .bottom) {
                             Color.clear.frame(height: 20)
                         }
-                        .transition(.move(edge: .bottom))
                 }
             }
             .ignoresSafeArea(.all, edges: .bottom)

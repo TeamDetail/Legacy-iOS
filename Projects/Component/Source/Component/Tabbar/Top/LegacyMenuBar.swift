@@ -11,11 +11,8 @@ public struct LegacyMenuBar: View {
     public var body: some View {
         VStack(spacing: 16) {
             ForEach(Array(LegacyMenuItem.allCases.enumerated()), id: \.element) { index, item in
-                Button {
-                    withAnimation(.spring(duration: 0.2)) {
-                        HapticManager.instance.impact(style: .soft)
-                        action(item)
-                    }
+                AnimationButton {
+                    action(item)
                 } label: {
                     item.icon
                         .foreground(LegacyColor.Common.white)
@@ -47,10 +44,8 @@ public struct TestView2: View {
         ZStack {
             HStack {
                 Spacer()
-                Button {
-                    withAnimation(.spring(duration: 0.2)) {
-                        showMenu.toggle()
-                    }
+                AnimationButton {
+                    showMenu.toggle()
                 } label: {
                     Image(icon: .menu)
                         .foreground(LegacyColor.Common.white)

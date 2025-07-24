@@ -8,7 +8,7 @@
 import Foundation
 import Domain
 
-public struct QuizRepositorylmpl: QuizRepository {
+public struct QuizRepositoryImpl: QuizRepository {
     
     let dataSource: QuizDataSource
     

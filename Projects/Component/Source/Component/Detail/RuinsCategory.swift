@@ -19,6 +19,6 @@ public struct RuinsCategory: View {
             .padding(.vertical, 4)
             .padding(.horizontal, 12)
             .background(Color.purple)
-            .cornerRadius(24)
+            .clipShape(size: 24)
     }
 }

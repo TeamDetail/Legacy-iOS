@@ -51,9 +51,7 @@ struct ProfileView: View {
             }
             
             if selection == 2 {
-                LegacyLoadingView(
-                    description: ""
-                )
+                CardCollectionView()
             }
         }
         .padding(.horizontal, 10)

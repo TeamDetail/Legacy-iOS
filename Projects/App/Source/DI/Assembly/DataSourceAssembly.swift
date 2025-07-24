@@ -31,5 +31,9 @@ public struct DataSourceAssembly: Assembly {
         container.register(RankDataSource.self) { _ in
             RankDataSource()
         }.inObjectScope(.container)
+        
+        container.register(CardDataSource.self) { _ in
+            CardDataSource()
+        }.inObjectScope(.container)
     }
 }

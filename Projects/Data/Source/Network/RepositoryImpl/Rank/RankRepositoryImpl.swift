@@ -8,7 +8,7 @@
 import Foundation
 import Domain
 
-public struct RankRepositorylmpl: RankRepository {
+public struct RankRepositoryImpl: RankRepository {
     
     let dataSource: RankDataSource
     

@@ -18,7 +18,7 @@ public struct ClapView: View {
     }
     
     public var body: some View {
-        LegacyModalView(action) {
+        LegacyModalView {
             VStack(spacing: 15) {
                 Spacer()
                 

@@ -1,14 +1,14 @@
 import SwiftUI
 
 public enum LegacyTabItem: Int, CaseIterable {
-    case shop, medal, flag, battle, trophy
+    case shop, medal, flag, course, trophy
     
     var icon: Image {
         switch self {
         case .flag:
             Image(icon: .flag)
-        case .battle:
-            Image(icon: .battle)
+        case .course:
+            Image(icon: .course)
         case .shop:
             Image(icon: .shop)
         case .trophy:
@@ -22,14 +22,14 @@ public enum LegacyTabItem: Int, CaseIterable {
         switch self {
         case .flag:
             "탐험"
-        case .battle:
-            "시련"
+        case .course:
+            "코스"
         case .shop:
             "상점"
         case .trophy:
             "랭킹"
         case .medal:
-            "퀘스트"
+            "도전과제"
         }
     }
 }

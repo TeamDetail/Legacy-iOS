@@ -9,6 +9,7 @@ public enum LegacyIconography: String, Hashable {
     case topArrow = "Arrow"
     case people = "People"
     case mail = "Mail"
+    case course = "Course"
     case setting = "Setting"
     case wrong = "Wrong"
     case out = "Out"

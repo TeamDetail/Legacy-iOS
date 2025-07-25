@@ -19,11 +19,11 @@ public struct RootView: View {
                 case .shop:
                     ShopView(tabItem: $selection)
                 case .medal:
-                    LegacyEmptyView()
+                    QuestView(tabItem: $selection)
                 case .flag:
                     ExploreView($isTabBarHidden)
-                case .battle:
-                    LegacyEmptyView()
+                case .course:
+                    CourseView(tabItem: $selection)
                 case .trophy:
                     RankingView(tabItem: $selection)
                 }

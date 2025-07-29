@@ -2,8 +2,10 @@ import SwiftUI
 import Domain
 import Kingfisher
 import Shimmer
+import FlowKit
 
 public struct RuinsDetailView: View {
+    @Flow var flow
     public let data: RuinsDetailResponse
     public var onClose: (() -> Void)? = nil
     public let action: () -> Void
@@ -25,33 +27,80 @@ public struct RuinsDetailView: View {
                 .foregroundColor(.gray.opacity(0.3))
                 .padding(.top, 8)
             
-            HStack(alignment: .top, spacing: 16) {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text("유적지 탐험")
-                        .font(.headline(.bold))
-                        .foreground(LegacyColor.Common.white)
-                    
-                    Text("선택한 블록")
-                        .font(.body2(.medium))
-                        .foreground(LegacyColor.Label.alternative)
-                    
-                    Text("#\(data.ruinsId)\n \(data.name)")
-                        .font(.headline(.medium))
-                        .foreground(LegacyColor.Common.white)
-                    
-                    Text("유적지 정보")
-                        .font(.body2(.medium))
-                        .foreground(LegacyColor.Label.alternative)
-                    
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(data.detailAddress)
-                        Text(data.periodName)
+            HStack(alignment: .top, spacing: 14) {
+                VStack(alignment: .leading, spacing: 16) {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("유적지 탐험")
+                            .font(.headline(.bold))
+                            .foreground(LegacyColor.Common.white)
+                        
+                        Text("#\(data.ruinsId)")
+                            .font(.caption1(.medium))
+                            .foreground(LegacyColor.Label.alternative)
+                        
+                        Text(data.name)
+                            .font(.headline(.bold))
+                            .foreground(LegacyColor.Label.normal)
                     }
-                    .font(.headline(.medium))
-                    .foreground(LegacyColor.Common.white)
+                    
+                    HStack(spacing: 6) {
+                        ForEach(1...5, id: \.self) { _ in
+                            HStack(spacing: 0) {
+                                Image(icon: .leftStar)
+                                Image(icon: .rightStar)
+                            }
+                            .frame(width: 4, height: 4)
+                            .padding(.horizontal, 4)
+                        }
+                        .foreground(LegacyColor.Primary.normal)
+                        
+                        Text("( 302 )")
+                            .font(.caption2(.medium))
+                            .foreground(LegacyColor.Fill.alternative)
+                    }
+                    
+                    LegacyDivider()
+                    
+                    HStack(spacing: 20) {
+                        VStack(alignment: .leading) {
+                            Text("탐험자 수")
+                                .font(.caption2(.regular))
+                                .foreground(LegacyColor.Label.alternative)
+                            
+                            Text("200001명")
+                                .font(.body2(.bold))
+                                .foreground(LegacyColor.Label.normal)
+                        }
+                        
+                        VStack(alignment: .leading) {
+                            Text("탐험자 수")
+                                .font(.caption2(.regular))
+                                .foreground(LegacyColor.Label.alternative)
+                            
+                            Text("14.5%")
+                                .font(.body2(.bold))
+                                .foreground(LegacyColor.Label.normal)
+                        }
+                    }
+                    
+                    AnimationButton {
+                        flow.push(EmptyView())
+                    } label: {
+                        Text("한줄평 남기기")
+                            .font(.caption1(.bold))
+                            .foreground(LegacyColor.Label.netural)
+                            .padding(.horizontal, 6)
+                            .frame(maxWidth: .infinity)
+                            .frame(height: 30)
+                            .background(LegacyColor.Fill.normal)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 12)
+                                    .stroke(lineWidth: 2)
+                                    .foreground(LegacyColor.Line.netural)
+                            )
+                            .clipShape(size: 12)
+                    }
                 }
-                
-                Spacer()
                 
                 if let url = URL(string: data.ruinsImage) {
                     ZStack(alignment: .bottomLeading) {
@@ -59,13 +108,13 @@ public struct RuinsDetailView: View {
                             .placeholder { _ in
                                 RoundedRectangle(cornerRadius: 16)
                                     .fill(Color.gray.opacity(0.3))
-                                    .frame(width: 140, height: 180)
+                                    .frame(width: 160, height: 224)
                                     .redacted(reason: .placeholder)
                                     .shimmering()
                             }
                             .resizable()
                             .aspectRatio(contentMode: .fill)
-                            .frame(width: 140, height: 180)
+                            .frame(width: 160, height: 224)
                             .clipShape(size: 16)
                         
                         
@@ -86,6 +135,7 @@ public struct RuinsDetailView: View {
                     )
                 }
             }
+            .padding(6)
             
             AnimationButton {
                 action()
@@ -105,7 +155,7 @@ public struct RuinsDetailView: View {
             }
             .padding(.top, 8)
         }
-        .padding(20)
+        .padding(8)
         .background(LegacyColor.Background.normal)
         .clipShape(size: 24)
         .padding(.horizontal, 4)

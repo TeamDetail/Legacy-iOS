@@ -30,7 +30,7 @@ struct RuinsDetailOverlay: View {
             }, action: {
                 action()
             })
-            .padding(.horizontal, 6)
+            .padding(.horizontal, 4)
             .padding(.bottom, 40)
         }
         .transition(.move(edge: .bottom).combined(with: .opacity))

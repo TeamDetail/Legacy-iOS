@@ -24,4 +24,7 @@ public enum LegacyIconography: String, Hashable {
     
     case clap = "Clap"
     case crying = "Crying"
+    case leftStar = "LeftStar"
+    case rightStar = "RightStar"
+    case talk = "Talk"
 }

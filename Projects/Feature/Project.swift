@@ -24,7 +24,9 @@ let project = Project(
                 .external(name: "KakaoSDKAuth"),
                 .external(name: "KakaoSDKCommon"),
                 .external(name: "KakaoSDKUser"),
-                .external(name: "Kingfisher")
+                .external(name: "Kingfisher"),
+                .external(name: "Realm"),
+                .external(name: "RealmSwift"),
             ],
             settings: .settings(
                 base: [

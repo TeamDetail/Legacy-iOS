@@ -35,5 +35,9 @@ public struct DataSourceAssembly: Assembly {
         container.register(CardDataSource.self) { _ in
             CardDataSource()
         }.inObjectScope(.container)
+        
+        container.register(BlockRepository.self) { _ in
+            BlockService()
+        }.inObjectScope(.container)
     }
 }

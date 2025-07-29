@@ -81,8 +81,27 @@ struct GMSMapViewRepresentable: UIViewRepresentable {
         
         mapView.clear()
         
-        //MARK: 내블록 표시
-        for block in myBlocks ?? [] {
+        // MARK: 유적지와 내 블록 통합
+        let myBlockList: [MapBlock] = (myBlocks ?? []).map {
+            MapBlock(latitude: $0.latitude, longitude: $0.longitude, type: .myBlock($0.blockType.rawValue))
+        }
+        
+        let ruinsList: [MapBlock] = (ruins ?? []).map { ruin in
+            let isOverlapping = myBlocks?.contains(where: {
+                isSameLocation($0.latitude, $0.longitude, ruin.latitude, ruin.longitude)
+            }) ?? false
+            
+            return MapBlock(
+                latitude: ruin.latitude,
+                longitude: ruin.longitude,
+                type: .ruins(ruin.ruinsId, isOverlapped: isOverlapping)
+            )
+        }
+        
+        let blocks = myBlockList + ruinsList
+        
+        // MARK: 폴리곤 표시
+        for block in blocks {
             let rect = makeRectangle(from: LatLng(lat: block.latitude, lng: block.longitude))
             let path = GMSMutablePath()
             rect.points.forEach { point in
@@ -90,30 +109,22 @@ struct GMSMapViewRepresentable: UIViewRepresentable {
             }
             
             let polygon = GMSPolygon(path: path)
-            polygon.strokeColor = UIColor(LegacyPalette.shared.green40)
-            polygon.fillColor = UIColor(LegacyPalette.shared.greenNormal)
             polygon.strokeWidth = 1.5
-            polygon.map = mapView
-        }
-        
-        //MARK: 유적지 표시
-        for ruin in ruins ?? [] {
-            let rect = makeRectangle(from: LatLng(lat: ruin.latitude, lng: ruin.longitude))
-            let path = GMSMutablePath()
-            rect.points.forEach { point in
-                path.add(CLLocationCoordinate2D(latitude: point.lat, longitude: point.lng))
-            }
-            
-            let polygon = GMSPolygon(path: path)
-            polygon.strokeColor = UIColor(LegacyPalette.shared.primary)
-            polygon.fillColor = UIColor(LegacyPalette.shared.purpleNetural)
-            polygon.strokeWidth = 1.5
-            polygon.userData = ruin.ruinsId
-            polygon.isTappable = true // 탭했을때
+            polygon.strokeColor = block.type.strokeColor
+            polygon.fillColor = block.type.fillColor
+            polygon.isTappable = block.type.isTappable
+            polygon.userData = block.type.userData
             polygon.map = mapView
         }
     }
     
+    // MARK: - 좌표 근사 비교 함수
+    private func isSameLocation(_ lat1: Double, _ lng1: Double, _ lat2: Double, _ lng2: Double) -> Bool {
+        let threshold = 0.0001
+        return abs(lat1 - lat2) < threshold && abs(lng1 - lng2) < threshold
+    }
+    
+    // MARK: - Coordinator
     class Coordinator: NSObject, GMSMapViewDelegate {
         var mapView: GMSMapView?
         let onBoundsChange: (_ bounds: GMSCoordinateBounds) -> Void

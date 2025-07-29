@@ -21,16 +21,9 @@ public class ExploreViewModel: ObservableObject {
     @MainActor
     func fetchMap(_ location: MapBoundsRequest) async {
         do {
-            ruins = try await exploreRepository.fetchMap(
-                .init(
-                    minLat: location.minLat,
-                    maxLat: location.maxLat,
-                    minLng: location.minLng,
-                    maxLng: location.maxLng
-                )
-            )
+            ruins = try await exploreRepository.fetchMap(location)
         } catch {
-            print("Error occurred: \(error.localizedDescription)")
+            print("유적지 로딩 실패: \(error.localizedDescription)")
         }
     }
     
@@ -38,24 +31,17 @@ public class ExploreViewModel: ObservableObject {
     func fetchRuinDeatil(_ id: Int) async {
         isLoadingDetail = true
         do {
-            ruinDetail = try await exploreRepository.fetchRuinDeatil(
-                id
-            )
-            isLoadingDetail = false
+            ruinDetail = try await exploreRepository.fetchRuinDeatil(id)
         } catch {
             print(error)
         }
+        isLoadingDetail = false
     }
     
     @MainActor
     func createBlock(_ location: CreateBlockRequest) async {
         do {
-            _ = try await exploreRepository.createBlock(
-                .init(
-                    latitude: location.latitude,
-                    longitude: location.longitude
-                )
-            )
+            _ = try await exploreRepository.createBlock(location)
             await fetchMyBlock()
         } catch {
             print("블록 생성 에러\(error.localizedDescription)")

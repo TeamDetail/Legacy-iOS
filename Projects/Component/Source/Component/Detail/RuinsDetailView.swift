@@ -47,10 +47,13 @@ public struct RuinsDetailView: View {
                         ForEach(1...5, id: \.self) { _ in
                             HStack(spacing: 0) {
                                 Image(icon: .leftStar)
+                                    .resizable()
+                                    .frame(width: 7, height: 13)
+                                
                                 Image(icon: .rightStar)
+                                    .resizable()
+                                    .frame(width: 7, height: 13)
                             }
-                            .frame(width: 4, height: 4)
-                            .padding(.horizontal, 4)
                         }
                         .foreground(LegacyColor.Primary.normal)
                         

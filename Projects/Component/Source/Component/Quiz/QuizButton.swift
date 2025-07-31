@@ -29,6 +29,7 @@ public struct QuizButton: View {
                 .background(LegacyColor.Fill.normal)
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)
+                        .inset(by: 5)
                         .stroke(lineWidth: 2)
                         .foreground(buttonType.stroke)
                 )

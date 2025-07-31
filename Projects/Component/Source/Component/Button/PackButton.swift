@@ -53,6 +53,7 @@ public struct PackButton: View {
             .background(LegacyColor.Fill.normal)
             .overlay {
                 RoundedRectangle(cornerRadius: 20)
+                    .inset(by: 5)
                     .stroke(lineWidth: 2)
                     .foreground(strokeColor)
             }

@@ -16,3 +16,14 @@ public func makeStyledText(count: Int) -> AttributedString {
     }
     return attributed
 }
+
+public func makeSectionTitle(_ type: CourseSectionType) -> AttributedString {
+    var attributed = AttributedString(type.rawValue)
+    
+    if let highlight = type.highlight,
+       let range = attributed.range(of: highlight) {
+        attributed[range].foregroundColor = type.highlightColor.color.rawValue
+    }
+    
+    return attributed
+}

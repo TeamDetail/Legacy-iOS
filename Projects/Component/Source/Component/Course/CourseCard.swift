@@ -17,7 +17,7 @@ public struct CourseCard: View {
     }
     
     public var body: some View {
-        VStack {
+        ZStack(alignment: .bottomLeading) {
             KFImage(URL(string: url))
                 .placeholder { _ in
                     RoundedRectangle(cornerRadius: 12)
@@ -30,8 +30,18 @@ public struct CourseCard: View {
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 144, height: 220)
                 .clipShape(size: 12)
-        }
-        .overlay(alignment: .bottomLeading) {
+            
+            LinearGradient(
+                gradient: Gradient(stops: [
+                    .init(color: Color.black.opacity(0.0), location: 0.5),
+                    .init(color: Color.black.opacity(0.7), location: 1.0)
+                ]),
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .clipShape(size: 12)
+            .frame(width: 144, height: 220)
+            
             VStack(alignment: .leading, spacing: 4) {
                 EventTag()
                 
@@ -46,22 +56,13 @@ public struct CourseCard: View {
                 }
                 
                 HStack(spacing: 8) {
-                    StatItem(
-                        statType: .heart,
-                        text: "999+"
-                    ) {
-                        
-                    }
-                    
-                    StatItem(
-                        statType: .flag,
-                        text: "108"
-                    ) {
-                        
-                    }
+                    StatItem(statType: .heart, text: "999+") { }
+                    StatItem(statType: .flag, text: "108") { }
                 }
             }
             .padding(8)
         }
+        .frame(width: 144, height: 220)
     }
 }
+

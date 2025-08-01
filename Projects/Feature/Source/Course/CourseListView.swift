@@ -11,6 +11,9 @@ import Data
 import Shared
 
 struct CourseListView: View {
+    @State private var selectedProgress: ProgressStatus = .incomplete
+    @State private var selectedSort: SortType = .latest
+    @State private var selectedContent: ContentType = .all
     @State private var searchText = ""
     @Binding var selection: Int
     @FocusState.Binding var isFocused: Bool
@@ -21,12 +24,23 @@ struct CourseListView: View {
                 selection = 0
             }
             
-            SearchField(searchText: $searchText) {
-                //MARK: 검색 기능 구현
+            VStack(spacing: 8) {
+                SearchField(searchText: $searchText) {
+                    //MARK: 검색 기능 구현
+                }
+                .focused($isFocused)
+                
+                HStack {
+                    DropDown(selected: ProgressStatus.all, button: .big)
+                    Spacer()
+                    DropDown(selected: SortType.latest, button: .small)
+                    DropDown(selected: ContentType.all, button: .small)
+                }
+                .zIndex(1)
+                
+                //TODO: component
+                .zIndex(0)
             }
-            .focused($isFocused)
-            
-            
         }
         .padding(.horizontal, 20)
         .padding(4)

@@ -24,6 +24,10 @@ struct CourseSectionView<Data: Hashable, Content: View>: View {
                         ForEach(data, id: \.self) { item in
                             content(item)
                         }
+                    } else {
+                        ForEach(1...3, id: \.self) { _ in
+                            CourseCardError()
+                        }
                     }
                     DetailButton {
                         selection = 1

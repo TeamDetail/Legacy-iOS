@@ -62,4 +62,17 @@ public class CourseViewModel: ObservableObject {
             print(error.localizedDescription)
         }
     }
+    
+    @MainActor
+    func fetchAllData() async {
+        courses = nil
+        recentCourses = nil
+        popularCourses = nil
+        eventCourses = nil
+        async let fetchCourse: () = fetchCourse()
+        async let fetchRecentCourse: () = fetchRecentCourse()
+        async let fetchPopularCourse: () = fetchPopularCourse()
+        async let fetchEventCourse: () = fetchEventCourse()
+        _ = await [fetchCourse, fetchRecentCourse, fetchPopularCourse, fetchEventCourse]
+    }
 }

@@ -61,7 +61,12 @@ struct CourseView: View {
             }
             .onAppear {
                 Task {
-                    await viewModel.fetchCourse()
+                    await viewModel.fetchAllData()
+                }
+            }
+            .refreshable {
+                Task {
+                    await viewModel.fetchAllData()
                 }
             }
         }

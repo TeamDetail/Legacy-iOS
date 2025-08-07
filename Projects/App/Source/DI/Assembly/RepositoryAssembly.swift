@@ -42,5 +42,10 @@ public struct RepositoryAssembly: Assembly {
             let dataSource = resolver.resolve(CardDataSource.self)!
             return CardRespositoryImpl(dataSource: dataSource)
         }.inObjectScope(.container)
+        
+        container.register(CourseRepository.self) { resolver in
+            let dataSource = resolver.resolve(CourseDataSource.self)!
+            return CourseRepositoryImpl(dataSource: dataSource)
+        }.inObjectScope(.container)
     }
 }

@@ -11,10 +11,12 @@ import Data
 import Shared
 
 struct CourseListView: View {
+    @ObservedObject var viewModel: CourseViewModel
     @State private var selectedProgress: ProgressStatus = .incomplete
     @State private var selectedSort: SortType = .latest
     @State private var selectedContent: ContentType = .all
     @State private var searchText = ""
+    @Binding var activeDropDown: DropDownType
     @Binding var selection: Int
     @FocusState.Binding var isFocused: Bool
     
@@ -31,15 +33,56 @@ struct CourseListView: View {
                 .focused($isFocused)
                 
                 HStack {
-                    DropDown(selected: ProgressStatus.all, button: .big)
+                    DropDown(
+                        isExpanded: Binding(
+                            get: { activeDropDown == .progress },
+                            set: { newValue in
+                                activeDropDown = newValue ? .progress : .none
+                            }
+                        ),
+                        selected: $selectedProgress,
+                        button: .big
+                    )
+                    
                     Spacer()
-                    DropDown(selected: SortType.latest, button: .small)
-                    DropDown(selected: ContentType.all, button: .small)
+                    
+                    DropDown(
+                        isExpanded: Binding(
+                            get: { activeDropDown == .sort },
+                            set: { newValue in
+                                activeDropDown = newValue ? .sort : .none
+                            }
+                        ),
+                        selected: $selectedSort,
+                        button: .small
+                    )
+                    
+                    DropDown(
+                        isExpanded: Binding(
+                            get: { activeDropDown == .content },
+                            set: { newValue in
+                                activeDropDown = newValue ? .content : .none
+                            }
+                        ),
+                        selected: $selectedContent,
+                        button: .small
+                    )
                 }
                 .zIndex(1)
                 
-                //TODO: component
-                .zIndex(0)
+                if let data = viewModel.courses {
+                    ForEach(data, id: \.self) { data in
+                        CourseItem(data: data) {
+                            //MARK: Heart 구현
+                        }
+                        .padding(.vertical, 4)
+                    }
+                    .zIndex(0)
+                } else {
+                    LegacyLoadingView(
+                        description: ""
+                    )
+                }
             }
         }
         .padding(.horizontal, 20)

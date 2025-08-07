@@ -8,20 +8,23 @@
 import SwiftUI
 
 public struct DropDown<T: CaseIterable & RawRepresentable>: View where T.RawValue == String {
-    @State private var isExpanded = false
+    @Binding var isExpanded: Bool
+    @Binding var selectedOption: T
     @State private var showAnimation = false
-    @State private var selectedOption: T
     
     let options: [T]
     let onSelection: (T) -> Void
     let buttonType: ButtonType
     
     public init(
-        selected: T, options: [T] = Array(T.allCases),
+        isExpanded: Binding<Bool>,
+        selected: Binding<T>,
+        options: [T] = Array(T.allCases),
         onSelection: @escaping (T) -> Void = { _ in },
         button: ButtonType = .small
     ) {
-        self._selectedOption = State(initialValue: selected)
+        self._isExpanded = isExpanded
+        self._selectedOption = selected
         self.options = options
         self.onSelection = onSelection
         self.buttonType = button
@@ -32,12 +35,7 @@ public struct DropDown<T: CaseIterable & RawRepresentable>: View where T.RawValu
             AnimationButton {
                 withAnimation(.easeOut(duration: 0.15)) {
                     isExpanded.toggle()
-                }
-                
-                if isExpanded {
-                    showAnimation = true
-                } else {
-                    showAnimation = false
+                    showAnimation = isExpanded
                 }
             } label: {
                 HStack(spacing: 6) {
@@ -51,10 +49,7 @@ public struct DropDown<T: CaseIterable & RawRepresentable>: View where T.RawValu
                         .foreground(LegacyColor.Common.white)
                         .rotationEffect(.degrees(isExpanded ? 0 : 180))
                 }
-                .frame(
-                    width: buttonType.widthSize,
-                    height: 36
-                )
+                .frame(width: buttonType.widthSize, height: 36)
                 .background(
                     RoundedRectangle(cornerRadius: 10)
                         .foreground(LegacyColor.Background.normal)
@@ -64,30 +59,23 @@ public struct DropDown<T: CaseIterable & RawRepresentable>: View where T.RawValu
                 if isExpanded {
                     VStack(spacing: 0) {
                         ForEach(Array(options.enumerated()), id: \.offset) { index, option in
-                            Button(action: {
+                            Button {
                                 selectedOption = option
                                 onSelection(option)
                                 withAnimation(.easeOut(duration: 0.15)) {
                                     isExpanded = false
                                     showAnimation = false
                                 }
-                            }) {
+                            } label: {
                                 HStack {
                                     Text(option.rawValue)
                                         .font(.label(.medium))
                                         .foreground(LegacyColor.Common.white)
                                 }
-                                .frame(
-                                    width: buttonType.widthSize,
-                                    height: 36
-                                )
+                                .frame(width: buttonType.widthSize, height: 36)
                             }
                             .opacity(showAnimation ? 1 : 0)
-                            .animation(
-                                .easeOut(duration: 0.2)
-                                .delay(Double(index) * 0.03),
-                                value: showAnimation
-                            )
+                            .animation(.easeOut(duration: 0.2).delay(Double(index) * 0.03), value: showAnimation)
                         }
                     }
                     .padding(.vertical, 8)
@@ -95,8 +83,6 @@ public struct DropDown<T: CaseIterable & RawRepresentable>: View where T.RawValu
                         RoundedRectangle(cornerRadius: 10)
                             .foreground(LegacyColor.Background.normal)
                     )
-                    .opacity(isExpanded ? 1.0 : 0)
-                    .animation(.easeOut(duration: 0.15), value: isExpanded)
                     .padding(.top, 40)
                 }
             }
@@ -105,3 +91,4 @@ public struct DropDown<T: CaseIterable & RawRepresentable>: View where T.RawValu
         .frame(width: buttonType.widthSize)
     }
 }
+

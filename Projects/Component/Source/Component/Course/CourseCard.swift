@@ -43,7 +43,7 @@ public struct CourseCard: View {
             .frame(width: 144, height: 220)
             
             VStack(alignment: .leading, spacing: 4) {
-                EventTag()
+                EventTag(.small)
                 
                 VStack(alignment: .leading, spacing: 2) {
                     Text("AlldayProject")
@@ -55,10 +55,10 @@ public struct CourseCard: View {
                         .foreground(LegacyColor.Label.assistive)
                 }
                 
-                HStack(spacing: 8) {
-                    StatItem(statType: .heart, text: "999+") { }
-                    StatItem(statType: .flag, text: "108") { }
-                }
+//                HStack(spacing: 8) {
+//                    StatItem(statType: .heart, text: "999+") { }
+//                    StatItem(statType: .flag, text: "108") { }
+//                }
             }
             .padding(8)
         }

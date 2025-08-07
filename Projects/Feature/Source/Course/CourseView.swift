@@ -11,10 +11,13 @@ import Data
 import FlowKit
 
 struct CourseView: View {
+    @StateObject var viewModel = CourseViewModel()
     @Flow var flow
+    @State private var activeDropDown: DropDownType = .none
+    @State private var selection = 0
     @FocusState private var isFocused: Bool
     @Binding var tabItem: LegacyTabItem
-    @State private var selection = 0
+    
     var body: some View {
         LegacyView {
             LegacyScrollView(title: "코스", icon: .course, item: tabItem) {
@@ -24,6 +27,8 @@ struct CourseView: View {
                     )
                 } else {
                     CourseListView(
+                        viewModel: viewModel,
+                        activeDropDown: $activeDropDown,
                         selection: $selection,
                         isFocused: $isFocused
                     )
@@ -50,7 +55,13 @@ struct CourseView: View {
                 .padding(.horizontal, 14)
             }
             .onTapGesture {
+                activeDropDown = .none
                 isFocused = false
+            }
+            .onAppear {
+                Task {
+                    await viewModel.fetchCourse()
+                }
             }
         }
     }

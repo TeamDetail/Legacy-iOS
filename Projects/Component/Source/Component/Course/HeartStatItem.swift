@@ -31,15 +31,15 @@ enum StatEnum {
 }
 
 
-struct StatItem: View {
+struct HeartStatItem: View {
+    @Binding var isChecked: Bool
     let statType: StatEnum
     let text: String
     let action: () -> Void
-    @State private var onClick = false
     
     var body: some View {
         Button {
-            onClick.toggle()
+            isChecked.toggle()
             action()
         } label: {
             HStack(spacing: 4) {
@@ -49,7 +49,8 @@ struct StatItem: View {
                 Text(text)
                     .font(.caption2(.medium))
             }
-            .foreground(onClick ? statType.selectColor : LegacyColor.Label.alternative)
+            .foreground(isChecked ? statType.selectColor : LegacyColor.Label.alternative)
         }
     }
 }
+

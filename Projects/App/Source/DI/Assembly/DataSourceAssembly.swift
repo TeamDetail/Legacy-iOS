@@ -36,7 +36,11 @@ public struct DataSourceAssembly: Assembly {
             CardDataSource()
         }.inObjectScope(.container)
         
-        container.register(BlockRepository.self) { _ in
+        container.register(CourseDataSource.self) { _ in
+            CourseDataSource()
+        }.inObjectScope(.container)
+        
+        container.register(BlockRepository.self) { _ in //MARK: 나중에 구현
             BlockService()
         }.inObjectScope(.container)
     }

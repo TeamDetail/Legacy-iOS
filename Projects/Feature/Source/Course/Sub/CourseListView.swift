@@ -73,7 +73,9 @@ struct CourseListView: View {
                 if let data = viewModel.courses {
                     ForEach(data, id: \.self) { data in
                         CourseItem(data: data) {
-                            //MARK: Heart 구현
+                            Task {
+                                await viewModel.likeCourse(data.courseId)
+                            }
                         }
                         .padding(.vertical, 4)
                     }

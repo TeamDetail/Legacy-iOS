@@ -80,8 +80,13 @@ public struct CourseItem: View {
                             statType: .heart,
                             text: "\(heartCount)"
                         ) {
-                            isHearted.toggle()
-                            heartCount += isHearted ? 1 : -1
+                            if isHearted {
+                                isHearted = false
+                                heartCount -= 1
+                            } else {
+                                isHearted = true
+                                heartCount += 1
+                            }
                             action()
                         }
                         
@@ -94,7 +99,10 @@ public struct CourseItem: View {
                     
                     Spacer()
                     
-                    //TODO: progressBar
+                    CourseClearTag(
+                        current: CGFloat(data.clearCount)
+                    )
+                    .frame(width: 84)
                 }
             }
             .padding()

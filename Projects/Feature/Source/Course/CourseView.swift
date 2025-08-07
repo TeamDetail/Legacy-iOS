@@ -23,6 +23,7 @@ struct CourseView: View {
             LegacyScrollView(title: "코스", icon: .course, item: tabItem) {
                 if selection == 0 {
                     CourseMainView(
+                        viewModel: viewModel,
                         selection: $selection
                     )
                 } else {

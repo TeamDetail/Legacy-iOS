@@ -6,19 +6,27 @@
 //
 
 import SwiftUI
+import Domain
 import Shimmer
 import Kingfisher
 
 public struct CourseCard: View {
-    let url: String
+    let data: CourseResponse
+    let action: () -> Void
     
-    public init(url: String) {
-        self.url = url
+    @State private var isHearted: Bool
+    @State private var heartCount: Int
+    
+    public init(data: CourseResponse, action: @escaping () -> Void) {
+        self.data = data
+        self.action = action
+        self._isHearted = State(initialValue: data.heart)
+        self._heartCount = State(initialValue: data.heartCount)
     }
     
     public var body: some View {
         ZStack(alignment: .bottomLeading) {
-            KFImage(URL(string: url))
+            KFImage(URL(string: data.thumbnail))
                 .placeholder { _ in
                     RoundedRectangle(cornerRadius: 12)
                         .fill(Color.gray.opacity(0.3))
@@ -43,22 +51,42 @@ public struct CourseCard: View {
             .frame(width: 144, height: 220)
             
             VStack(alignment: .leading, spacing: 4) {
-                EventTag(.small)
+                if data.eventId != nil {
+                    EventTag(.small)
+                }
                 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text("AlldayProject")
+                    Text(data.courseName)
                         .font(.body2(.bold))
                         .foreground(LegacyColor.Label.normal)
                     
-                    Text("영서")
+                    Text(data.description)
                         .font(.caption2(.medium))
                         .foreground(LegacyColor.Label.assistive)
                 }
                 
-//                HStack(spacing: 8) {
-//                    StatItem(statType: .heart, text: "999+") { }
-//                    StatItem(statType: .flag, text: "108") { }
-//                }
+                HStack(spacing: 8) {
+                    HeartStatItem(
+                        isChecked: $isHearted,
+                        statType: .heart,
+                        text: "\(heartCount)"
+                    ) {
+                        if isHearted {
+                            isHearted = false
+                            heartCount -= 1
+                        } else {
+                            isHearted = true
+                            heartCount += 1
+                        }
+                        action()
+                    }
+                    
+                    ClearStatItem(
+                        statType: .flag,
+                        text: "\(data.clearCount)",
+                        isChecked: data.clear
+                    )
+                }
             }
             .padding(8)
         }

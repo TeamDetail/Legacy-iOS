@@ -12,6 +12,9 @@ import Data
 
 public class CourseViewModel: ObservableObject {
     @Published var courses: [CourseResponse]?
+    @Published var recentCourses: [CourseResponse]?
+    @Published var popularCourses: [CourseResponse]?
+    @Published var eventCourses: [CourseResponse]?
     
     @Inject var courseRepository: any CourseRepository
     
@@ -19,7 +22,42 @@ public class CourseViewModel: ObservableObject {
     func fetchCourse() async {
         do {
             courses = try await courseRepository.fetchCourse()
-            print(courses)
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    @MainActor
+    func fetchRecentCourse() async {
+        do {
+            recentCourses = try await courseRepository.fetchRecentCourse()
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    @MainActor
+    func fetchPopularCourse() async {
+        do {
+            popularCourses = try await courseRepository.fetchPopularCourse()
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    @MainActor
+    func fetchEventCourse() async {
+        do {
+            eventCourses = try await courseRepository.fetchEventCourse()
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    @MainActor
+    func likeCourse(_ courseId: Int) async {
+        do {
+            try await courseRepository.likeCourse(courseId)
         } catch {
             print(error.localizedDescription)
         }

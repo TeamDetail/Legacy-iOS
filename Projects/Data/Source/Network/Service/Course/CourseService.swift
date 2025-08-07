@@ -11,6 +11,10 @@ import Domain
 
 public enum CourseService: ServiceProtocol {
     case fetchCourse
+    case fetchRecentCourse
+    case fetchPopularCourse
+    case fetchEventCourse
+    case likeCourse(_ courseId: Int)
 }
 
 extension CourseService {
@@ -22,18 +26,42 @@ extension CourseService {
         switch self {
         case .fetchCourse:
             ""
+        case .fetchRecentCourse:
+            "/recent"
+        case .fetchPopularCourse:
+            "/popular"
+        case .fetchEventCourse:
+            "/event"
+        case .likeCourse:
+            ""
         }
     }
     
     public var method: Moya.Method {
         switch self {
         case .fetchCourse: .get
+        case .fetchRecentCourse: .get
+        case .fetchPopularCourse: .get
+        case .fetchEventCourse: .get
+        case .likeCourse: .patch
         }
     }
     
     public var task: Moya.Task {
         switch self {
-        case .fetchCourse: .requestPlain
+        case .fetchCourse:
+            return .requestPlain
+        case .fetchRecentCourse:
+            return .requestPlain
+        case .fetchPopularCourse:
+            return .requestPlain
+        case .fetchEventCourse:
+            return .requestPlain
+        case let .likeCourse(courseId):
+            return .requestParameters(
+                parameters: ["courseId": courseId],
+                encoding: JSONEncoding.default
+            )
         }
     }
 }

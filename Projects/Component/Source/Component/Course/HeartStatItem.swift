@@ -39,7 +39,6 @@ struct HeartStatItem: View {
     
     var body: some View {
         Button {
-            isChecked.toggle()
             action()
         } label: {
             HStack(spacing: 4) {

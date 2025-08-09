@@ -12,6 +12,8 @@ public struct AnimationButton<Label: View>: View {
     let action: () -> Void
     let label: () -> Label
     
+    @State private var isPressed = false
+    
     public init(
         animationDuration: Double = 0.2,
         action: @escaping () -> Void,
@@ -24,11 +26,26 @@ public struct AnimationButton<Label: View>: View {
     
     public var body: some View {
         Button {
-            withAnimation(.spring(duration: animationDuration)) {
-                action()
+            withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+                isPressed = true
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                withAnimation(.spring(duration: animationDuration)) {
+                    action()
+                }
+            }
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                withAnimation(.spring(response: 0.3, dampingFraction: 0.6)) {
+                    isPressed = false
+                }
             }
         } label: {
             label()
+                .scaleEffect(isPressed ? 0.92 : 1.0)
+                .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isPressed)
         }
+        .buttonStyle(PlainButtonStyle())
     }
 }

@@ -41,12 +41,7 @@ class LoginViewModel: ObservableObject {
     @MainActor
     func postLogin(_ request: AuthRequest) async {
         do {
-            _ = try await authRepository.postLogin(
-                .init(
-                    accessToken: request.accessToken,
-                    refreshToken: request.refreshToken
-                )
-            )
+            _ = try await authRepository.postLogin(request)
         } catch {
             print(error.localizedDescription)
         }

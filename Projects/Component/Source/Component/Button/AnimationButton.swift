@@ -46,6 +46,6 @@ public struct AnimationButton<Label: View>: View {
                 .scaleEffect(isPressed ? 0.92 : 1.0)
                 .animation(.spring(response: 0.3, dampingFraction: 0.6), value: isPressed)
         }
-        .buttonStyle(PlainButtonStyle())
+        .buttonStyle(.plain)
     }
 }

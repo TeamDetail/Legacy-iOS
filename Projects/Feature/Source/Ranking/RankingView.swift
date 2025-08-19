@@ -13,7 +13,7 @@ struct RankingView: View {
                 VStack(spacing: 16) {
                     HStack {
                         CategoryButtonGroup(
-                            categories: ["친구", "전체"],
+                            categories: ["전체", "친구"],
                             selection: $selection
                         )
                         

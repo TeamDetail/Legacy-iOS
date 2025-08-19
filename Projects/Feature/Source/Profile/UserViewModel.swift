@@ -10,10 +10,9 @@ import DIContainer
 import Domain
 import Data
 
-
 public class UserViewModel: ObservableObject {
+    static let shared = UserViewModel()
     @Published var userInfo: UserInfoResponse?
-    
     @Inject var userRepository: any UserRepository
     
     @MainActor

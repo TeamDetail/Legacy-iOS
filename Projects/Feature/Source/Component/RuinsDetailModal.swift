@@ -21,8 +21,10 @@ struct RuinsDetailOverlay: View {
         ZStack(alignment: .bottom) {
             Color.black.opacity(0.4)
                 .ignoresSafeArea()
+                .blur(radius: showDetail ? 2 : 0)
+                .animation(.spring(response: 0.55, dampingFraction: 0.85), value: showDetail)
                 .onTapGesture {
-                    withAnimation(.easeInOut(duration: 0.25)) {
+                    withAnimation(.spring(response: 0.55, dampingFraction: 0.85)) {
                         if showComment {
                             showComment = false
                         } else {
@@ -37,36 +39,49 @@ struct RuinsDetailOverlay: View {
                     CommentView(detail)
                         .padding(.horizontal, 4)
                         .padding(.bottom, 40)
-                        .transition(.move(edge: .trailing).combined(with: .opacity))
+                        .transition(
+                            .asymmetric(
+                                insertion: .move(edge: .trailing)
+                                    .combined(with: .opacity)
+                                    .combined(with: .scale(scale: 0.95, anchor: .trailing)),
+                                removal: .move(edge: .trailing).combined(with: .opacity)
+                            )
+                        )
                 } else {
                     RuinsDetailView(
                         data: detail,
                         onClose: { dismissDetail() },
                         action: action,
                         onComment: {
-                            withAnimation(.easeInOut(duration: 0.25)) {
+                            withAnimation(.spring(response: 0.55, dampingFraction: 0.85)) {
                                 showComment = true
                             }
                         }
                     )
                     .padding(.horizontal, 4)
                     .padding(.bottom, 40)
-                    .transition(.move(edge: .leading).combined(with: .opacity))
+                    .transition(
+                        .asymmetric(
+                            insertion: .move(edge: .leading)
+                                .combined(with: .opacity)
+                                .combined(with: .scale(scale: 0.95, anchor: .leading)),
+                            removal: .move(edge: .leading).combined(with: .opacity)
+                        )
+                    )
                 }
             }
+            .animation(.spring(response: 0.55, dampingFraction: 0.85), value: showComment)
         }
         .transition(.move(edge: .bottom).combined(with: .opacity))
-        .animation(.easeOut(duration: 0.25), value: showDetail)
+        .animation(.spring(response: 0.55, dampingFraction: 0.85), value: showDetail)
     }
     
     private func dismissDetail() {
-        withAnimation(.easeOut(duration: 0.2)) {
+        withAnimation(.spring(response: 0.55, dampingFraction: 0.9)) {
             showDetail = false
         }
-        delayRun(0.2) {
+        delayRun(0.25) {
             viewModel.ruinDetail = nil
         }
     }
 }
-
-

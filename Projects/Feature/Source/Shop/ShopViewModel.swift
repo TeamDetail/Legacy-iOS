@@ -1,9 +1,14 @@
-import SwiftUI
+import Foundation
+import DIContainer
 import Combine
+import Domain
+import Data
 
 class ShopViewModel: ObservableObject {
+    @Published var cardPack: [StoreResponse]?
     @Published var timeRemaining: TimeInterval = 0
     private var timer: AnyCancellable?
+    @Inject var shopRepository: any StoreRepository
     
     init() {
         checkAndResetShop()
@@ -31,8 +36,20 @@ class ShopViewModel: ObservableObject {
                     self.timeRemaining -= 1
                 } else {
                     self.checkAndResetShop()
+                    Task {
+                        await self.fetchShop()
+                    }
                     //MARK: 초기화 로직
                 }
             }
+    }
+    
+    @MainActor
+    func fetchShop() async {
+        do {
+            cardPack = try await shopRepository.fetchStore()
+        } catch {
+            print("\(error)에러")
+        }
     }
 }

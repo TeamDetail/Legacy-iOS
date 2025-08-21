@@ -24,7 +24,7 @@ public struct PackButton: View {
     }
     
     public var body: some View {
-        Button {
+        AnimationButton {
             action()
         } label: {
             VStack(alignment: .leading, spacing: 8) {

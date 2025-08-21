@@ -11,7 +11,6 @@ import Component
 struct LegacyView<Content: View>: View {
     @State private var showMenu = false
     @ObservedObject private var viewModel = UserViewModel.shared
-    @State private var hasLoadedUser = false
     let content: Content
     
     init(@ViewBuilder content: () -> Content) {
@@ -35,11 +34,8 @@ struct LegacyView<Content: View>: View {
                 }
         }
         .onAppear {
-            if viewModel.userInfo == nil && !hasLoadedUser {
-                hasLoadedUser = true
-                Task {
-                    await viewModel.fetchMyinfo()
-                }
+            Task {
+                await viewModel.fetchMyinfo()
             }
         }
         .onTapGesture {

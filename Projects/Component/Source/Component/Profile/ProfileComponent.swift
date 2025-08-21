@@ -49,7 +49,7 @@ public struct ProfileComponent: View {
                     
                     Spacer()
                     
-                    Button {
+                    AnimationButton {
                         action()
                     } label: {
                         Image(icon: .pen)

@@ -40,6 +40,10 @@ public struct DataSourceAssembly: Assembly {
             CourseDataSource()
         }.inObjectScope(.container)
         
+        container.register(StoreDataSource.self) { _ in
+            StoreDataSource()
+        }.inObjectScope(.container)
+        
         container.register(BlockRepository.self) { _ in //MARK: 나중에 구현
             BlockService()
         }.inObjectScope(.container)

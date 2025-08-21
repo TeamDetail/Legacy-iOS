@@ -119,6 +119,9 @@ struct ShopView: View {
         .onAppear {
             //MARK: 상점 브금 로그인 브금으로 대체
             SoundPlayer.shared.loginSound()
+            Task {
+                await viewModel.fetchShop()
+            }
         }
     }
 }

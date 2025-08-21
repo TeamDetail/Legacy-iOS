@@ -26,10 +26,12 @@ public struct SearchField: View {
                     .frame(width: 20, height: 20)
                     .foreground(LegacyColor.Label.normal)
                     .padding(.horizontal, 8)
+                    .padding(.leading, 4)
             }
             
             ZStack {
                 TextField("", text: $searchText)
+                    .font(.label(.medium))
                     .tint(LegacyColor.Common.white)
                     .submitLabel(.search)
                     .frame(height: 40)

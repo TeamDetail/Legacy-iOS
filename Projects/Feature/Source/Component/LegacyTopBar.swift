@@ -24,12 +24,12 @@ struct LegacyTopBar: View {
     var body: some View {
         ZStack(alignment: .topTrailing) {
             HStack {
-                if let url = URL(string: data.imageUrl) {
-                    Button {
-                        withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
-                            flow.push(ProfileView(viewModel: data))
-                        }
-                    } label: {
+                AnimationButton {
+                    withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
+                        flow.push(ProfileView(viewModel: data))
+                    }
+                } label: {
+                    if let url = URL(string: data.imageUrl) {
                         KFImage(url)
                             .placeholder { _ in
                                 RoundedRectangle(cornerRadius: 16)
@@ -42,21 +42,21 @@ struct LegacyTopBar: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: 44, height: 44)
                             .clipShape(size: 50)
+                    } else {
+                        Circle()
+                            .frame(width: 44, height: 44)
+                            .redacted(reason: .placeholder)
+                            .shimmering()
                     }
-                } else {
-                    Circle()
-                        .frame(width: 44, height: 44)
-                        .redacted(reason: .placeholder)
-                        .shimmering()
-                }
-                
-                VStack(alignment: .leading) {
-                    Text(data.nickname)
-                        .font(.body2(.bold))
-                        .foreground(LegacyColor.Label.normal)
-                    Text("Lv.\(data.level)")
-                        .font(.caption2(.bold))
-                        .foreground(LegacyColor.Label.alternative)
+                    
+                    VStack(alignment: .leading) {
+                        Text(data.nickname)
+                            .font(.body2(.bold))
+                            .foreground(LegacyColor.Label.normal)
+                        Text("Lv.\(data.level)")
+                            .font(.caption2(.bold))
+                            .foreground(LegacyColor.Label.alternative)
+                    }
                 }
                 
                 Spacer()

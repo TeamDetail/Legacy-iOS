@@ -15,23 +15,45 @@ struct RuinsDetailOverlay: View {
     @Binding var isTabBarHidden: Bool
     let viewModel: ExploreViewModel
     let action: () -> Void
+    @State private var showComment = false
     
     var body: some View {
         ZStack(alignment: .bottom) {
             Color.black.opacity(0.4)
                 .ignoresSafeArea()
                 .onTapGesture {
-                    isTabBarHidden = false
-                    dismissDetail()
+                    withAnimation(.easeInOut(duration: 0.25)) {
+                        if showComment {
+                            showComment = false
+                        } else {
+                            isTabBarHidden = false
+                            dismissDetail()
+                        }
+                    }
                 }
             
-            RuinsDetailView(data: detail, onClose: {
-                dismissDetail()
-            }, action: {
-                action()
-            })
-            .padding(.horizontal, 4)
-            .padding(.bottom, 40)
+            ZStack {
+                if showComment {
+                    CommentView(detail)
+                        .padding(.horizontal, 4)
+                        .padding(.bottom, 40)
+                        .transition(.move(edge: .trailing).combined(with: .opacity))
+                } else {
+                    RuinsDetailView(
+                        data: detail,
+                        onClose: { dismissDetail() },
+                        action: action,
+                        onComment: {
+                            withAnimation(.easeInOut(duration: 0.25)) {
+                                showComment = true
+                            }
+                        }
+                    )
+                    .padding(.horizontal, 4)
+                    .padding(.bottom, 40)
+                    .transition(.move(edge: .leading).combined(with: .opacity))
+                }
+            }
         }
         .transition(.move(edge: .bottom).combined(with: .opacity))
         .animation(.easeOut(duration: 0.25), value: showDetail)
@@ -46,3 +68,5 @@ struct RuinsDetailOverlay: View {
         }
     }
 }
+
+

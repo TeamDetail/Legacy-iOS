@@ -9,11 +9,10 @@ import SwiftUI
 import Domain
 import Kingfisher
 import Shimmer
-import FlowKit
 
 struct RuinsDetailContent: View {
-    @Flow var flow
     public let data: RuinsDetailResponse
+    public let onComment: () -> Void
     
     var body: some View {
         HStack(alignment: .top, spacing: 14) {
@@ -76,7 +75,7 @@ struct RuinsDetailContent: View {
                 }
                 
                 AnimationButton {
-                    flow.push(EmptyView())
+                    onComment()
                 } label: {
                     Text("한줄평 남기기")
                         .font(.caption1(.bold))
@@ -128,6 +127,5 @@ struct RuinsDetailContent: View {
             }
         }
         .padding(6)
-        .fixedSize(horizontal: false, vertical: true)
     }
 }

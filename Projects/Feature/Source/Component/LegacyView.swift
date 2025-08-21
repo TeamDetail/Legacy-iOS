@@ -10,7 +10,7 @@ import Component
 
 struct LegacyView<Content: View>: View {
     @State private var showMenu = false
-    @ObservedObject private var viewModel = UserViewModel.shared
+    @EnvironmentObject private var viewModel: UserViewModel
     let content: Content
     
     init(@ViewBuilder content: () -> Content) {

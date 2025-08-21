@@ -7,7 +7,7 @@ import Domain
 public struct ExploreView: View {
     @StateObject private var quizViewModel = QuizViewModel()
     @StateObject private var quizStateViewModel = QuizStateViewModel()
-    @ObservedObject private var userData = UserViewModel.shared
+    @EnvironmentObject private var userData: UserViewModel
     @StateObject private var viewModel = ExploreViewModel()
     @StateObject private var locationManager = LocationManager()
     

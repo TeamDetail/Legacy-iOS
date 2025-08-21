@@ -7,9 +7,11 @@
 
 import SwiftUI
 import FlowKit
+import Feature
 
 public struct SafeFlowPresenter<Content: View>: View {
     @StateObject private var flow: FlowProvider
+    @StateObject private var userViewModel = UserViewModel()
     
     public init(rootView: Content, customNavigationController: NavigationControllerSettings? = nil) {
         _flow = StateObject(wrappedValue: FlowProvider(rootView: rootView,
@@ -18,6 +20,7 @@ public struct SafeFlowPresenter<Content: View>: View {
     
     public var body: some View {
         FlowPresenterProxy(flow: flow)
+            .environmentObject(userViewModel)
     }
 }
 

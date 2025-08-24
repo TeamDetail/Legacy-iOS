@@ -28,12 +28,12 @@ public struct LevelProgressBar: View {
                 let filledWidth = width * progress
                 
                 Rectangle()
-                    .foreground(LegacyColor.Red.alternative)
+                    .foreground(LegacyColor.Red.normal)
                     .frame(width: filledWidth, height: height)
                     .clipShape(waveClippedShape(width: filledWidth, height: height))
             }
             .clipShape(size: 20)
-            .frame(height: 40) 
+            .frame(height: 40)
             
             HStack(spacing: 8) {
                 Text("Lv. \(level)")

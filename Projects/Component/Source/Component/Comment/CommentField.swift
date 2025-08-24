@@ -9,9 +9,17 @@ import SwiftUI
 
 public struct CommentField: View {
     @Binding var commentText: String
+    @Binding var isKeyboardFocused: Bool
+    @FocusState private var isTextEditorFocused: Bool
     
-    public init(commentText: Binding<String>) {
+    public init(commentText: Binding<String>, isKeyboardFocused: Binding<Bool>) {
         self._commentText = commentText
+        self._isKeyboardFocused = isKeyboardFocused
+    }
+    
+    private func dismissKeyboard() {
+        isTextEditorFocused = false
+        isKeyboardFocused = false
     }
     
     public var body: some View {
@@ -24,11 +32,19 @@ public struct CommentField: View {
                         .scrollContentBackground(.hidden)
                         .scrollIndicators(.hidden)
                         .frame(height: 130)
+                        .focused($isTextEditorFocused)
+                        .onTapGesture {
+                            isTextEditorFocused = true
+                        }
                 } else {
                     TextEditor(text: $commentText)
                         .font(.label(.medium))
                         .tint(LegacyColor.Common.white)
                         .frame(height: 130)
+                        .focused($isTextEditorFocused)
+                        .onTapGesture {
+                            isTextEditorFocused = true
+                        }
                 }
                 
                 if commentText.isEmpty {
@@ -37,6 +53,7 @@ public struct CommentField: View {
                         .foreground(LegacyColor.Label.alternative)
                         .padding(.top, 8)
                         .padding(.leading, 6)
+                        .allowsHitTesting(false)
                 }
             }
             .padding(.horizontal, 10)
@@ -45,5 +62,15 @@ public struct CommentField: View {
             .clipShape(size: 16)
         }
         .frame(maxWidth: .infinity, maxHeight: 130)
+        .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+                Spacer()
+                Button("완료") {
+                    dismissKeyboard()
+                }
+                .foregroundColor(.blue)
+                .font(.body.weight(.medium))
+            }
+        }
     }
 }

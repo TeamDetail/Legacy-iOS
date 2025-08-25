@@ -14,6 +14,7 @@ public enum LegacyIconography: String, Hashable {
     case wrong = "Wrong"
     case out = "Out"
     case coin = "Coin"
+    case mapPin = "MapPin"
     
     case flag = "Flag"
     case battle = "Battle"

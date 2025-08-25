@@ -37,8 +37,8 @@ public struct LegacyErrorAlert: View {
                         .offset(x: showText ? 0 : -10)
                         .animation(.easeOut(duration: 0.3).delay(0.1), value: showText)
                 }
-                .padding(.horizontal, 18)
                 .padding(.vertical, 12)
+                .padding(.horizontal, 16)
                 .background(
                     LinearGradient(
                         gradient: Gradient(colors: [Color.red.opacity(0.9), Color.red.opacity(0.6)]),
@@ -49,7 +49,6 @@ public struct LegacyErrorAlert: View {
                 .clipShape(size: 16)
                 .shadow(color: Color.red.opacity(0.3), radius: 10, x: 0, y: 4)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 16)
                 .transition(.move(edge: .leading).combined(with: .opacity))
                 .onAppear {
                     showIcon = true

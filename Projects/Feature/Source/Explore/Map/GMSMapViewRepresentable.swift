@@ -15,13 +15,15 @@ struct GMSMapViewRepresentable: UIViewRepresentable {
     let onBoundsChange: (_ bounds: GMSCoordinateBounds) -> Void
     let onPolygonTap: (_ ruinsId: Int) -> Void
     let onMapTap: (() -> Void)?
+    let onLocationButtonTap: (() -> Void)?
     
     func makeCoordinator() -> Coordinator {
         Coordinator(
             isZoomValid: $isZoomValid,
             onBoundsChange: onBoundsChange,
             onPolygonTap: onPolygonTap,
-            onMapTap: onMapTap
+            onMapTap: onMapTap,
+            onLocationButtonTap: onLocationButtonTap
         )
     }
     
@@ -48,19 +50,13 @@ struct GMSMapViewRepresentable: UIViewRepresentable {
         mapView.setMinZoom(10.0, maxZoom: 20.0)
         
         mapView.isMyLocationEnabled = true
-        mapView.settings.myLocationButton = true
-        
-        // MARK: 위치 버튼을 탭바 위로 올리기 위한 패딩 설정
-        mapView.padding = UIEdgeInsets(
-            top: 0,
-            left: 0,
-            bottom: 70,
-            right: 0
-        )
+        mapView.settings.myLocationButton = false
         
         //MARK: Coordinator 연결
         context.coordinator.mapView = mapView
         mapView.delegate = context.coordinator
+        
+        context.coordinator.setupNotificationObserver()
         
         return mapView
     }
@@ -116,6 +112,8 @@ struct GMSMapViewRepresentable: UIViewRepresentable {
             polygon.userData = block.type.userData
             polygon.map = mapView
         }
+        
+        context.coordinator.userLocation = userLocation
     }
     
     // MARK: - 좌표 근사 비교 함수
@@ -127,22 +125,47 @@ struct GMSMapViewRepresentable: UIViewRepresentable {
     // MARK: - Coordinator
     class Coordinator: NSObject, GMSMapViewDelegate {
         var mapView: GMSMapView?
+        var userLocation: CLLocation?
         let onBoundsChange: (_ bounds: GMSCoordinateBounds) -> Void
         @Binding var isZoomValid: Bool
         var hasMovedToUserLocation = false
         let onPolygonTap: (Int) -> Void
         let onMapTap: (() -> Void)?
+        let onLocationButtonTap: (() -> Void)?
         
         init(
             isZoomValid: Binding<Bool>,
             onBoundsChange: @escaping (_ bounds: GMSCoordinateBounds) -> Void,
             onPolygonTap: @escaping (Int) -> Void,
-            onMapTap: (() -> Void)? = nil
+            onMapTap: (() -> Void)? = nil,
+            onLocationButtonTap: (() -> Void)? = nil
         ) {
             self._isZoomValid = isZoomValid
             self.onBoundsChange = onBoundsChange
             self.onPolygonTap = onPolygonTap
             self.onMapTap = onMapTap
+            self.onLocationButtonTap = onLocationButtonTap
+        }
+        
+        deinit {
+            NotificationCenter.default.removeObserver(self)
+        }
+        
+        func setupNotificationObserver() {
+            NotificationCenter.default.addObserver(
+                self,
+                selector: #selector(handleMoveToUserLocation),
+                name: NSNotification.Name("MoveToUserLocation"),
+                object: nil
+            )
+        }
+        
+        @objc func handleMoveToUserLocation(notification: Notification) {
+            if let location = notification.object as? CLLocation {
+                DispatchQueue.main.async { [weak self] in
+                    self?.moveToUserLocation(location: location)
+                }
+            }
         }
         
         func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition) {
@@ -160,6 +183,22 @@ struct GMSMapViewRepresentable: UIViewRepresentable {
         
         func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
             onMapTap?()
+        }
+        
+        //MARK: 커스텀 위치 버튼 액션
+        func moveToUserLocation(location: CLLocation? = nil) {
+            guard let mapView = mapView else { return }
+            
+            let locationToUse = location ?? userLocation
+            guard let locationToUse = locationToUse else { return }
+            
+            let coord = locationToUse.coordinate
+            let camera = GMSCameraPosition.camera(
+                withLatitude: coord.latitude,
+                longitude: coord.longitude,
+                zoom: 17
+            )
+            mapView.animate(to: camera)
         }
     }
 }

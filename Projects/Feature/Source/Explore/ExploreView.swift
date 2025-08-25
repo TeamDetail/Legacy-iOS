@@ -58,6 +58,8 @@ public struct ExploreView: View {
                             showMenu = false
                         }
                     }
+                } onLocationButtonTap: {
+                    
                 }
                 .ignoresSafeArea()
                 .overlay(alignment: .top) {
@@ -67,10 +69,15 @@ public struct ExploreView: View {
                         } else {
                             ErrorTopBar()
                         }
-                        LegacyErrorAlert(
-                            isPresented: $isZoomValid,
-                            description: "줌을 많이 당기면 화면이\n멈출 수도 있어요!"
-                        )
+                        MapUtilityView(isPresented: $isZoomValid) {
+                            guard let location = locationManager.location else { return }
+                            NotificationCenter.default.post(
+                                name: NSNotification.Name("MoveToUserLocation"),
+                                object: location
+                            )
+                        } searchAction: {
+                            //TODO: 검색 구현
+                        }
                     }
                 }
                 

@@ -5,7 +5,8 @@ import Domain
 import Data
 
 class ShopViewModel: ObservableObject {
-    @Published var cardPack: [StoreResponse]?
+    @Published var storeData: StoreResponse?
+    @Published var buyCount: Int?
     @Published var timeRemaining: TimeInterval = 0
     private var timer: AnyCancellable?
     @Inject var shopRepository: any StoreRepository
@@ -13,6 +14,17 @@ class ShopViewModel: ObservableObject {
     init() {
         checkAndResetShop()
         startTimer()
+    }
+    
+    var groupedCardPacks: [(StoreType, [CardPack])] {
+        guard let storeData = storeData else { return [] }
+        
+        return StoreType.allCases
+            .sorted(by: { $0.sortOrder < $1.sortOrder })
+            .compactMap { storeType in
+                let filteredPacks = storeData.cardPack.filter { $0.storeType == storeType }
+                return filteredPacks.isEmpty ? nil : (storeType, filteredPacks)
+            }
     }
     
     func checkAndResetShop() {
@@ -47,9 +59,11 @@ class ShopViewModel: ObservableObject {
     @MainActor
     func fetchShop() async {
         do {
-            cardPack = try await shopRepository.fetchStore()
+            let response = try await shopRepository.fetchStore()
+            storeData = response
+            buyCount = response.buyCount
         } catch {
-            print("\(error)에러")
+            print("에러: \(error)")
         }
     }
 }

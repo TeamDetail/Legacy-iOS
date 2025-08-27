@@ -9,5 +9,5 @@ import Foundation
 import Domain
 
 public protocol StoreRepository {
-    func fetchStore() async throws -> [StoreResponse]
+    func fetchStore() async throws -> StoreResponse
 }

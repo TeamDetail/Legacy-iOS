@@ -15,7 +15,7 @@ public struct StoreRepositoryImpl: StoreRepository {
         self.dataSource = dataSource
     }
     
-    public func fetchStore() async throws -> [StoreResponse] {
+    public func fetchStore() async throws -> StoreResponse {
         let data = try await dataSource.fetchStore()
         return data
     }

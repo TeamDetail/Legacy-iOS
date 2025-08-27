@@ -8,6 +8,7 @@
 import SwiftUI
 import Component
 import Shared
+import Shimmer
 
 struct AdvertiseView: View {
     @ObservedObject var viewModel: ShopViewModel
@@ -15,9 +16,17 @@ struct AdvertiseView: View {
     var body: some View {
         VStack(spacing: 6) {
             VStack(alignment: .leading) {
-                Text(makeStyledText(count: 3))
-                    .foreground(LegacyColor.Common.white)
-                    .font(.heading1(.bold))
+                if let count = viewModel.buyCount {
+                    Text(makeStyledText(count: count))
+                        .foreground(LegacyColor.Common.white)
+                        .font(.heading1(.bold))
+                } else {
+                    Text("오늘 총 3개 구매!")
+                        .foreground(LegacyColor.Common.white)
+                        .font(.heading1(.bold))
+                        .redacted(reason: .placeholder)
+                        .shimmering()
+                }
                 
                 Text("현재 가격 배율")
                     .font(.caption2(.medium))
@@ -33,7 +42,7 @@ struct AdvertiseView: View {
                         .foreground(LegacyColor.Label.alternative)
                 }
             }
-            
+            .frame(maxWidth: .infinity, alignment: .leading)
             
             HStack(alignment: .center) {
                 Text("초기화까지")
@@ -47,12 +56,9 @@ struct AdvertiseView: View {
             .font(.caption2(.bold))
             .background(LegacyColor.Fill.netural)
             .clipShape(size: 8)
-            .padding(.horizontal, 14)
-            
         }
         .frame(maxWidth: .infinity)
         .frame(height: 152)
-        .background(LegacyColor.Fill.normal)
         .clipShape(size: 20)
         .padding(.horizontal, 14)
         .onAppear {

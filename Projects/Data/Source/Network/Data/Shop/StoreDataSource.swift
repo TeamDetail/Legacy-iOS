@@ -13,8 +13,8 @@ public struct StoreDataSource: DataSourceProtocol {
     
     public init() {}
     
-    public func fetchStore() async throws -> [StoreResponse] {
-        let response: BaseResponse<[StoreResponse]> = try await self.request(target: .fetchStore)
+    public func fetchStore() async throws -> StoreResponse {
+        let response: BaseResponse<StoreResponse> = try await self.request(target: .fetchStore)
         return response.data
     }
 }

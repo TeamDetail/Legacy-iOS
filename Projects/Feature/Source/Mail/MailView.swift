@@ -30,23 +30,24 @@ struct MailView: View {
             .padding(.horizontal, 18)
             
             ScrollView(showsIndicators: false) {
-                ForEach(1...6, id: \.self) { _ in
-                    VStack(alignment: .leading) {
-                        Text("5월 10일 점검 보상")
-                            .font(.body1(.bold))
-                            .foreground(LegacyColor.Common.white)
-                        
-                        Text("2025. 05. 11.")
-                            .font(.caption2(.regular))
-                            .foreground(LegacyColor.Label.alternative)
-                        
-                        HStack(spacing: 12) {
-                            ForEach(1...6, id: \.self) { _ in
-                                MailboxView()
+                VStack(spacing: 12) {
+                    ForEach(1...6, id: \.self) { _ in
+                        VStack(alignment: .leading, spacing: 8) {
+                            Text("5월 10일 점검 보상")
+                                .font(.body1(.bold))
+                                .foreground(LegacyColor.Common.white)
+                            
+                            Text("2025. 05. 11.")
+                                .font(.caption2(.regular))
+                                .foreground(LegacyColor.Label.alternative)
+                            
+                            HStack(spacing: 12) {
+                                ForEach(1...6, id: \.self) { _ in
+                                    MailboxView()
+                                }
                             }
                         }
                     }
-                    .padding(.vertical, 4)
                 }
             }
             .padding(.bottom, 60)
@@ -69,7 +70,7 @@ struct MailView: View {
                             .foreground(LegacyColor.Yellow.netural)
                     )
             }
-            .padding(.bottom, 8)
+            .padding(.bottom, 10)
             .padding(.horizontal, 18)
         }
         .frame(maxWidth: .infinity)

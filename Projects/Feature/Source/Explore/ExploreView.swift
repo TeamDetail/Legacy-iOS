@@ -54,7 +54,7 @@ public struct ExploreView: View {
                     }
                 } onMapTap: {
                     if showMenu {
-                        withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
+                        withAnimation(.appSpring) {
                             showMenu = false
                         }
                     }
@@ -62,23 +62,28 @@ public struct ExploreView: View {
                     
                 }
                 .ignoresSafeArea()
-                .overlay(alignment: .top) {
-                    VStack {
-                        if let data = userData.userInfo {
-                            LegacyTopBar(showMenu: $showMenu, data: data)
-                        } else {
-                            ErrorTopBar()
-                        }
-                        MapUtilityView(isPresented: $isZoomValid) {
-                            guard let location = locationManager.location else { return }
-                            NotificationCenter.default.post(
-                                name: NSNotification.Name("MoveToUserLocation"),
-                                object: location
-                            )
-                        } searchAction: {
-                            //TODO: 검색 구현
-                        }
+                
+                VStack {
+                    if let data = userData.userInfo {
+                        LegacyTopBar(showMenu: $showMenu, data: data)
+                    } else {
+                        ErrorTopBar()
                     }
+                    Spacer()
+                }
+                
+                VStack {
+                    MapUtilityView(isPresented: $isZoomValid) {
+                        guard let location = locationManager.location else { return }
+                        NotificationCenter.default.post(
+                            name: NSNotification.Name("MoveToUserLocation"),
+                            object: location
+                        )
+                    } searchAction: {
+                        //TODO: 검색 구현
+                    }
+                    .padding(.top, 80)
+                    Spacer()
                 }
                 
                 // 유적지 상세 로딩

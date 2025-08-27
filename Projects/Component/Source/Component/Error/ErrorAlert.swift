@@ -48,7 +48,7 @@ public struct LegacyErrorAlert: View {
                 )
                 .clipShape(size: 16)
                 .shadow(color: Color.red.opacity(0.3), radius: 10, x: 0, y: 4)
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(maxWidth: .infinity, alignment: .trailing)
                 .transition(.move(edge: .leading).combined(with: .opacity))
                 .onAppear {
                     showIcon = true

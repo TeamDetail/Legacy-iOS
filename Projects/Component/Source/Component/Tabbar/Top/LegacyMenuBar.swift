@@ -70,7 +70,7 @@ public struct TestView2: View {
             if showMenu {
                 LegacyMenuBar { item in
                     if item == .arrow {
-                        withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
+                        withAnimation(.appSpring) {
                             showMenu = false
                         }
                     } else {

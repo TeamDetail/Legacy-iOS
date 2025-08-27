@@ -86,7 +86,7 @@ public struct CommentView: View {
                 CommentField(commentText: $commentText, isKeyboardFocused: $isKeyboardFocused)
                 
                 AnimationButton {
-                    
+                    //TODO: 서버통신 구현
                 } label: {
                     Text("작성 완료!")
                         .frame(maxWidth: .infinity)

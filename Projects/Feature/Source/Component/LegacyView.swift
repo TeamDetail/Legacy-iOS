@@ -39,7 +39,7 @@ struct LegacyView<Content: View>: View {
             }
         }
         .onTapGesture {
-            withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
+            withAnimation(.appSpring) {
                 showMenu = false
             }
         }

@@ -45,7 +45,7 @@ struct ErrorTopBar: View {
                 .clipShape(size: 12)
                 
                 Button {
-                    withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
+                    withAnimation(.appSpring) {
                         HapticManager.instance.impact(style: .light)
                         showMenu.toggle()
                     }
@@ -79,7 +79,7 @@ struct ErrorTopBar: View {
                 LegacyMenuBar { item in
                     switch item {
                     case .arrow:
-                        withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
+                        withAnimation(.appSpring) {
                             showMenu = false
                         }
                     case .people:
@@ -104,7 +104,7 @@ struct ErrorTopBar: View {
             }
         }
         .onTapGesture {
-            withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
+            withAnimation(.appSpring) {
                 showMenu = false
             }
         }

@@ -17,6 +17,7 @@ import Kingfisher
 struct LegacyTopBar: View {
     @Flow var flow
     @Binding var showMenu: Bool
+    @State private var showMail = false
     @State private var buttonFrame: CGRect = .zero
     @State private var showAnimation = false
     let data: UserInfoResponse
@@ -25,7 +26,7 @@ struct LegacyTopBar: View {
         ZStack(alignment: .topTrailing) {
             HStack {
                 AnimationButton {
-                    withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
+                    withAnimation(.appSpring) {
                         flow.push(ProfileView(viewModel: data))
                     }
                 } label: {
@@ -106,13 +107,16 @@ struct LegacyTopBar: View {
                 LegacyMenuBar { item in
                     switch item {
                     case .arrow:
-                        withAnimation(.spring(response: 0.35, dampingFraction: 0.75)) {
+                        withAnimation(.appSpring) {
                             showMenu = false
                         }
                     case .people:
                         print("사람")
                     case .mail:
-                        print("메일")
+                        withAnimation(.appSpring) {
+                            showMail = true
+                            showMenu = false
+                        }
                     case .setting:
                         flow.push(SettingView())
                     case .wrong:
@@ -128,6 +132,28 @@ struct LegacyTopBar: View {
                 .padding(.top, 7)
                 .padding(.trailing, 16)
                 .padding(.horizontal, 4)
+            }
+            
+            if showMail {
+                ZStack {
+                    Color.black.opacity(0.4)
+                        .ignoresSafeArea()
+                        .blur(radius: 2)
+                        .onTapGesture {
+                            withAnimation(.appSpring) {
+                                showMail = false
+                            }
+                        }
+                    
+                    MailView {
+                        withAnimation(.appSpring) {
+                            showMail = false
+                        }
+                    }
+                    .transition(.scale.combined(with: .opacity))
+                    .zIndex(1)
+                }
+                .animation(.spring(response: 0.35, dampingFraction: 0.7), value: showMail)
             }
         }
     }

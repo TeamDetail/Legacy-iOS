@@ -11,47 +11,55 @@ import Shimmer
 import Domain
 
 public struct MyCardView: View {
-    let data: CardResponse
+    let data: Card
     @State private var isShaking = false
     @State private var shakePhase = 0
+    @State private var shakeTimer: Timer?
     
-    public init(data: CardResponse) {
+    public init(data: Card) {
         self.data = data
     }
     
     public var body: some View {
         if let url = URL(string: data.cardImageUrl) {
-            ZStack(alignment: .init(horizontal: .leading, vertical: .bottom)) {
+            ZStack(alignment: .topLeading) {
                 KFImage(url)
                     .placeholder { _ in
                         RoundedRectangle(cornerRadius: 12)
                             .fill(Color.gray.opacity(0.3))
-                            .frame(width: 120, height: 168)
+                            .aspectRatio(140/196, contentMode: .fit)
                             .redacted(reason: .placeholder)
                             .shimmering()
                     }
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 120, height: 168)
+                    .aspectRatio(140/196, contentMode: .fill)
                     .clipShape(size: 12)
                 
-                Text(data.cardName)
-                    .font(.bitFont(size: 14))
-                    .foreground(LegacyColor.Common.white)
-                    .padding(8)
-                    .clipShape(size: 20)
-            }
-            .padding(4)
-            .overlay(
-                VStack(spacing: 4) {
+                LinearGradient(
+                    gradient: Gradient(stops: [
+                        .init(color: Color.black.opacity(0.0), location: 0.4),
+                        .init(color: Color.black.opacity(0.8), location: 0.7),
+                        .init(color: Color.black.opacity(1.0), location: 1.0)
+                    ]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .clipShape(size: 12)
+                
+                VStack(alignment: .leading, spacing: 4) {
                     CardCategory(category: data.nationAttributeName, backgroundColor: LegacyColor.Primary.normal)
                     CardCategory(category: data.lineAttributeName, backgroundColor: LegacyColor.Blue.netural)
                     CardCategory(category: data.regionAttributeName, backgroundColor: LegacyColor.Red.netural)
+                    
+                    Spacer()
+                    
+                    Text(data.cardName)
+                        .font(.bitFont(size: 14))
+                        .foreground(LegacyColor.Common.white)
                 }
-                    .frame(maxWidth: .infinity, alignment: .topLeading)
-                    .padding([.leading, .top], 10), alignment: .topLeading)
-            .padding(.vertical, 8)
-            
+                .padding(10)
+            }
+            .aspectRatio(140/196, contentMode: .fit)
             .rotationEffect(Angle(degrees: rotationDegree(for: shakePhase)))
             .scaleEffect(isShaking ? 1.05 : 1.0)
             .animation(.easeInOut(duration: 0.12), value: shakePhase)
@@ -65,7 +73,7 @@ public struct MyCardView: View {
         }
     }
     
-    func rotationDegree(for phase: Int) -> Double {
+    private func rotationDegree(for phase: Int) -> Double {
         switch phase % 4 {
         case 0: return 0
         case 1: return -0.5
@@ -75,9 +83,7 @@ public struct MyCardView: View {
         }
     }
     
-    @State private var shakeTimer: Timer?
-    
-    func startShaking() {
+    private func startShaking() {
         shakeTimer = Timer.scheduledTimer(withTimeInterval: 0.12, repeats: true) { _ in
             withAnimation {
                 shakePhase += 1
@@ -88,7 +94,7 @@ public struct MyCardView: View {
         }
     }
     
-    func stopShaking() {
+    private func stopShaking() {
         shakeTimer?.invalidate()
         shakeTimer = nil
         withAnimation {

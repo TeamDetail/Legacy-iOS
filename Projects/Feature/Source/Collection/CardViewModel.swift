@@ -12,21 +12,20 @@ import Domain
 import Data
 
 public class CardViewModel: ObservableObject {
-    @Published var regionCardMap: [RegionEnum: [CardResponse]] = [:]
+    @Published var regionCardMap: [RegionEnum: [Card]] = [:]
     @Inject var cardRepository: any CardRepository
     
     @MainActor
     func fetchAllCards() async {
         do {
             let regions = RegionEnum.allCases
+            var tempMap: [RegionEnum: [Card]] = [:]
             
-            var tempMap: [RegionEnum: [CardResponse]] = [:]
-            
-            try await withThrowingTaskGroup(of: (RegionEnum, [CardResponse]).self) { group in
+            try await withThrowingTaskGroup(of: (RegionEnum, [Card]).self) { group in
                 for region in regions {
                     group.addTask {
-                        let cards = try await self.cardRepository.fetchCards(region)
-                        return (region, cards)
+                        let cardResponse = try await self.cardRepository.fetchCards(region)
+                        return (region, cardResponse.cards)
                     }
                 }
                 
@@ -40,5 +39,4 @@ public class CardViewModel: ObservableObject {
             print("에러 발생: \(error)")
         }
     }
-    
 }

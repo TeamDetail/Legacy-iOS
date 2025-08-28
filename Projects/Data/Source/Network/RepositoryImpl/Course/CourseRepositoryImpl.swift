@@ -38,4 +38,9 @@ public struct CourseRepositoryImpl: CourseRepository {
     public func likeCourse(_ courseId: Int) async throws {
         try await dataSource.likeCourse(courseId)
     }
+    
+    public func fetchCourseDetail(_ courseId: Int) async throws -> CourseDetailResponse {
+        let data = try await dataSource.fetchCourseDetail(courseId)
+        return data
+    }
 }

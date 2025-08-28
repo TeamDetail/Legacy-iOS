@@ -34,6 +34,11 @@ public struct CourseDataSource: DataSourceProtocol {
     }
     
     public func likeCourse(_ courseId: Int) async throws {
-        let response: BaseResponse<String> = try await self.request(target: .likeCourse(courseId))
+        let _: BaseResponse<String> = try await self.request(target: .likeCourse(courseId))
+    }
+    
+    public func fetchCourseDetail(_ courseId: Int) async throws -> CourseDetailResponse {
+        let response: BaseResponse<CourseDetailResponse> = try await self.request(target: .fetchCourseDetail(courseId))
+        return response.data
     }
 }

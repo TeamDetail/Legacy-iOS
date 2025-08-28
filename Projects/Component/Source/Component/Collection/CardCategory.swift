@@ -18,10 +18,11 @@ struct CardCategory: View {
     
     var body: some View {
         Text(category)
-            .font(.label(.bold))
+            .font(.caption2(.bold))
             .foreground(LegacyColor.Common.white)
-            .padding(.vertical, 3)
-            .padding(.horizontal, 10)
+            .padding(.horizontal, 6)
+            .padding(.vertical, 2)
+            .frame(height: 18)
             .background(backgroundColor)
             .clipShape(size: 24)
     }

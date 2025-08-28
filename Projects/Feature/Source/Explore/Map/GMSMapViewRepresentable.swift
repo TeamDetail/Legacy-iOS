@@ -28,34 +28,23 @@ struct GMSMapViewRepresentable: UIViewRepresentable {
     }
     
     func makeUIView(context: Context) -> GMSMapView {
-        //MARK: init하기 위한 더미 좌표
         let defaultLat = 37.5665
         let defaultLng = 126.9780
         let latitude = userLocation?.coordinate.latitude ?? defaultLat
         let longitude = userLocation?.coordinate.longitude ?? defaultLng
         
-        let camera = GMSCameraPosition(
-            latitude: latitude,
-            longitude: longitude,
-            zoom: 15
-        )
-        
+        let camera = GMSCameraPosition(latitude: latitude, longitude: longitude, zoom: 15)
         let mapOptions = GMSMapViewOptions()
         mapOptions.camera = camera
         mapOptions.mapID = GMSMapID(identifier: mapId)
         
-        //MARK: deprecated 메서드 대신 init(options:) 사용
         let mapView = GMSMapView(options: mapOptions)
-        
-        mapView.setMinZoom(10.0, maxZoom: 20.0)
-        
+        mapView.setMinZoom(10, maxZoom: 20)
         mapView.isMyLocationEnabled = true
         mapView.settings.myLocationButton = false
         
-        //MARK: Coordinator 연결
         context.coordinator.mapView = mapView
         mapView.delegate = context.coordinator
-        
         context.coordinator.setupNotificationObserver()
         
         return mapView
@@ -64,56 +53,47 @@ struct GMSMapViewRepresentable: UIViewRepresentable {
     func updateUIView(_ mapView: GMSMapView, context: Context) {
         guard let userLocation else { return }
         
-        if context.coordinator.hasMovedToUserLocation == false {
+        if !context.coordinator.hasMovedToUserLocation {
             let coord = userLocation.coordinate
-            let camera = GMSCameraPosition.camera(
-                withLatitude: coord.latitude,
-                longitude: coord.longitude,
-                zoom: 17
-            )
+            let camera = GMSCameraPosition.camera(withLatitude: coord.latitude, longitude: coord.longitude, zoom: 17)
             mapView.animate(to: camera)
             context.coordinator.hasMovedToUserLocation = true
         }
         
-        mapView.clear()
-        
-        // MARK: 유적지와 내 블록 통합
-        let myBlockList: [MapBlock] = (myBlocks ?? []).map {
-            MapBlock(latitude: $0.latitude, longitude: $0.longitude, type: .myBlock($0.blockType.rawValue))
-        }
-        
-        let ruinsList: [MapBlock] = (ruins ?? []).map { ruin in
-            let isOverlapping = myBlocks?.contains(where: {
-                isSameLocation($0.latitude, $0.longitude, ruin.latitude, ruin.longitude)
-            }) ?? false
-            
-            return MapBlock(
-                latitude: ruin.latitude,
-                longitude: ruin.longitude,
-                type: .ruins(ruin.ruinsId, isOverlapped: isOverlapping)
-            )
-        }
-        
-        let blocks = myBlockList + ruinsList
-        
-        // MARK: 폴리곤 표시
-        for block in blocks {
-            let rect = makeRectangle(from: LatLng(lat: block.latitude, lng: block.longitude))
-            let path = GMSMutablePath()
-            rect.points.forEach { point in
-                path.add(CLLocationCoordinate2D(latitude: point.lat, longitude: point.lng))
+        // MARK: 성능 개선을 위해 clear + bulk polygon 처리
+        DispatchQueue.global(qos: .userInitiated).async {
+            let myBlockList = (self.myBlocks ?? []).map {
+                MapBlock(latitude: $0.latitude, longitude: $0.longitude, type: .myBlock($0.blockType.rawValue))
             }
             
-            let polygon = GMSPolygon(path: path)
-            polygon.strokeWidth = 1.5
-            polygon.strokeColor = block.type.strokeColor
-            polygon.fillColor = block.type.fillColor
-            polygon.isTappable = block.type.isTappable
-            polygon.userData = block.type.userData
-            polygon.map = mapView
+            let ruinsList = (self.ruins ?? []).map { ruin in
+                let isOverlapping = self.myBlocks?.contains(where: {
+                    self.isSameLocation($0.latitude, $0.longitude, ruin.latitude, ruin.longitude)
+                }) ?? false
+                return MapBlock(latitude: ruin.latitude, longitude: ruin.longitude, type: .ruins(ruin.ruinsId, isOverlapped: isOverlapping))
+            }
+            
+            let blocks = myBlockList + ruinsList
+            
+            DispatchQueue.main.async {
+                mapView.clear()
+                for block in blocks {
+                    let rect = makeRectangle(from: LatLng(lat: block.latitude, lng: block.longitude))
+                    let path = GMSMutablePath()
+                    rect.points.forEach { point in
+                        path.add(CLLocationCoordinate2D(latitude: point.lat, longitude: point.lng))
+                    }
+                    let polygon = GMSPolygon(path: path)
+                    polygon.strokeWidth = 1.5
+                    polygon.strokeColor = block.type.strokeColor
+                    polygon.fillColor = block.type.fillColor
+                    polygon.isTappable = block.type.isTappable
+                    polygon.userData = block.type.userData
+                    polygon.map = mapView
+                }
+                context.coordinator.userLocation = userLocation
+            }
         }
-        
-        context.coordinator.userLocation = userLocation
     }
     
     // MARK: - 좌표 근사 비교 함수
@@ -147,9 +127,7 @@ struct GMSMapViewRepresentable: UIViewRepresentable {
             self.onLocationButtonTap = onLocationButtonTap
         }
         
-        deinit {
-            NotificationCenter.default.removeObserver(self)
-        }
+        deinit { NotificationCenter.default.removeObserver(self) }
         
         func setupNotificationObserver() {
             NotificationCenter.default.addObserver(
@@ -161,10 +139,9 @@ struct GMSMapViewRepresentable: UIViewRepresentable {
         }
         
         @objc func handleMoveToUserLocation(notification: Notification) {
-            if let location = notification.object as? CLLocation {
-                DispatchQueue.main.async { [weak self] in
-                    self?.moveToUserLocation(location: location)
-                }
+            guard let location = notification.object as? CLLocation else { return }
+            DispatchQueue.main.async { [weak self] in
+                self?.moveToUserLocation(location: location)
             }
         }
         
@@ -175,8 +152,7 @@ struct GMSMapViewRepresentable: UIViewRepresentable {
         }
         
         func mapView(_ mapView: GMSMapView, didTap overlay: GMSOverlay) {
-            if let polygon = overlay as? GMSPolygon,
-               let ruinsId = polygon.userData as? Int {
+            if let polygon = overlay as? GMSPolygon, let ruinsId = polygon.userData as? Int {
                 onPolygonTap(ruinsId)
             }
         }
@@ -185,19 +161,11 @@ struct GMSMapViewRepresentable: UIViewRepresentable {
             onMapTap?()
         }
         
-        //MARK: 커스텀 위치 버튼 액션
         func moveToUserLocation(location: CLLocation? = nil) {
             guard let mapView = mapView else { return }
-            
             let locationToUse = location ?? userLocation
-            guard let locationToUse = locationToUse else { return }
-            
-            let coord = locationToUse.coordinate
-            let camera = GMSCameraPosition.camera(
-                withLatitude: coord.latitude,
-                longitude: coord.longitude,
-                zoom: 17
-            )
+            guard let coord = locationToUse?.coordinate else { return }
+            let camera = GMSCameraPosition.camera(withLatitude: coord.latitude, longitude: coord.longitude, zoom: 17)
             mapView.animate(to: camera)
         }
     }

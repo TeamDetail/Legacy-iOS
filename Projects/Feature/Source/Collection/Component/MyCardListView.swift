@@ -11,18 +11,22 @@ import Component
 
 struct MyCardListView: View {
     let columns = [
-        GridItem(.flexible()),
-        GridItem(.flexible())
+        GridItem(.flexible(), spacing: 6),
+        GridItem(.flexible(), spacing: 6)
     ]
-    let cards: [CardResponse]
+    let cards: [Card]
     
     var body: some View {
-        LazyVGrid(columns: columns, spacing: 8) {
-            VStack(spacing: 12) {
+        VStack(alignment: .center, spacing: 0) {
+            LazyVGrid(columns: columns, spacing: 12) {
                 ForEach(cards, id: \.cardId) { card in
                     MyCardView(data: card)
                 }
             }
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
+            
+            Spacer()
         }
     }
 }

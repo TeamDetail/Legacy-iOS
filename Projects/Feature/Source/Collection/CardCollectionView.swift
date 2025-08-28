@@ -23,15 +23,28 @@ struct CardCollectionView: View {
                 //MARK: TODO: refactor
                 RegionItemGroup(data: viewModel, selectedRegion: $selectedRegion)
                     .padding(.vertical, 12)
-                Spacer()
-                if let cards = viewModel.regionCardMap[selectedRegion] {
-                    MyCardListView(cards: cards)
-                } else {
-                    Text("\(selectedRegion.regionName) 지역의 카드가 없어요!")
-                        .font(.title2(.bold))
-                        .foreground(LegacyColor.Common.white)
-                        .frame(maxWidth: .infinity, alignment: .center)
+                
+                VStack {
+                    if viewModel.regionCardMap.isEmpty {
+                        LegacyLoadingView(
+                            description: ""
+                        )
+                    } else if let cards = viewModel.regionCardMap[selectedRegion] {
+                        if cards.isEmpty {
+                            Text("\(selectedRegion.regionName) 지역의 카드가 없어요!")
+                                .font(.title2(.bold))
+                                .foreground(LegacyColor.Common.white)
+                                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                        } else {
+                            MyCardListView(cards: cards)
+                        }
+                    } else {
+                        LegacyLoadingView(
+                            description: ""
+                        )
+                    }
                 }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
         .onAppear {

@@ -16,8 +16,7 @@ public struct CardRespositoryImpl: CardRepository {
         self.dataSource = dataSource
     }
     
-    public func fetchCards(_ region: RegionEnum) async throws -> [CardResponse] {
-        let data = try await dataSource.fetchCards(region)
-        return data
+    public func fetchCards(_ region: RegionEnum) async throws -> CardResponse {
+        try await dataSource.fetchCards(region)
     }
 }

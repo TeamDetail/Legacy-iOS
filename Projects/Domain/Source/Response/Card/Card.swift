@@ -11,7 +11,7 @@ public struct Card: ResponseProtocol {
     public let cardId: Int
     public let cardName: String
     public let cardImageUrl: String
-    public let cardType: CardType
+    public let cardType: CardType?
     public let nationAttributeName: String
     public let lineAttributeName: String
     public let regionAttributeName: String

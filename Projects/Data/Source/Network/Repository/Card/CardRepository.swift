@@ -9,5 +9,5 @@ import Domain
 import Component
 
 public protocol CardRepository {
-    func fetchCards(_ region: RegionEnum) async throws -> [CardResponse]
+    func fetchCards(_ region: RegionEnum) async throws -> CardResponse
 }

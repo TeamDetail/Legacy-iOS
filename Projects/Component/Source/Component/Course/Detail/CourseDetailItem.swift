@@ -28,9 +28,9 @@ public struct CourseDetailItem: View {
                             .shimmering()
                     }
                     .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 200)
+                    .scaledToFit()
+                    .frame(maxWidth: .infinity, maxHeight: 200)
+                    .clipped()
                     .clipShape(size: 8)
             }
             

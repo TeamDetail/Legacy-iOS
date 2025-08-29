@@ -33,6 +33,7 @@ struct CourseSectionView<Data: Hashable, Content: View>: View {
                         selection = 1
                     }
                 }
+                .padding(.horizontal, 16)
             }
         }
     }

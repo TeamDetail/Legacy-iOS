@@ -66,6 +66,7 @@ public class CourseViewModel: ObservableObject {
     
     @MainActor
     func fetchCourseDatail(_ courseId: Int) async {
+        courseDetail = nil
         do {
             courseDetail = try await courseRepository.fetchCourseDetail(courseId)
         } catch {

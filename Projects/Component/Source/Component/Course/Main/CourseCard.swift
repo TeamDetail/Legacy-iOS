@@ -97,6 +97,7 @@ public struct CourseCard: View {
             }
             .frame(width: 144, height: 220)
         }
+        .contentShape(Rectangle())
     }
 }
 

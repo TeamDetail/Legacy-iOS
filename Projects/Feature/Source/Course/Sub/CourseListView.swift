@@ -75,22 +75,23 @@ struct CourseListView: View {
                 .padding(.horizontal, 8)
                 
                 if let data = viewModel.courses {
-                    ForEach(data, id: \.self) { data in
-                        CourseItem(data: data) {
-                            Task {
-                                await viewModel.likeCourse(data.courseId)
+                    LazyVStack(spacing: 4) {
+                        ForEach(data, id: \.self) { data in
+                            CourseItem(data: data) {
+                                Task {
+                                    await viewModel.likeCourse(data.courseId)
+                                }
+                            } navigation: {
+                                flow.push(CourseDetailView(courseId: data.courseId))
                             }
-                        } navigation: {
-                            flow.push(CourseDetailView(courseId: data.courseId))
+                            .padding(.vertical, 4)
+                            .padding(.horizontal, 8)
                         }
-                        .padding(.vertical, 4)
-                        .padding(.horizontal, 8)
                     }
+                    .frame(maxWidth: .infinity)
                     .zIndex(0)
                 } else {
-                    LegacyLoadingView(
-                        description: ""
-                    )
+                    LegacyLoadingView(description: "")
                 }
             }
         }

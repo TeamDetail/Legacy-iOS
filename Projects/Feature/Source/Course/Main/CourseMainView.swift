@@ -8,8 +8,10 @@
 import SwiftUI
 import Component
 import Data
+import FlowKit
 
 struct CourseMainView: View {
+    @Flow var flow
     @ObservedObject var viewModel: CourseViewModel
     @Binding var selection: Int
     
@@ -24,6 +26,8 @@ struct CourseMainView: View {
                         Task {
                             await viewModel.likeCourse(data.courseId)
                         }
+                    } navigation: {
+                        flow.push(CourseDetailView(courseId: data.courseId))
                     }
                 }
             )
@@ -37,6 +41,8 @@ struct CourseMainView: View {
                         Task {
                             await viewModel.likeCourse(data.courseId)
                         }
+                    } navigation: {
+                        flow.push(CourseDetailView(courseId: data.courseId))
                     }
                 }
             )
@@ -50,6 +56,8 @@ struct CourseMainView: View {
                         Task {
                             await viewModel.likeCourse(data.courseId)
                         }
+                    } navigation: {
+                        flow.push(CourseDetailView(courseId: data.courseId))
                     }
                 }
             )

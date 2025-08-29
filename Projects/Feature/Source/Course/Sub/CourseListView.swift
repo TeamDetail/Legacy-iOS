@@ -9,6 +9,7 @@ import SwiftUI
 import Component
 import Data
 import Shared
+import FlowKit
 
 struct CourseListView: View {
     @ObservedObject var viewModel: CourseViewModel
@@ -19,6 +20,7 @@ struct CourseListView: View {
     @Binding var activeDropDown: DropDownType
     @Binding var selection: Int
     @FocusState.Binding var isFocused: Bool
+    @Flow var flow
     
     var body: some View {
         VStack(spacing: 16) {
@@ -78,6 +80,8 @@ struct CourseListView: View {
                             Task {
                                 await viewModel.likeCourse(data.courseId)
                             }
+                        } navigation: {
+                            flow.push(CourseDetailView(courseId: data.courseId))
                         }
                         .padding(.vertical, 4)
                         .padding(.horizontal, 8)

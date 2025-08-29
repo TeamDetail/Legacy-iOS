@@ -10,11 +10,12 @@ import Foundation
 public struct CourseDetailResponse: ResponseProtocol {
     public let courseId: Int
     public let courseName: String
+    public let creator: String
     public let tag: [String]
     public let description: String
     public let heartCount: Int
     public let clearCount: Int
-    public let eventId: Int
+    public let eventId: Int?
     public let thumbnail: String
     public let clearRuinsCount: Int
     public let maxRuinsCount: Int
@@ -23,9 +24,10 @@ public struct CourseDetailResponse: ResponseProtocol {
     public let clear: Bool
     public let heart: Bool
     
-    public init(courseId: Int, courseName: String, tag: [String], description: String, heartCount: Int, clearCount: Int, eventId: Int, thumbnail: String, clearRuinsCount: Int, maxRuinsCount: Int, ruins: [RuinsDetailResponse], clearRuins: [RuinsDetailResponse], clear: Bool, heart: Bool) {
+    public init(courseId: Int, courseName: String, creator: String, tag: [String], description: String, heartCount: Int, clearCount: Int, eventId: Int?, thumbnail: String, clearRuinsCount: Int, maxRuinsCount: Int, ruins: [RuinsDetailResponse], clearRuins: [RuinsDetailResponse], clear: Bool, heart: Bool) {
         self.courseId = courseId
         self.courseName = courseName
+        self.creator = creator
         self.tag = tag
         self.description = description
         self.heartCount = heartCount

@@ -20,11 +20,11 @@ struct MyCardListView: View {
         VStack(alignment: .center, spacing: 0) {
             LazyVGrid(columns: columns, spacing: 12) {
                 ForEach(cards, id: \.cardId) { card in
-                    MyCardView(data: card)
+                    RuinCardView(data: card)
                         .frame(maxWidth: .infinity)
                 }
             }
-            .padding(.horizontal, 12)
+            .padding(.horizontal, 6)
             .padding(.vertical, 16)
             
             Spacer()

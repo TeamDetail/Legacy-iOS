@@ -10,7 +10,7 @@ import SwiftUI
 import Shimmer
 import Domain
 
-public struct MyCardView: View {
+public struct RuinCardView: View {
     let data: Card
     @State private var isShaking = false
     @State private var shakePhase = 0
@@ -69,6 +69,11 @@ public struct MyCardView: View {
             .scaleEffect(isShaking ? 1.05 : 1.0)
             .animation(.easeInOut(duration: 0.12), value: shakePhase)
             .animation(.easeInOut(duration: 0.12), value: isShaking)
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(lineWidth: 2)
+                    .foreground(LegacyColor.Line.netural)
+            )
             .onTapGesture {
                 guard !isShaking else { return }
                 isShaking = true

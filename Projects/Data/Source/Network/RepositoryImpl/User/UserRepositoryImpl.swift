@@ -8,7 +8,7 @@
 import Foundation
 import Domain
 
-public struct UserRepositoryImpl: UserRepository {
+public struct UserRepositoryImpl: UserRepository {    
     let dataSource: UserDataSource
     
     public init(dataSource: UserDataSource) {
@@ -18,6 +18,15 @@ public struct UserRepositoryImpl: UserRepository {
     public func fetchMyinfo() async throws -> UserInfoResponse {
         let data = try await dataSource.fetchMyinfo()
         return data
+    }
+    
+    public func uploadUrl(_ request: UploadUrlRequest) async throws -> String {
+        let data = try await dataSource.uploadUrl(request)
+        return data
+    }
+    
+    public func changeProfileImage(_ requst: ChangeProfileImageRequest) async throws {
+        let data = try await dataSource.changeProfileImage(requst)
     }
 }
 

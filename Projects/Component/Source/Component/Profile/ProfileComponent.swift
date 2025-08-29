@@ -34,6 +34,16 @@ public struct ProfileComponent: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 100, height: 100)
                     .clipShape(size: 50)
+                    .overlay(alignment: .bottomTrailing) {
+                        AnimationButton {
+                            action()
+                        } label: {
+                            Image(icon: .pen)
+                                .frame(width: 32, height: 32)
+                                .background(LegacyColor.Background.normal)
+                                .clipShape(size: 8)
+                        }
+                    }
             } else {
                 Circle()
                     .frame(width: 100, height: 100)
@@ -42,23 +52,9 @@ public struct ProfileComponent: View {
             }
             
             VStack(alignment: .leading, spacing: 6) {
-                HStack {
-                    Text(data.nickname)
-                        .font(.title3(.bold))
-                        .foreground(LegacyColor.Common.white)
-                    
-                    Spacer()
-                    
-                    AnimationButton {
-                        action()
-                    } label: {
-                        Image(icon: .pen)
-                            .frame(width: 32, height: 32)
-                            .background(LegacyColor.Background.normal)
-                            .clipShape(size: 8)
-                            .padding(.trailing, 8)
-                    }
-                }
+                Text(data.nickname)
+                    .font(.title3(.bold))
+                    .foreground(LegacyColor.Common.white)
                 
                 Text("Lv.\(data.level)")
                     .font(.body1(.bold))
@@ -69,6 +65,7 @@ public struct ProfileComponent: View {
                     TitleBadge(data.title.name, color: LegacyColor.Yellow.netural, size: .big)
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }

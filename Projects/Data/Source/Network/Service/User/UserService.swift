@@ -11,6 +11,8 @@ import Domain
 
 public enum UserService: ServiceProtocol {
     case fetchMyinfo
+    case uploadUrl(_ request: UploadUrlRequest)
+    case changeProfileImage(_ request: ChangeProfileImageRequest)
 }
 
 extension UserService {
@@ -22,18 +24,29 @@ extension UserService {
         switch self {
         case .fetchMyinfo:
             "/me"
+        case .uploadUrl:
+            "/uploadUrl"
+        case .changeProfileImage:
+            "/image"
         }
     }
     
     public var method: Moya.Method {
         switch self {
         case .fetchMyinfo: .get
+        case .uploadUrl: .get
+        case .changeProfileImage: .patch
         }
     }
     
     public var task: Moya.Task {
         switch self {
-        case .fetchMyinfo: .requestPlain
+        case .fetchMyinfo:
+            return .requestPlain
+        case let .uploadUrl(request):
+            return .requestJSONEncodable(request)
+        case let .changeProfileImage(request):
+            return .requestJSONEncodable(request)
         }
     }
 }

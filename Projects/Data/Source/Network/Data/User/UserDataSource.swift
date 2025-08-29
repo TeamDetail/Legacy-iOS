@@ -17,4 +17,14 @@ public struct UserDataSource: DataSourceProtocol {
         let response: BaseResponse<UserInfoResponse> = try await self.request(target: .fetchMyinfo)
         return response.data
     }
+    
+    public func uploadUrl(_ request: UploadUrlRequest) async throws -> String {
+        let response: BaseResponse<String> = try await self.request(target: .uploadUrl(request))
+        return response.data
+    }
+    
+    public func changeProfileImage(_ request: ChangeProfileImageRequest) async throws -> UserInfoResponse {
+        let response: BaseResponse<UserInfoResponse> = try await self.request(target: .changeProfileImage(request))
+        return response.data
+    }
 }

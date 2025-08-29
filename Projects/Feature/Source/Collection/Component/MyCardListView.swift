@@ -11,8 +11,8 @@ import Component
 
 struct MyCardListView: View {
     let columns = [
-        GridItem(.flexible(), spacing: 6),
-        GridItem(.flexible(), spacing: 6)
+        GridItem(.flexible(), spacing: 8),
+        GridItem(.flexible(), spacing: 8)
     ]
     let cards: [Card]
     
@@ -21,10 +21,11 @@ struct MyCardListView: View {
             LazyVGrid(columns: columns, spacing: 12) {
                 ForEach(cards, id: \.cardId) { card in
                     MyCardView(data: card)
+                        .frame(maxWidth: .infinity)
                 }
             }
-            .padding(.horizontal, 16)
-            .padding(.vertical, 8)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 16)
             
             Spacer()
         }

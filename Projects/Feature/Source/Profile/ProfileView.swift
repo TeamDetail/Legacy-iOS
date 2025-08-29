@@ -16,7 +16,7 @@ struct ProfileView: View {
     @State private var selection = 0
     
     var body: some View {
-        ScrollView {
+        ScrollView(showsIndicators: false) {
             if let data = viewModel {
                 ProfileComponent(data) {
                     

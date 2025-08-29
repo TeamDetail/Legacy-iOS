@@ -25,12 +25,14 @@ struct CourseListView: View {
             CourseButton(title: "추천 페이지로 보기") {
                 selection = 0
             }
+            .padding(.horizontal, 8)
             
             VStack(spacing: 8) {
                 SearchField(searchText: $searchText) {
                     //MARK: 검색 기능 구현
                 }
                 .focused($isFocused)
+                .padding(.horizontal, 8)
                 
                 HStack {
                     DropDown(
@@ -43,8 +45,7 @@ struct CourseListView: View {
                         selected: $selectedProgress,
                         button: .big
                     )
-                    
-                    Spacer()
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     
                     DropDown(
                         isExpanded: Binding(
@@ -69,6 +70,7 @@ struct CourseListView: View {
                     )
                 }
                 .zIndex(1)
+                .padding(.horizontal, 8)
                 
                 if let data = viewModel.courses {
                     ForEach(data, id: \.self) { data in
@@ -78,6 +80,7 @@ struct CourseListView: View {
                             }
                         }
                         .padding(.vertical, 4)
+                        .padding(.horizontal, 8)
                     }
                     .zIndex(0)
                 } else {
@@ -87,7 +90,6 @@ struct CourseListView: View {
                 }
             }
         }
-        .padding(.horizontal, 20)
         .padding(4)
     }
 }

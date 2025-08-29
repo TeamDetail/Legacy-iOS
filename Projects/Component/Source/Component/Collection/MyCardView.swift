@@ -27,12 +27,14 @@ public struct MyCardView: View {
                     .placeholder { _ in
                         RoundedRectangle(cornerRadius: 12)
                             .fill(Color.gray.opacity(0.3))
+                            .frame(maxWidth: .infinity)
                             .aspectRatio(140/196, contentMode: .fit)
                             .redacted(reason: .placeholder)
                             .shimmering()
                     }
                     .resizable()
                     .aspectRatio(140/196, contentMode: .fill)
+                    .frame(maxWidth: .infinity)
                     .clipShape(size: 12)
                 
                 LinearGradient(
@@ -54,11 +56,14 @@ public struct MyCardView: View {
                     Spacer()
                     
                     Text(data.cardName)
-                        .font(.bitFont(size: 14))
+                        .font(.bitFont(size: 16))
                         .foreground(LegacyColor.Common.white)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.leading)
                 }
-                .padding(10)
+                .padding(8)
             }
+            .frame(maxWidth: .infinity)
             .aspectRatio(140/196, contentMode: .fit)
             .rotationEffect(Angle(degrees: rotationDegree(for: shakePhase)))
             .scaleEffect(isShaking ? 1.05 : 1.0)

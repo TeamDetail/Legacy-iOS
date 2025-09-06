@@ -66,4 +66,13 @@ class ShopViewModel: ObservableObject {
             print("에러: \(error)")
         }
     }
+    
+    @MainActor
+    func buyCard(_ cardpackId: Int) async {
+        do {
+            try await shopRepository.buyCard(cardpackId)
+        } catch {
+            print("에러: \(error)")
+        }
+    }
 }

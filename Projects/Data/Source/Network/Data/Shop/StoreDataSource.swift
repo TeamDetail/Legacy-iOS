@@ -17,4 +17,8 @@ public struct StoreDataSource: DataSourceProtocol {
         let response: BaseResponse<StoreResponse> = try await self.request(target: .fetchStore)
         return response.data
     }
+    
+    public func buyCard(_ cardpackId: Int) async throws {
+        let _: BaseResponse<String> = try await self.request(target: .buyCard(cardpackId))
+    }
 }

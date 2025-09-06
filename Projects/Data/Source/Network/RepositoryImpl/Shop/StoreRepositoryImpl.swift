@@ -19,6 +19,10 @@ public struct StoreRepositoryImpl: StoreRepository {
         let data = try await dataSource.fetchStore()
         return data
     }
+    
+    public func buyCard(_ cardpackId: Int) async throws {
+        try await dataSource.buyCard(cardpackId)
+    }
 }
 
 

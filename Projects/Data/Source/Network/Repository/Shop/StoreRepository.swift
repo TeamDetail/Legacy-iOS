@@ -10,4 +10,5 @@ import Domain
 
 public protocol StoreRepository {
     func fetchStore() async throws -> StoreResponse
+    func buyCard(_ cardpackId: Int) async throws
 }

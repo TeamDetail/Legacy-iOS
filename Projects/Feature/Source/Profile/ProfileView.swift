@@ -1,8 +1,6 @@
 //
-//  Profile.swift
+//  ProfileView.swift
 //  Feature
-//
-//  Created by dgsw27 on 5/14/25.
 //
 
 import Domain
@@ -12,14 +10,16 @@ import Component
 
 struct ProfileView: View {
     @Flow var flow
-    let viewModel: UserInfoResponse?
+    @StateObject var viewModel = UserViewModel()
     @State private var selection = 0
     @State private var showModal: Bool = false
+    @State private var showPhotoPicker: Bool = false
+    let data: UserInfoResponse?
     
     var body: some View {
         ZStack {
             ScrollView(showsIndicators: false) {
-                if let data = viewModel {
+                if let data = data {
                     ProfileComponent(data) {
                         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                             showModal = true
@@ -38,20 +38,16 @@ struct ProfileView: View {
                 .padding(.top, 20)
                 
                 if selection == 0 {
-                    if let data = viewModel {
+                    if let data = data {
                         ActivityRecordView(data: data)
                             .padding(.top, 8)
                     } else {
-                        LegacyLoadingView(
-                            description: ""
-                        )
+                        LegacyLoadingView(description: "")
                     }
                 }
                 
                 if selection == 1 {
-                    LegacyLoadingView(
-                        description: ""
-                    )
+                    LegacyLoadingView(description: "")
                 }
                 
                 if selection == 2 {
@@ -74,7 +70,8 @@ struct ProfileView: View {
                 
                 ChangeImageModal(
                     changeImage: {
-                        
+                        showPhotoPicker = true
+                        showModal = false
                     },
                     resetImage: {
                         print("초기화는 나중에~")
@@ -88,6 +85,14 @@ struct ProfileView: View {
         }
         .backButton(title: "프로필") {
             flow.pop()
+        }
+        .sheet(isPresented: $showPhotoPicker, onDismiss: {
+            Task { await viewModel.editProfileImage() }
+        }) {
+            PhotoPicker(image: $viewModel.image)
+        }
+        .task {
+            await viewModel.fetchMyinfo()
         }
     }
 }

@@ -27,7 +27,7 @@ struct LegacyTopBar: View {
             HStack {
                 AnimationButton {
                     withAnimation(.appSpring) {
-                        flow.push(ProfileView(viewModel: data))
+                        flow.push(ProfileView(data: data))
                     }
                 } label: {
                     if let url = URL(string: data.imageUrl) {

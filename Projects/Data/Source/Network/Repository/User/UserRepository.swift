@@ -10,7 +10,7 @@ import Domain
 
 public protocol UserRepository {
     func fetchMyinfo() async throws -> UserInfoResponse
-    func uploadUrl(_ request: UploadUrlRequest) async throws -> String
+    func uploadUrl(_ fileName: String) async throws -> String
     func changeProfileImage(_ request: ChangeProfileImageRequest) async throws
 }
 

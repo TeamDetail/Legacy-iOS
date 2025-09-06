@@ -11,7 +11,7 @@ import Domain
 
 public enum UserService: ServiceProtocol {
     case fetchMyinfo
-    case uploadUrl(_ request: UploadUrlRequest)
+    case uploadUrl(_ fileName: String)
     case changeProfileImage(_ request: ChangeProfileImageRequest)
 }
 
@@ -43,8 +43,11 @@ extension UserService {
         switch self {
         case .fetchMyinfo:
             return .requestPlain
-        case let .uploadUrl(request):
-            return .requestJSONEncodable(request)
+        case let .uploadUrl(fileName):
+            return .requestParameters(
+                parameters: ["fileName": fileName],
+                encoding: URLEncoding.queryString
+            )
         case let .changeProfileImage(request):
             return .requestJSONEncodable(request)
         }

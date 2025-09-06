@@ -18,8 +18,8 @@ public struct UserDataSource: DataSourceProtocol {
         return response.data
     }
     
-    public func uploadUrl(_ request: UploadUrlRequest) async throws -> String {
-        let response: BaseResponse<String> = try await self.request(target: .uploadUrl(request))
+    public func uploadUrl(_ fileName: String) async throws -> String {
+        let response: BaseResponse<String> = try await self.request(target: .uploadUrl(fileName))
         return response.data
     }
     

@@ -20,13 +20,13 @@ public struct UserRepositoryImpl: UserRepository {
         return data
     }
     
-    public func uploadUrl(_ request: UploadUrlRequest) async throws -> String {
-        let data = try await dataSource.uploadUrl(request)
+    public func uploadUrl(_ fileName: String) async throws -> String {
+        let data = try await dataSource.uploadUrl(fileName)
         return data
     }
     
     public func changeProfileImage(_ requst: ChangeProfileImageRequest) async throws {
-        let data = try await dataSource.changeProfileImage(requst)
+        _ = try await dataSource.changeProfileImage(requst)
     }
 }
 

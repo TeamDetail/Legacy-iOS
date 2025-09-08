@@ -11,14 +11,23 @@ import Combine
 
 public struct CommentView: View {
     @State private var keyboardHeight: CGFloat = 0
-    @State private var rating: Double = 0.0
-    @State private var commentText = ""
     @State private var isClicked = false
     @State private var isKeyboardFocused = false
+    @Binding var rating: Double
+    @Binding var commentText: String
+    let action: () -> Void
     let data: RuinsDetailResponse
     
-    public init(_ data: RuinsDetailResponse) {
+    public init(
+        _ data: RuinsDetailResponse,
+        rating: Binding<Double>,
+        commentText: Binding<String>,
+        action: @escaping () -> Void
+    ) {
         self.data = data
+        self._rating = rating
+        self._commentText = commentText
+        self.action = action
     }
     
     public var body: some View {
@@ -86,7 +95,7 @@ public struct CommentView: View {
                 CommentField(commentText: $commentText, isKeyboardFocused: $isKeyboardFocused)
                 
                 AnimationButton {
-                    //TODO: 서버통신 구현
+                    action()
                 } label: {
                     Text("작성 완료!")
                         .frame(maxWidth: .infinity)

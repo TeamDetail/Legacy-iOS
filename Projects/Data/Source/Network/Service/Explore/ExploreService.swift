@@ -11,14 +11,16 @@ import Domain
 public enum ExploreService: ServiceProtocol {
     case fetchMap(_ request: MapBoundsRequest)
     case fetchRuinDeatil(_ id: Int)
-    case createBlock(_ requset: CreateBlockRequest)
+    case createBlock(_ request: CreateBlockRequest)
     case fetchMyBlock
+    case createComment(_ request: CommentRequest)
+    case fetchComment(_ id: Int)
 }
 
 extension ExploreService {
     public var host: String {
         switch self {
-        case .fetchMap, .fetchRuinDeatil:
+        case .fetchMap, .fetchRuinDeatil, .createComment, .fetchComment :
             return "/ruins"
         case .createBlock, .fetchMyBlock:
             return "/block"
@@ -31,6 +33,8 @@ extension ExploreService {
         case .fetchRuinDeatil(let id): "/\(id)"
         case .createBlock: ""
         case .fetchMyBlock: "/user/me"
+        case .createComment: "/comment"
+        case .fetchComment(let id): "/comment/\(id)"
         }
     }
     
@@ -40,6 +44,8 @@ extension ExploreService {
         case .fetchRuinDeatil: .get
         case .createBlock: .post
         case .fetchMyBlock: .get
+        case .createComment: .post
+        case .fetchComment: .get
         }
     }
     
@@ -52,6 +58,8 @@ extension ExploreService {
         case .fetchRuinDeatil(_ ): .requestPlain
         case let .createBlock(request): .requestJSONEncodable(request)
         case .fetchMyBlock: .requestPlain
+        case let .createComment(request): .requestJSONEncodable(request)
+        case .fetchComment(_ ): .requestPlain
         }
     }
 }

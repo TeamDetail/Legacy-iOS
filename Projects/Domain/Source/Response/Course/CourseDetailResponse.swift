@@ -19,12 +19,11 @@ public struct CourseDetailResponse: ResponseProtocol {
     public let thumbnail: String
     public let clearRuinsCount: Int
     public let maxRuinsCount: Int
-    public let ruins: [RuinsDetailResponse]
-    public let clearRuins: [RuinsDetailResponse]
+    public let ruins: [ClearRuinsResponse]
     public let clear: Bool
     public let heart: Bool
     
-    public init(courseId: Int, courseName: String, creator: String, tag: [String], description: String, heartCount: Int, clearCount: Int, eventId: Int?, thumbnail: String, clearRuinsCount: Int, maxRuinsCount: Int, ruins: [RuinsDetailResponse], clearRuins: [RuinsDetailResponse], clear: Bool, heart: Bool) {
+    public init(courseId: Int, courseName: String, creator: String, tag: [String], description: String, heartCount: Int, clearCount: Int, eventId: Int?, thumbnail: String, clearRuinsCount: Int, maxRuinsCount: Int, ruins: [ClearRuinsResponse], clear: Bool, heart: Bool) {
         self.courseId = courseId
         self.courseName = courseName
         self.creator = creator
@@ -37,7 +36,6 @@ public struct CourseDetailResponse: ResponseProtocol {
         self.clearRuinsCount = clearRuinsCount
         self.maxRuinsCount = maxRuinsCount
         self.ruins = ruins
-        self.clearRuins = clearRuins
         self.clear = clear
         self.heart = heart
     }

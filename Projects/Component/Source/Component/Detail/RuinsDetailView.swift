@@ -15,6 +15,7 @@ public struct RuinsDetailView: View {
     public var onClose: (() -> Void)? = nil
     public let action: () -> Void
     public let onComment: (() -> Void)?
+    public let commentData: [CommentResponse]?
     
     @State private var scrollOffset: CGFloat = 0
     @State private var isExpanded: Bool = false
@@ -25,10 +26,12 @@ public struct RuinsDetailView: View {
     
     public init(
         data: RuinsDetailResponse,
+        commentData: [CommentResponse]?,
         onClose: (() -> Void)? = nil,
         action: @escaping () -> Void,
         onComment: (() -> Void)? = nil
     ) {
+        self.commentData = commentData
         self.data = data
         self.onClose = onClose
         self.action = action
@@ -64,10 +67,11 @@ public struct RuinsDetailView: View {
                 }
                 .padding(.horizontal, 6)
                 
-                ForEach(1...5, id: \.self) { _ in
-                    Text("대통령의 임기연장 또는 중임변경을 위한 헌법개정은 그 헌법개정 제안 당시의 대통령에 대하여는 효력이 없다. 각급 선거관리위원회는 선거인명부의 작성등 선거사무와 국민투표사무에 관하여 관계 행정기관에 필요한 지시를 할 수 있다.")
-                        .padding(.horizontal)
-                        .padding(.bottom, 8)
+                if let data = commentData {
+                    ForEach(data, id: \.self) { comment in
+                        Text(comment.comment)
+                            .font(.body1(.bold))
+                    }
                 }
             }
             .coordinateSpace(name: "scroll")

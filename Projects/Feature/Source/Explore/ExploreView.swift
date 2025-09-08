@@ -94,9 +94,9 @@ public struct ExploreView: View {
                 // 상세 정보 오버레이
                 if let detail = viewModel.ruinDetail, showDetail {
                     RuinsDetailModal(
-                        detail: detail,
                         showDetail: $showDetail,
                         isTabBarHidden: $isTabBarHidden,
+                        detail: detail,
                         viewModel: viewModel
                     ) {
                         Task {

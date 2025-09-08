@@ -9,29 +9,29 @@ import SwiftUI
 import Domain
 
 public struct CourseDetailClearItem: View {
-    let data: RuinsDetailResponse
-    public init(data: RuinsDetailResponse) {
+    let data: ClearRuinsResponse
+    public init(data: ClearRuinsResponse) {
         self.data = data
     }
     public var body: some View {
         HStack {
             VStack {
-                Text("1")
+                Text(data.clear ? "✓" : "✗")
                     .font(.heading2(.bold))
                     .foreground(LegacyColor.Common.white)
                     .frame(width: 40, height: 40)
-                    .background(LegacyColor.Green.normal)
+                    .background(data.clear ? LegacyColor.Green.normal : LegacyColor.Label.alternative)
                     .clipShape(size: 999)
                 Spacer()
             }
             .padding(.vertical, 4)
             
             VStack(alignment: .leading, spacing: 14) {
-                Text("#\(data.ruinsId)")
+                Text("#\(data.data.ruinsId)")
                     .font(.caption1(.medium))
                     .foreground(LegacyColor.Label.alternative)
                 
-                Text(data.name)
+                Text(data.data.name)
                     .font(.heading1(.bold))
                     .foreground(LegacyColor.Common.white)
                 
@@ -39,8 +39,8 @@ public struct CourseDetailClearItem: View {
             }
             .frame(maxWidth: .infinity, alignment: .topLeading)
             
-            if let data = data.card {
-                RuinCardView(data: data)
+            if let card = data.data.card {
+                RuinCardView(data: card)
                     .frame(width: 120, height: 168)
             } else {
                 ErrorRuinsCardView()

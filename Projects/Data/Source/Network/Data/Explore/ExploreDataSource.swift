@@ -33,4 +33,14 @@ public struct ExploreDataSource: DataSourceProtocol {
         let response: BaseResponse<[CreateBlockResponse]> = try await self.request(target: .fetchMyBlock)
         return response.data
     }
+    
+    public func createComment(_ request: CommentRequest) async throws -> CommentResponse {
+        let response: BaseResponse<CommentResponse> = try await self.request(target: .createComment(request))
+        return response.data
+    }
+    
+    public func fetchComment(_ id: Int) async throws -> [CommentResponse] {
+        let response: BaseResponse<[CommentResponse]> = try await self.request(target: .fetchComment(id))
+        return response.data
+    }
 }

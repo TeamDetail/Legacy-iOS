@@ -10,12 +10,13 @@ import Domain
 import Component
 
 struct RuinsDetailModal: View {
-    let detail: RuinsDetailResponse
+    @StateObject private var commentViewModel = CommentViewModel()
+    @State private var showComment = false
     @Binding var showDetail: Bool
     @Binding var isTabBarHidden: Bool
+    let detail: RuinsDetailResponse
     let viewModel: ExploreViewModel
     let action: () -> Void
-    @State private var showComment = false
     
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -36,20 +37,32 @@ struct RuinsDetailModal: View {
                 
                 ZStack {
                     if showComment {
-                        CommentView(detail)
-                            .padding(.horizontal, 4)
-                            .padding(.bottom, 40)
-                            .transition(
-                                .asymmetric(
-                                    insertion: .move(edge: .trailing)
-                                        .combined(with: .opacity)
-                                        .combined(with: .scale(scale: 0.95, anchor: .trailing)),
-                                    removal: .move(edge: .trailing).combined(with: .opacity)
-                                )
+                        CommentView(
+                            detail,
+                            rating: $commentViewModel.rating,
+                            commentText: $commentViewModel.commentText
+                        ) {
+                            Task {
+                                await commentViewModel.createComment(detail.ruinsId)
+                                withAnimation(.spring(response: 0.55, dampingFraction: 0.85)) {
+                                    showComment = false
+                                }
+                            }
+                        }
+                        .padding(.horizontal, 4)
+                        .padding(.bottom, 40)
+                        .transition(
+                            .asymmetric(
+                                insertion: .move(edge: .trailing)
+                                    .combined(with: .opacity)
+                                    .combined(with: .scale(scale: 0.95, anchor: .trailing)),
+                                removal: .move(edge: .trailing).combined(with: .opacity)
                             )
+                        )
                     } else {
                         RuinsDetailView(
                             data: detail,
+                            commentData: commentViewModel.ruinComments, //MARK: commentResponse 바뀔예정
                             onClose: { dismissDetail() },
                             action: action,
                             onComment: {
@@ -68,6 +81,11 @@ struct RuinsDetailModal: View {
                                 removal: .move(edge: .leading).combined(with: .opacity)
                             )
                         )
+                        .onAppear {
+                            Task {
+                                await commentViewModel.fetchComment(detail.ruinsId)
+                            }
+                        }
                     }
                 }
                 .transition(.move(edge: .bottom).combined(with: .opacity))

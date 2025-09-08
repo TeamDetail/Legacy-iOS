@@ -35,4 +35,13 @@ public struct ExploreRepositoryImpl: ExploreRepository {
         let data = try await dataSource.fetchMyBlock()
         return data
     }
+    
+    public func createComment(_ request: CommentRequest) async throws {
+        try await dataSource.createComment(request)
+    }
+    
+    public func fetchComment(_ id: Int) async throws -> [CommentResponse] {
+        let data = try await dataSource.fetchComment(id)
+        return data
+    }
 }

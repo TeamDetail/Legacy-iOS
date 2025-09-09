@@ -8,11 +8,11 @@
 import Foundation
 
 public struct StoreResponse: ResponseProtocol {
-    public let cardPack: [CardPack]
+    public let cardpack: [CardPack]
     public let buyCount: Int
     
-    public init(cardPack: [CardPack], buyCount: Int) {
-        self.cardPack = cardPack
+    public init(cardpack: [CardPack], buyCount: Int) {
+        self.cardpack = cardpack
         self.buyCount = buyCount
     }
 }

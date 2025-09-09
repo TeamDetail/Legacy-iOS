@@ -44,6 +44,10 @@ public struct DataSourceAssembly: Assembly {
             StoreDataSource()
         }.inObjectScope(.container)
         
+        container.register(InventoryDataSource.self) { _ in
+            InventoryDataSource()
+        }.inObjectScope(.container)
+        
         container.register(BlockRepository.self) { _ in //MARK: 나중에 구현
             BlockService()
         }.inObjectScope(.container)

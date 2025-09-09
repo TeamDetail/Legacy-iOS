@@ -48,6 +48,11 @@ public struct RepositoryAssembly: Assembly {
             return CourseRepositoryImpl(dataSource: dataSource)
         }.inObjectScope(.container)
         
+        container.register(InventoryRepository.self) { resolver in
+            let dataSource = resolver.resolve(InventoryDataSource.self)!
+            return InventoryRepositoryImpl(dataSource: dataSource)
+        }.inObjectScope(.container)
+        
         container.register(StoreRepository.self) { resolver in
             let dataSource = resolver.resolve(StoreDataSource.self)!
             return StoreRepositoryImpl(dataSource: dataSource)

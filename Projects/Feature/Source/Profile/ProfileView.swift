@@ -30,7 +30,7 @@ struct ProfileView: View {
                 }
                 HStack {
                     CategoryButtonGroup(
-                        categories: ["내 기록", "칭호", "도감"],
+                        categories: ["내 기록", "칭호", "도감", "인벤토리"],
                         selection: $selection
                     )
                 }
@@ -52,6 +52,10 @@ struct ProfileView: View {
                 
                 if selection == 2 {
                     CardCollectionView()
+                }
+                
+                if selection == 3 {
+                    InventoryView()
                 }
             }
             .padding(.horizontal, 10)

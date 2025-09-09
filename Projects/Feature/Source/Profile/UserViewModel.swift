@@ -52,6 +52,7 @@ public class UserViewModel: ObservableObject {
         var request = URLRequest(url: uploadUrl)
         request.httpMethod = "PUT"
         request.setValue("image/jpeg", forHTTPHeaderField: "Content-Type")
+        request.setValue("public-read", forHTTPHeaderField: "x-amz-acl")
         
         let (_, response) = try await URLSession.shared.upload(for: request, from: data)
         guard let httpResponse = response as? HTTPURLResponse,

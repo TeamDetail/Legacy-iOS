@@ -21,7 +21,7 @@ extension StoreService {
     
     public var path: String {
         switch self {
-        case .fetchStore: ""
+        case .fetchStore: "/cardpack"
         case let .buyCard(cardpackId): "/cardBuy/\(cardpackId)"
         }
     }

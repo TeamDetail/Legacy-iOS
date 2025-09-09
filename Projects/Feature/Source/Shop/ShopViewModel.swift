@@ -22,7 +22,7 @@ class ShopViewModel: ObservableObject {
         return StoreType.allCases
             .sorted(by: { $0.sortOrder < $1.sortOrder })
             .compactMap { storeType in
-                let filteredPacks = storeData.cardPack.filter { $0.storeType == storeType }
+                let filteredPacks = storeData.cardpack.filter { $0.storeType == storeType }
                 return filteredPacks.isEmpty ? nil : (storeType, filteredPacks)
             }
     }

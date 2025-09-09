@@ -28,6 +28,9 @@ public struct RootView: View {
                     RankingView(tabItem: $selection)
                 }
             }
+            .onAppear {
+                print("현재 엑세스 토큰입니다.\(accessToken)")
+            }
         } else {
             LoginView()
         }

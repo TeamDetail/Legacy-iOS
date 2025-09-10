@@ -7,6 +7,8 @@
 
 import Foundation
 import DIContainer
+import Alamofire
+import Shared
 import Domain
 import Data
 
@@ -54,6 +56,25 @@ public class ExploreViewModel: ObservableObject {
             myBlocks = try await exploreRepository.fetchMyBlock()
         } catch {
             print("블록 에러\(error.localizedDescription)")
+        }
+    }
+    
+    @MainActor
+    func pushAlarm(_ request: AlarmRequest) async {
+        AF.request(
+            serverUrl + "/alarm/location",
+            method: .post,
+            parameters: request,
+            encoder: JSONParameterEncoder.default
+        )
+        .responseDecodable(of: BaseResponse<String>.self) { response in
+            switch response.result {
+            case .success(let alarmResponse):
+                print("푸시 성공: \(alarmResponse)")
+                print("status: \(alarmResponse.status), data: \(alarmResponse.data)")
+            case .failure(let error):
+                print("푸시 실패: \(error)")
+            }
         }
     }
 }

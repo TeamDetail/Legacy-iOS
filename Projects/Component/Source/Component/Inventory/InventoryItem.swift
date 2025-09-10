@@ -9,10 +9,8 @@ import SwiftUI
 
 public struct InventoryItem: View {
     let action: () -> Void
-    let test: String
     
-    public init(action: @escaping () -> Void, test: String) {
-        self.test = test
+    public init(action: @escaping () -> Void) {
         self.action = action
     }
     
@@ -21,7 +19,6 @@ public struct InventoryItem: View {
             action()
         } label: {
             VStack {
-                Text(test)
                 Image(systemName: "backpack.fill")
                     .foreground(LegacyColor.Common.white)
             }
@@ -30,7 +27,6 @@ public struct InventoryItem: View {
             .clipShape(size: 8)
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
-                    .inset(by: 5)
                     .stroke(lineWidth: 1)
                     .foreground(LegacyColor.Line.alternative)
             )

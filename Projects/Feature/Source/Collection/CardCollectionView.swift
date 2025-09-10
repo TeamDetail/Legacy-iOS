@@ -19,7 +19,7 @@ struct CardCollectionView: View {
     
     var body: some View {
         VStack {
-            HStack {
+            HStack(alignment: .top) {
                 //MARK: TODO: refactor
                 RegionItemGroup(data: viewModel, selectedRegion: $selectedRegion)
                     .padding(.vertical, 12)

@@ -1,6 +1,6 @@
 import Foundation
 
-public struct BaseResponse<T: Decodable>: Decodable {
+public struct BaseResponse<T: Decodable>: Decodable, Sendable {
     public let status: Int
     public let data: T
     

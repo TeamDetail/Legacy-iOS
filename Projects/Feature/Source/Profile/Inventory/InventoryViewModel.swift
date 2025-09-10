@@ -13,9 +13,11 @@ import Data
 public class InventoryViewModel: ObservableObject {
     @Published var inventory: [InventoryResponse]?
     @Published var openedCards: [Card]?
+    @Published var selectedItem: InventoryResponse?
+    
     @Inject var inventoryRepository: any InventoryRepository
     
-    
+    @MainActor
     func fetchInventory() async {
         do {
             inventory = try await inventoryRepository.fetchInventory()
@@ -24,6 +26,7 @@ public class InventoryViewModel: ObservableObject {
         }
     }
     
+    @MainActor
     func openInventory(_ request: InventoryRequest) async {
         do {
             openedCards = try await inventoryRepository.openInventory(request)

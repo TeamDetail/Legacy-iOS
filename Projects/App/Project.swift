@@ -55,11 +55,18 @@ let project = Project(
                     ],
                     "NSAppTransportSecurity": [
                         "NSAllowsArbitraryLoads": true
+                    ],
+                    
+                    //MARK: 푸시 알림 설정
+                    "FirebaseAppDelegateProxyEnabled": true,
+                    "UIBackgroundModes": [
+                        "remote-notification"
                     ]
                 ]
             ),
             sources: ["Source/**"],
             resources: ["Resource/**"],
+            entitlements: .file(path: "Resource/Legacy.entitlements"),
             scripts: [.codeQuality],
             dependencies: [
                 .project(target: "Feature", path: .relativeToRoot("Projects/Feature")),
@@ -71,6 +78,7 @@ let project = Project(
                 .external(name: "GoogleMaps"),
                 .external(name: "KakaoSDKAuth"),
                 .external(name: "KakaoSDKCommon"),
+                .external(name: "FirebaseMessaging"),
             ]
         )
     ]

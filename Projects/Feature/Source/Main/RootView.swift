@@ -30,6 +30,7 @@ public struct RootView: View {
             }
             .onAppear {
                 print("현재 엑세스 토큰입니다.\(accessToken)")
+                print("푸쉬 토큰임\(UserDefaults.standard.string(forKey: "FCMToken"))" ?? "FCMToken이 없습니다.")
             }
         } else {
             LoginView()

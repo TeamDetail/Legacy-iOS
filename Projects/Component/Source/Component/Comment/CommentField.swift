@@ -27,7 +27,7 @@ public struct CommentField: View {
             ZStack(alignment: .topLeading) {
                 if #available(iOS 16.0, *) {
                     TextEditor(text: $commentText)
-                        .font(.label(.medium))
+                        .font(.body2(.medium))
                         .tint(LegacyColor.Common.white)
                         .scrollContentBackground(.hidden)
                         .scrollIndicators(.hidden)
@@ -38,7 +38,7 @@ public struct CommentField: View {
                         }
                 } else {
                     TextEditor(text: $commentText)
-                        .font(.label(.medium))
+                        .font(.body2(.medium))
                         .tint(LegacyColor.Common.white)
                         .frame(height: 130)
                         .focused($isTextEditorFocused)

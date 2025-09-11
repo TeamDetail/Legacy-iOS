@@ -15,4 +15,5 @@ public protocol CourseRepository {
     func fetchEventCourse() async throws -> [CourseResponse]
     func likeCourse(_ courseId: Int) async throws
     func fetchCourseDetail(_ courseId: Int) async throws -> CourseDetailResponse
+    func createCourse(_ request: CourseRequest) async throws -> CourseResponse
 }

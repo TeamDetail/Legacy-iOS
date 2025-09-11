@@ -38,7 +38,11 @@ struct CourseView: View {
             .overlay(alignment: .bottomTrailing) {
                 VStack {
                     AnimationButton {
-                        flow.push(EmptyView())
+                        flow.push(
+                            CreateCourseView(
+                                viewModel: viewModel
+                            )
+                        )
                     } label: {
                         ZStack {
                             Circle()

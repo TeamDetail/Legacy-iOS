@@ -41,4 +41,9 @@ public struct CourseDataSource: DataSourceProtocol {
         let response: BaseResponse<CourseDetailResponse> = try await self.request(target: .fetchCourseDetail(courseId))
         return response.data
     }
+    
+    public func createCourse(_ request: CourseRequest) async throws -> CourseResponse {
+        let response: BaseResponse<CourseResponse> = try await self.request(target: .createCourse(request))
+        return response.data
+    }
 }

@@ -43,4 +43,8 @@ public struct CourseRepositoryImpl: CourseRepository {
         let data = try await dataSource.fetchCourseDetail(courseId)
         return data
     }
+    
+    public func createCourse(_ request: CourseRequest) async throws -> CourseResponse {
+        try await dataSource.createCourse(request)
+    }
 }

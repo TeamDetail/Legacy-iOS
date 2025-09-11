@@ -75,6 +75,15 @@ public class CourseViewModel: ObservableObject {
     }
     
     @MainActor
+    func createCourse(_ request: CourseRequest) async {
+        do {
+            try await courseRepository.createCourse(request)
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    @MainActor
     func fetchAllData() async {
         courses = nil
         recentCourses = nil

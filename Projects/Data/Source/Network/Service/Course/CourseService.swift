@@ -16,6 +16,7 @@ public enum CourseService: ServiceProtocol {
     case fetchEventCourse
     case likeCourse(_ courseId: Int)
     case fetchCourseDetail(_ courseId: Int)
+    case createCourse(_ request: CourseRequest)
 }
 
 extension CourseService {
@@ -37,6 +38,7 @@ extension CourseService {
             ""
         case .fetchCourseDetail(let courseId):
             "/\(courseId)"
+        case .createCourse: ""
         }
     }
     
@@ -48,6 +50,7 @@ extension CourseService {
         case .fetchEventCourse: .get
         case .likeCourse: .patch
         case .fetchCourseDetail: .get
+        case .createCourse: .post
         }
     }
     
@@ -68,6 +71,8 @@ extension CourseService {
             )
         case .fetchCourseDetail(_ ):
             return .requestPlain
+        case let .createCourse(request):
+            return .requestJSONEncodable(request)
         }
     }
 }

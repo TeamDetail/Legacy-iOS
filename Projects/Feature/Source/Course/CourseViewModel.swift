@@ -17,7 +17,11 @@ public class CourseViewModel: ObservableObject {
     @Published var eventCourses: [CourseResponse]?
     @Published var courseDetail: CourseDetailResponse?
     
+    @Published var searchResult: [RuinsDetailResponse]?
+    @Published var isLoading = false
+    
     @Inject var courseRepository: any CourseRepository
+    @Inject var ruinsRepository: any ExploreRepository
     
     @MainActor
     func fetchCourse() async {
@@ -77,7 +81,19 @@ public class CourseViewModel: ObservableObject {
     @MainActor
     func createCourse(_ request: CourseRequest) async {
         do {
-            try await courseRepository.createCourse(request)
+            _ = try await courseRepository.createCourse(request)
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    //MARK: 유적지를 찾기 위해 ruinsRepository에서 가져옴
+    @MainActor
+    func searchRuins(_ ruinsName: String) async {
+        isLoading = true
+        do {
+            searchResult = try await ruinsRepository.searchRuins(ruinsName)
+            isLoading = false
         } catch {
             print(error.localizedDescription)
         }

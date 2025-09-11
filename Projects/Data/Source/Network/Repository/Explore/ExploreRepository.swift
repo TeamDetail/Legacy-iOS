@@ -15,4 +15,5 @@ public protocol ExploreRepository {
     func fetchMyBlock() async throws -> [CreateBlockResponse]
     func createComment(_ request: CommentRequest) async throws
     func fetchComment(_ id: Int) async throws -> [CommentResponse]
+    func searchRuins(_ ruinsName: String) async throws -> [RuinsDetailResponse]
 }

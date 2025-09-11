@@ -43,4 +43,9 @@ public struct ExploreDataSource: DataSourceProtocol {
         let response: BaseResponse<[CommentResponse]> = try await self.request(target: .fetchComment(id))
         return response.data
     }
+    
+    public func searchRuins(_ ruinsName: String) async throws -> [RuinsDetailResponse] {
+        let response: BaseResponse<[RuinsDetailResponse]> = try await self.request(target: .searchRuins(ruinsName))
+        return response.data
+    }
 }

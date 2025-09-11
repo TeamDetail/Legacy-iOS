@@ -37,11 +37,16 @@ public struct ExploreRepositoryImpl: ExploreRepository {
     }
     
     public func createComment(_ request: CommentRequest) async throws {
-        try await dataSource.createComment(request)
+        _ = try await dataSource.createComment(request)
     }
     
     public func fetchComment(_ id: Int) async throws -> [CommentResponse] {
         let data = try await dataSource.fetchComment(id)
+        return data
+    }
+    
+    public func searchRuins(_ ruinsName: String) async throws -> [RuinsDetailResponse] {
+        let data = try await dataSource.searchRuins(ruinsName)
         return data
     }
 }

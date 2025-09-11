@@ -26,6 +26,7 @@ public struct TagEditor: View {
                         .foreground(LegacyColor.Common.white)
                         .padding(.horizontal, 8)
                         .padding(.vertical, 6)
+                        .frame(height: 35)
                         .background(LegacyColor.Fill.normal)
                         .clipShape(size: 6)
                 }

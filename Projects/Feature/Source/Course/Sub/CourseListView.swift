@@ -30,7 +30,7 @@ struct CourseListView: View {
             .padding(.horizontal, 8)
             
             VStack(spacing: 8) {
-                SearchField(searchText: $searchText) {
+                SearchField("코스 이름으로 검색해주세요.", searchText: $searchText) {
                     //MARK: 검색 기능 구현
                 }
                 .focused($isFocused)

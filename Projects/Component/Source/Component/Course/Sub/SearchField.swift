@@ -9,9 +9,15 @@ import SwiftUI
 
 public struct SearchField: View {
     @Binding var searchText: String
+    let fieldDescription: String
     let action: () -> Void
     
-    public init(searchText: Binding<String>, action: @escaping () -> Void) {
+    public init(
+        _ fieldDescription: String,
+        searchText: Binding<String>,
+        action: @escaping () -> Void
+    ) {
+        self.fieldDescription = fieldDescription
         self._searchText = searchText
         self.action = action
     }
@@ -40,7 +46,7 @@ public struct SearchField: View {
                     }
                 HStack {
                     if searchText.isEmpty {
-                        Text("코스 이름으로 검색해주세요.")
+                        Text(fieldDescription)
                             .font(.label(.medium))
                             .foreground(LegacyColor.Common.white)
                     }

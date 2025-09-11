@@ -62,6 +62,10 @@ public struct RuinCardView: View {
                         .multilineTextAlignment(.leading)
                 }
                 .padding(8)
+                
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(lineWidth: 2)
+                    .foreground(LegacyColor.Line.netural)
             }
             .frame(maxWidth: .infinity)
             .aspectRatio(140/196, contentMode: .fit)
@@ -69,11 +73,6 @@ public struct RuinCardView: View {
             .scaleEffect(isShaking ? 1.05 : 1.0)
             .animation(.easeInOut(duration: 0.12), value: shakePhase)
             .animation(.easeInOut(duration: 0.12), value: isShaking)
-            .overlay(
-                RoundedRectangle(cornerRadius: 12)
-                    .stroke(lineWidth: 2)
-                    .foreground(LegacyColor.Line.netural)
-            )
             .onTapGesture {
                 guard !isShaking else { return }
                 isShaking = true

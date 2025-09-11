@@ -11,18 +11,20 @@ import Component
 struct ProfileView: View {
     @Flow var flow
     @StateObject var viewModel = UserViewModel()
+    @StateObject private var inventoryViewModel = InventoryViewModel()
     @State private var selection = 0
-    @State private var showModal: Bool = false
     @State private var showPhotoPicker: Bool = false
     let data: UserInfoResponse?
     
+    @State private var showInventory = false
+    
     var body: some View {
-        ZStack {
+        ZStack(alignment: .bottom) {
             ScrollView(showsIndicators: false) {
                 if let data = data {
                     ProfileComponent(data) {
                         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                            showModal = true
+                            //MARK: 수정 뷰로 이동 처리
                         }
                     }
                 } else {
@@ -55,35 +57,41 @@ struct ProfileView: View {
                 }
                 
                 if selection == 3 {
-                    InventoryView()
+                    InventoryView(
+                        viewModel: inventoryViewModel,
+                        showInventory: $showInventory
+                    )
                 }
             }
             .padding(.horizontal, 10)
-            .blur(radius: showModal ? 2 : 0)
-            .animation(.easeInOut(duration: 0.25), value: showModal)
+            .blur(radius: showInventory ? 2 : 0)
+            .animation(.easeInOut(duration: 0.25), value: showInventory)
             
-            if showModal {
+            if showInventory, let data = inventoryViewModel.selectedItem {
                 Color.black.opacity(0.3)
                     .ignoresSafeArea()
                     .onTapGesture {
                         withAnimation(.easeOut(duration: 0.2)) {
-                            showModal = false
+                            showInventory = false
                         }
                     }
                     .transition(.opacity.animation(.easeInOut(duration: 0.2)))
                 
-                ChangeImageModal(
-                    changeImage: {
-                        showPhotoPicker = true
-                        showModal = false
-                    },
-                    resetImage: {
-                        print("초기화는 나중에~")
+                InventoryModal(data) {
+                    withAnimation(.easeOut(duration: 0.2)) {
+                        Task {
+                            await inventoryViewModel.openInventory(
+                                .init(cardpackId: data.itemId, count: data.itemCount)
+                            )
+                        }
+                        showInventory = false
                     }
-                )
+                }
                 .transition(.asymmetric(
-                    insertion: .scale(scale: 0.7).combined(with: .opacity.animation(.easeOut(duration: 0.1))),
-                    removal: .scale(scale: 0.9).combined(with: .opacity.animation(.easeIn(duration: 0.15)))
+                    insertion: .scale(scale: 0.7)
+                        .combined(with: .opacity.animation(.easeOut(duration: 0.1))),
+                    removal: .scale(scale: 0.9)
+                        .combined(with: .opacity.animation(.easeIn(duration: 0.15)))
                 ))
             }
         }

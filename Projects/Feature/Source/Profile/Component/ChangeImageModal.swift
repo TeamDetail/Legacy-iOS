@@ -8,6 +8,7 @@
 import SwiftUI
 import Component
 
+//MARK: 삭제
 struct ChangeImageModal: View {
     let changeImage: () -> Void
     let resetImage: () -> Void

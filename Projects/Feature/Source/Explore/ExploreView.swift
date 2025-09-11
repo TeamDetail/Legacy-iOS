@@ -161,26 +161,27 @@ public struct ExploreView: View {
             locationManager.stopUpdating()
         }
         .onAppear {
-            locationManager.stopUpdating()
-            locationManager.setTestLocation() //MARK: 테스트 할 때 사용
+            //MARK: 테스트 할 때 사용
+            //            locationManager.stopUpdating()
+            //            locationManager.setTestLocation()
             Task {
                 await viewModel.fetchMyBlock()
                 await userData.fetchMyinfo()
             }
-            if let token = UserDefaults.standard.string(forKey: "FCMToken") {
-                let request = AlarmRequest(
-                    lat: 35.6657913817,
-                    lng: 128.4219071616,
-                    title: "테스트용 알람!",
-                    targetToken: token
-                )
-                Task {
-                    await viewModel.pushAlarm(request)
-                    print("알람 요청 보냄")
-                }
-            } else {
-                print("FCMToken 없음, 먼저 토큰 확인 필요")
-            }
+            //            if let token = UserDefaults.standard.string(forKey: "FCMToken") {
+            //                let request = AlarmRequest(
+            //                    lat: 35.6657913817,
+            //                    lng: 128.4219071616,
+            //                    title: "테스트용 알람!",
+            //                    targetToken: token
+            //                )
+            //                Task {
+            //                    await viewModel.pushAlarm(request)
+            //                    print("알람 요청 보냄")
+            //                }
+            //            } else {
+            //                print("FCMToken 없음, 먼저 토큰 확인 필요")
+            //            }
             //            SoundPlayer.shared.mainSound()
         }
     }

@@ -19,6 +19,7 @@ public class CourseViewModel: ObservableObject {
     
     @Published var searchResult: [RuinsDetailResponse]?
     @Published var isLoading = false
+    @Published var selectedRuins: [RuinsDetailResponse] = []
     
     @Inject var courseRepository: any CourseRepository
     @Inject var ruinsRepository: any ExploreRepository
@@ -97,6 +98,18 @@ public class CourseViewModel: ObservableObject {
         } catch {
             print(error.localizedDescription)
         }
+    }
+    
+    func toggleSelection(_ ruins: RuinsDetailResponse) {
+        if let index = selectedRuins.firstIndex(where: { $0.ruinsId == ruins.ruinsId }) {
+            selectedRuins.remove(at: index)
+        } else {
+            selectedRuins.append(ruins)
+        }
+    }
+    
+    func isSelected(_ ruins: RuinsDetailResponse) -> Bool {
+        selectedRuins.contains { $0.ruinsId == ruins.ruinsId }
     }
     
     @MainActor

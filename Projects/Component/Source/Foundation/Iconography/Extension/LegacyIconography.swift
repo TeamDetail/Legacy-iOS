@@ -32,4 +32,5 @@ public enum LegacyIconography: String, Hashable {
     case search = "Search"
     case close = "Close"
     case emptyCard = "EmptyCard"
+    case cap = "Deathcap"
 }

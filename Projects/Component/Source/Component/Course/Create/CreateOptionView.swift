@@ -23,9 +23,17 @@ public enum CreateOptionType {
 
 public struct CreateOptionView: View {
     let descriptionText: CreateOptionType
+    let isSelected: Bool
+    let action: (() -> Void)?
     
-    public init(_ descriptionText: CreateOptionType) {
+    public init(
+        _ descriptionText: CreateOptionType,
+        isSelected: Bool = false,
+        action: (() -> Void)? = nil
+    ) {
         self.descriptionText = descriptionText
+        self.isSelected = isSelected
+        self.action = action
     }
     
     public var body: some View {
@@ -37,11 +45,22 @@ public struct CreateOptionView: View {
             Spacer()
             
             if descriptionText == .select {
-                Text("( 클릭 시 삭제 )")
-                    .font(.label(.regular))
-                    .foreground(LegacyColor.Label.alternative)
+                if isSelected {
+                    AnimationButton {
+                        action?()
+                    } label: {
+                        Text("전체삭제")
+                            .font(.label(.regular))
+                            .foreground(LegacyColor.Red.netural)
+                    }
+                } else {
+                    Text("( 클릭 시 삭제 )")
+                        .font(.label(.regular))
+                        .foreground(LegacyColor.Label.alternative)
+                }
             }
         }
         .padding(.horizontal, 8)
     }
 }
+

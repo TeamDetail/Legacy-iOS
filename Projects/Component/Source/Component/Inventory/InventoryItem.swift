@@ -19,8 +19,7 @@ public struct InventoryItem: View {
             action()
         } label: {
             VStack {
-                Image(systemName: "backpack.fill")
-                    .foreground(LegacyColor.Common.white)
+                Image(icon: .cap)
             }
             .frame(width: 48, height: 48)
             .background(LegacyColor.Fill.normal)

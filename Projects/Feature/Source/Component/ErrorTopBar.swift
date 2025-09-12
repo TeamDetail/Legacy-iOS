@@ -13,7 +13,7 @@ struct ErrorTopBar: View {
     var body: some View {
         ZStack(alignment: .topTrailing) {
             HStack {
-                Circle()
+                RoundedRectangle(cornerRadius: 8)
                     .frame(width: 44, height: 44)
                     .redacted(reason: .placeholder)
                     .shimmering()

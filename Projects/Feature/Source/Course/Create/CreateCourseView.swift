@@ -5,13 +5,6 @@
 //  Created by 김은찬 on 9/11/25.
 //
 
-//
-//  CreateCourseView.swift
-//  Feature
-//
-//  Created by 김은찬 on 9/11/25.
-//
-
 import Domain
 import SwiftUI
 import FlowKit
@@ -26,6 +19,7 @@ struct CreateCourseView: View {
     @State private var description = ""
     @State private var searchText = ""
     @State private var tagList = [String]()
+    @State private var ruinsIdList = [Int]()
     
     @FocusState private var isTitleFocused: Bool
     @FocusState private var isDescriptionFocused: Bool
@@ -49,9 +43,51 @@ struct CreateCourseView: View {
                         .id("descriptionField")
                     
                     VStack {
-                        CreateOptionView(.select)
+                        CreateOptionView(
+                            .select,
+                            isSelected: !viewModel.selectedRuins.isEmpty
+                        ) {
+                            viewModel.selectedRuins.removeAll()
+                        }
+                        
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            ZStack {
+                                if !viewModel.selectedRuins.isEmpty {
+                                    HStack {
+                                        ForEach(viewModel.selectedRuins.indices, id: \.self) { index in
+                                            let ruins = viewModel.selectedRuins[index]
+                                            
+                                            AnimationButton {
+                                                viewModel.toggleSelection(ruins)
+                                            } label: {
+                                                VStack(spacing: 8) {
+                                                    Text("\(index + 1)")
+                                                        .font(.caption1(.bold))
+                                                        .foreground(LegacyColor.Common.white)
+                                                        .frame(maxWidth: .infinity)
+                                                        .padding(.vertical, 4)
+                                                        .background(LegacyColor.Fill.normal)
+                                                        .clipShape(size: 12)
+                                                    
+                                                    if let card = ruins.card {
+                                                        RuinCardView(data: card)
+                                                    }
+                                                }
+                                                .frame(width: 120, height: 196)
+                                            }
+                                        }
+                                    }
+                                } else {
+                                    Text("선택된 유적지가 없어요!")
+                                        .font(.headline(.bold))
+                                        .foreground(LegacyColor.Common.white)
+                                        .frame(width: UIScreen.main.bounds.width - 32, height: 196)
+                                        .multilineTextAlignment(.center)
+                                }
+                            }
+                            .padding(.horizontal, 4)
+                        }
                     }
-                    .frame(height: 230)
                     
                     VStack(spacing: 12) {
                         SearchField("유적지 이름으로 검색해주세요.", searchText: $searchText) {
@@ -66,8 +102,14 @@ struct CreateCourseView: View {
                         if viewModel.isLoading {
                             LegacyLoadingView(description: "")
                         } else if let data = viewModel.searchResult {
-                            ForEach(data, id: \.self) { item in
-                                RuinsSearchItem(data: item)
+                            ForEach(data, id: \.ruinsId) { item in
+                                RuinsSearchItem(
+                                    data: item,
+                                    selectedRuins: viewModel.selectedRuins,
+                                    onSelect: { selected in
+                                        viewModel.toggleSelection(selected)
+                                    }
+                                )
                             }
                             .padding(.bottom, 12)
                         }
@@ -116,7 +158,20 @@ struct CreateCourseView: View {
         }
         .overlay(alignment: .bottom) {
             AnimationButton {
-                
+                for ruins in viewModel.selectedRuins {
+                    ruinsIdList.append(ruins.ruinsId)
+                }
+                Task {
+                    await viewModel.createCourse(
+                        .init(
+                            name: title,
+                            tag: tagList,
+                            description: description,
+                            ruinsId: ruinsIdList
+                        )
+                    )
+                }
+                flow.pop()
             } label: {
                 Text("코스 제작 완료!")
                     .frame(maxWidth: .infinity)

@@ -10,7 +10,7 @@ import SwiftUI
 public struct DetailRatingInfoItem: View {
     public init() {}
     public var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: 12) {
             HStack(spacing: 6) {
                 ForEach(1...5, id: \.self) { _ in
                     HStack(spacing: 0) {

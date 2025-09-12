@@ -21,8 +21,9 @@ public struct InventoryModal: View {
         VStack(spacing: 14) {
             HStack(spacing: 8) {
                 VStack {
-                    Image(systemName: "backpack.fill")
-                        .foreground(LegacyColor.Common.white)
+                    Image(icon: .cap)
+                        .resizable()
+                        .frame(width: 96, height: 96)
                 }
                 .frame(width: 108, height: 108)
                 .background(LegacyColor.Fill.normal)

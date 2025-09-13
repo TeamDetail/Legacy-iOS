@@ -8,11 +8,17 @@
 import Foundation
 
 public struct CommentResponse: ResponseProtocol {
+    public let userName: String
+    public let userImgUrl: String
     public let rating: Double
     public let comment: String
+    public let createAt: String
     
-    public init(rating: Double, comment: String) {
+    public init(userName: String, userImgUrl: String, rating: Double, comment: String, createAt: String) {
+        self.userName = userName
+        self.userImgUrl = userImgUrl
         self.rating = rating
         self.comment = comment
+        self.createAt = createAt
     }
 }

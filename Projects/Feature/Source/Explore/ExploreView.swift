@@ -19,6 +19,8 @@ public struct ExploreView: View {
     //MARK: 탭바 숨기는 바인딩
     @Binding var isTabBarHidden: Bool
     
+    @State private var showSearchModal = false
+    
     public init (
         _ isTabBarHidden: Binding<Bool>
     ) {
@@ -80,7 +82,7 @@ public struct ExploreView: View {
                             object: location
                         )
                     } searchAction: {
-                        //TODO: 검색 구현
+                        showSearchModal = true
                     }
                     .padding(.top, 80)
                     Spacer()
@@ -120,6 +122,42 @@ public struct ExploreView: View {
                 userData: userData, //MARK: 얘도 서버 고쳐지면 나중에 삭제
                 ruinDetail: viewModel.ruinDetail
             )
+            
+            if showSearchModal {
+                Color.black.opacity(0.6)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        withAnimation(.appSpring) {
+                            showSearchModal = false
+                        }
+                    }
+                
+                RuinsSearchModal(
+                    viewModel: viewModel,
+                    close: {
+                        withAnimation(.appSpring) {
+                            showSearchModal = false
+                        }
+                    },
+                    clickEvent: { selectedRuin in
+                        let targetLocation = CLLocation(
+                            latitude: selectedRuin.latitude,
+                            longitude: selectedRuin.longitude
+                        )
+                        
+                        // 지도 카메라 이동 알림
+                        NotificationCenter.default.post(
+                            name: NSNotification.Name("MoveToSelectedRuin"),
+                            object: targetLocation
+                        )
+                        
+                        withAnimation(.appSpring) {
+                            showSearchModal = false
+                        }
+                    }
+                )
+                .transition(.scale.combined(with: .opacity))
+            }
         }
         .onChange(of: locationManager.location) { newLocation in
             guard let newLocation, newLocation.horizontalAccuracy < 100 else { return }

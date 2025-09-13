@@ -47,6 +47,22 @@ struct GMSMapViewRepresentable: UIViewRepresentable {
         mapView.delegate = context.coordinator
         context.coordinator.setupNotificationObserver()
         
+        //MARK: 검색한 유적지 위치로 이동
+        NotificationCenter.default.addObserver(
+            forName: NSNotification.Name("MoveToSelectedRuin"),
+            object: nil,
+            queue: .main
+        ) { notification in
+            if let location = notification.object as? CLLocation {
+                let camera = GMSCameraPosition.camera(
+                    withLatitude: location.coordinate.latitude,
+                    longitude: location.coordinate.longitude,
+                    zoom: 15.0
+                )
+                mapView.animate(to: camera)
+            }
+        }
+        
         return mapView
     }
     

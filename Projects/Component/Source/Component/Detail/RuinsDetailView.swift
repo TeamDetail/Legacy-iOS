@@ -67,10 +67,10 @@ public struct RuinsDetailView: View {
                 }
                 .padding(.horizontal, 6)
                 
+                //MARK: 잘되는지 확인해야함
                 if let data = commentData {
-                    ForEach(data, id: \.self) { comment in
-                        Text(comment.comment)
-                            .font(.body1(.bold))
+                    ForEach(data, id: \.self) { data in
+                        CommentItem(data: data)
                     }
                 }
             }

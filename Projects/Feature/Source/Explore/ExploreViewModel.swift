@@ -18,6 +18,9 @@ public class ExploreViewModel: ObservableObject {
     @Published var myBlocks: [CreateBlockResponse]?
     @Published var isLoadingDetail = false
     
+    @Published var searchResult: [RuinsDetailResponse]?
+    @Published var isLoadingSearch = false
+    
     @Inject var exploreRepository: any ExploreRepository
     
     @MainActor
@@ -75,6 +78,17 @@ public class ExploreViewModel: ObservableObject {
             case .failure(let error):
                 print("푸시 실패: \(error)")
             }
+        }
+    }
+    
+    @MainActor
+    func searchRuins(_ ruinsName: String) async {
+        isLoadingSearch = true
+        do {
+            searchResult = try await exploreRepository.searchRuins(ruinsName)
+            isLoadingSearch = false
+        } catch {
+            print(error.localizedDescription)
         }
     }
 }

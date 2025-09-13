@@ -170,8 +170,8 @@ struct CreateCourseView: View {
                             ruinsId: ruinsIdList
                         )
                     )
+                    flow.pop()
                 }
-                flow.pop()
             } label: {
                 Text("코스 제작 완료!")
                     .frame(maxWidth: .infinity)

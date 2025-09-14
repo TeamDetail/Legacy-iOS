@@ -14,13 +14,11 @@ public struct InventoryDataSource: DataSourceProtocol {
     public init() {}
     
     public func fetchInventory() async throws -> [InventoryResponse] {
-        let response: BaseResponse<[InventoryResponse]> = try await self.request(target: .fetchInventory)
-        return response.data
+        try await performRequest(.fetchInventory)
     }
     
     public func openInventory(_ request: InventoryRequest) async throws -> [Card] {
-        let response: BaseResponse<[Card]> = try await self.request(target: .openInventory(request))
-        return response.data
+        try await performRequest(.openInventory(request))
     }
 }
 

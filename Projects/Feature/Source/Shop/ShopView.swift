@@ -104,6 +104,16 @@ struct ShopView: View {
                 }
             }
         }
+        .statusModal(
+            message: viewModel.successMessage,
+            statusType: .success,
+            onClear: { viewModel.successMessage = "" }
+        )
+        .statusModal(
+            message: viewModel.errorMessage,
+            statusType: .failure,
+            onClear: { viewModel.errorMessage = "" }
+        )
         .onAppear {
             //MARK: 상점 브금 로그인 브금으로 대체
             SoundPlayer.shared.loginSound()

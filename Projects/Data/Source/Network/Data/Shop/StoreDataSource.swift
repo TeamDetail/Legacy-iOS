@@ -14,11 +14,10 @@ public struct StoreDataSource: DataSourceProtocol {
     public init() {}
     
     public func fetchStore() async throws -> StoreResponse {
-        let response: BaseResponse<StoreResponse> = try await self.request(target: .fetchStore)
-        return response.data
+        try await performRequest(.fetchStore)
     }
     
-    public func buyCard(_ cardpackId: Int) async throws {
-        let _: BaseResponse<String> = try await self.request(target: .buyCard(cardpackId))
+    public func buyCard(_ cardpackId: Int) async throws -> String {
+        try await performRequest(.buyCard(cardpackId))
     }
 }

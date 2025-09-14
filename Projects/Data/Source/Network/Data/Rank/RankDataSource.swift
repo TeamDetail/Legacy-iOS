@@ -14,7 +14,6 @@ public struct RankDataSource: DataSourceProtocol {
     public init() {}
     
     public func fetchRanking() async throws -> [RankResponse] {
-        let response: BaseResponse<[RankResponse]> = try await self.request(target: .fetchRanking)
-        return response.data
+        try await performRequest(.fetchRanking)
     }
 }

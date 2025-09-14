@@ -14,36 +14,30 @@ public struct CourseDataSource: DataSourceProtocol {
     public init() {}
     
     public func fetchCourse() async throws -> [CourseResponse] {
-        let response: BaseResponse<[CourseResponse]> = try await self.request(target: .fetchCourse)
-        return response.data
+        try await performRequest(.fetchCourse)
     }
     
     public func fetchRecentCourse() async throws -> [CourseResponse] {
-        let response: BaseResponse<[CourseResponse]> = try await self.request(target: .fetchRecentCourse)
-        return response.data
+        try await performRequest(.fetchRecentCourse)
     }
     
     public func fetchPopularCourse() async throws -> [CourseResponse] {
-        let response: BaseResponse<[CourseResponse]> = try await self.request(target: .fetchPopularCourse)
-        return response.data
+        try await performRequest(.fetchPopularCourse)
     }
     
     public func fetchEventCourse() async throws -> [CourseResponse] {
-        let response: BaseResponse<[CourseResponse]> = try await self.request(target: .fetchEventCourse)
-        return response.data
+        try await performRequest(.fetchEventCourse)
     }
     
-    public func likeCourse(_ courseId: Int) async throws {
-        let _: BaseResponse<String> = try await self.request(target: .likeCourse(courseId))
+    public func likeCourse(_ courseId: Int) async throws -> String {
+        try await performRequest(.likeCourse(courseId))
     }
     
     public func fetchCourseDetail(_ courseId: Int) async throws -> CourseDetailResponse {
-        let response: BaseResponse<CourseDetailResponse> = try await self.request(target: .fetchCourseDetail(courseId))
-        return response.data
+        try await performRequest(.fetchCourseDetail(courseId))
     }
     
     public func createCourse(_ request: CourseRequest) async throws -> CourseResponse {
-        let response: BaseResponse<CourseResponse> = try await self.request(target: .createCourse(request))
-        return response.data
+        try await performRequest(.createCourse(request))
     }
 }

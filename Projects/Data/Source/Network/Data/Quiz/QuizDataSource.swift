@@ -15,12 +15,10 @@ public struct QuizDataSource: DataSourceProtocol {
     public init() {}
     
     public func fetchQuiz(_ id: Int) async throws -> [QuizResponse] {
-        let response: BaseResponse<[QuizResponse]> = try await self.request(target: .fetchQuiz(id))
-        return response.data
+        try await performRequest(.fetchQuiz(id))
     }
     
     public func checkQuiz(_ request: [CheckQuizRequest]) async throws -> CheckQuizResponse {
-        let response: BaseResponse<CheckQuizResponse> = try await self.request(target: .checkQuiz(request))
-        return response.data
+        try await performRequest(.checkQuiz(request))
     }
 }

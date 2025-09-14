@@ -15,7 +15,6 @@ public struct CardDataSource: DataSourceProtocol {
     public init() {}
     
     public func fetchCards(_ region: RegionEnum) async throws -> CardResponse {
-        let response: BaseResponse<CardResponse> = try await self.request(target: .fetchCards(region))
-        return response.data
+        try await performRequest(.fetchCards(region))
     }
 }

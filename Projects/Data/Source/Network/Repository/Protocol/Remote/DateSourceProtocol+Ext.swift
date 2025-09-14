@@ -24,9 +24,17 @@ public extension DataSourceProtocol {
         
         if response.statusCode >= 400 {
             let errorResponse = try JSONDecoder().decode(ErrorResponse.self, from: response.data)
-            throw errorResponse
+            throw APIError.serverMessage(errorResponse.message)
         }
         
         return try JSONDecoder().decode(BaseResponse<T>.self, from: response.data)
+    }
+    
+    func performRequest<T: Decodable>(_ target: Target) async throws -> T {
+        let response: BaseResponse<T> = try await request(target: target)
+        //        guard response.status == 200, let data = response.data else {
+        //            throw APIError.serverMessage(response.message ?? "알 수 없는 오류")
+        //        }
+        return response.data
     }
 }

@@ -15,37 +15,30 @@ public struct ExploreDataSource: DataSourceProtocol {
     public init() {}
     
     public func fetchRuins(_ request: MapBoundsRequest) async throws -> [RuinsPositionResponse] {
-        let response: BaseResponse<[RuinsPositionResponse]> = try await self.request(target: .fetchMap(request))
-        return response.data
+        try await performRequest(.fetchMap(request))
     }
     
     public func fetchRuinDeatil(_ id: Int) async throws -> RuinsDetailResponse {
-        let response: BaseResponse<RuinsDetailResponse> = try await self.request(target: .fetchRuinDeatil(id))
-        return response.data
+        try await performRequest(.fetchRuinDeatil(id))
     }
     
     public func createBlock(_ request: CreateBlockRequest) async throws -> CreateBlockResponse {
-        let response: BaseResponse<CreateBlockResponse> = try await self.request(target: .createBlock(request))
-        return response.data
+        try await performRequest(.createBlock(request))
     }
     
     public func fetchMyBlock() async throws -> [CreateBlockResponse] {
-        let response: BaseResponse<[CreateBlockResponse]> = try await self.request(target: .fetchMyBlock)
-        return response.data
+        try await performRequest(.fetchMyBlock)
     }
     
     public func createComment(_ request: CommentRequest) async throws -> CommentResponse {
-        let response: BaseResponse<CommentResponse> = try await self.request(target: .createComment(request))
-        return response.data
+        try await performRequest(.createComment(request))
     }
     
     public func fetchComment(_ id: Int) async throws -> [CommentResponse] {
-        let response: BaseResponse<[CommentResponse]> = try await self.request(target: .fetchComment(id))
-        return response.data
+        try await performRequest(.fetchComment(id))
     }
     
     public func searchRuins(_ ruinsName: String) async throws -> [RuinsDetailResponse] {
-        let response: BaseResponse<[RuinsDetailResponse]> = try await self.request(target: .searchRuins(ruinsName))
-        return response.data
+        try await performRequest(.searchRuins(ruinsName))
     }
 }

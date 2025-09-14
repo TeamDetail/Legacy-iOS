@@ -4,7 +4,10 @@ import Combine
 import Domain
 import Data
 
-class ShopViewModel: ObservableObject {
+class ShopViewModel: ObservableObject, APIMessageable {
+    @Published var successMessage: String = ""
+    @Published var errorMessage: String = ""
+    
     @Published var storeData: StoreResponse?
     @Published var buyCount: Int?
     @Published var timeRemaining: TimeInterval = 0
@@ -71,6 +74,9 @@ class ShopViewModel: ObservableObject {
     func buyCard(_ cardpackId: Int) async {
         do {
             try await shopRepository.buyCard(cardpackId)
+            successMessage = "카드팩 구매 성공! 인벤토리를 확인하세요."
+        } catch let apiError as APIError {
+            errorMessage = apiError.message
         } catch {
             print("에러: \(error)")
         }

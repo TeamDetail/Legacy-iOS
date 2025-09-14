@@ -7,12 +7,26 @@
 
 import SwiftUI
 
-struct LegacyStatusModal: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+public struct LegacyStatusModal: View {
+    let statusType: LegacyStatusType
+    let description: String
+    
+    public init(statusType: LegacyStatusType, description: String) {
+        self.statusType = statusType
+        self.description = description
     }
-}
-
-#Preview {
-    LegacyStatusModal()
+    
+    public var body: some View {
+        HStack(spacing: 8) {
+            statusType.icon
+            
+            Text(description)
+                .font(.body1(.bold))
+                .foreground(statusType == .success ? LegacyColor.Status.positive : LegacyColor.Status.negative)
+        }
+        .padding(.vertical, 8)
+        .padding(.horizontal, 12)
+        .background(LegacyColor.Fill.normal)
+        .clipShape(size: 16)
+    }
 }

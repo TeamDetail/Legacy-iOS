@@ -24,5 +24,5 @@ extension ServiceProtocol {
     public var headers: [String: String]? {
         return ["Content-Type": "application/json"]
     }
-    public var validationType: ValidationType { .none }
+    public var validationType: ValidationType { .successCodes }
 }

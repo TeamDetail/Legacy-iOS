@@ -17,10 +17,9 @@ struct QuestView: View {
             LegacyScrollView(title: "도전과제", icon: .medal, item: tabItem) {
                 HStack {
                     VStack(spacing: 12) {
-                        QuestProgressBar(currentEx: 130)
                         
                         CategoryButtonGroup(
-                            categories: ["전체", "일일", "탐험", "숙현", "시련", "히든"],
+                            categories: ["전체", "탐험", "숙련", "히든"],
                             selection: $selection
                         )
                         .frame(maxWidth: .infinity, alignment: .leading)

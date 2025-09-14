@@ -12,7 +12,7 @@ import Data
 
 public class InventoryViewModel: ObservableObject {
     @Published var inventory: [InventoryResponse]?
-    @Published var openedCards: [Card]?
+    @Published var openedCards: [[Card]]?
     @Published var selectedItem: InventoryResponse?
     
     @Inject var inventoryRepository: any InventoryRepository

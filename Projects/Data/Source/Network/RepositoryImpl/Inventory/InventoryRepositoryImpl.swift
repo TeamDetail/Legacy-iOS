@@ -20,7 +20,7 @@ public struct InventoryRepositoryImpl: InventoryRepository {
         return data
     }
     
-    public func openInventory(_ request: InventoryRequest) async throws -> [Card] {
+    public func openInventory(_ request: InventoryRequest) async throws -> [[Card]] {
         let data = try await dataSource.openInventory(request)
         return data
     }

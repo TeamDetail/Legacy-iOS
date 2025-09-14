@@ -9,6 +9,8 @@ import SwiftUI
 import Component
 
 struct MailView: View {
+    @StateObject private var viewModel = MailViewModel()
+    @State private var selection = 0
     let onClose: () -> Void
     var body: some View {
         VStack(spacing: 14) {
@@ -29,54 +31,82 @@ struct MailView: View {
             .padding(.top, 18)
             .padding(.horizontal, 18)
             
-            ScrollView(showsIndicators: false) {
-                VStack(spacing: 12) {
-                    ForEach(1...6, id: \.self) { _ in
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("5월 10일 점검 보상")
-                                .font(.body1(.bold))
+            if selection == 0 {
+                ScrollView(showsIndicators: false) {
+                    if let mails = viewModel.myMail {
+                        if mails.isEmpty {
+                            Text("우편함이 비었어요!")
+                                .font(.headline(.bold))
                                 .foreground(LegacyColor.Common.white)
-                            
-                            Text("2025. 05. 11.")
-                                .font(.caption2(.regular))
-                                .foreground(LegacyColor.Label.alternative)
-                            
-                            HStack(spacing: 12) {
-                                ForEach(1...6, id: \.self) { _ in
-                                    MailboxView()
+                        } else {
+                            VStack(spacing: 12) {
+                                ForEach(mails, id: \.self) { mailData in
+                                    MailboxItem(data: mailData) {
+                                        viewModel.selectMail = mailData
+                                        selection = 1
+                                    }
+                                    .padding(.horizontal, 24)
                                 }
+                                .padding(.vertical, 4)
                             }
                         }
+                    } else {
+                        LegacyLoadingView(description: "")
+                            .padding(.top, 10)
                     }
                 }
+                .padding(.bottom, 60)
+                .refreshable {
+                    Task { await viewModel.fetchMail() }
+                }
+            } else {
+                if let data = viewModel.selectMail {
+                    MailDetailView(
+                        data: data
+                    ) {
+                        selection = 0
+                    }
+                } else {
+                    LegacyLoadingView(description: "")
+                        .padding(.top, 10)
+                }
             }
-            .padding(.bottom, 60)
         }
         .overlay(alignment: .bottom) {
-            AnimationButton {
-                //TODO: 서버통신 구현
-            } label: {
-                Text("일괄 수령")
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 40)
-                    .font(.caption1(.bold))
-                    .foreground(LegacyColor.Yellow.netural)
-                    .background(LegacyColor.Fill.normal)
-                    .clipShape(size: 12)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 12)
-                            .inset(by: 5)
-                            .stroke(lineWidth: 1)
-                            .foreground(LegacyColor.Yellow.netural)
-                    )
+            if selection == 0 {
+                AnimationButton {
+                    Task {
+                        await viewModel.postAward()
+                    }
+                } label: {
+                    Text("일괄 수령")
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 40)
+                        .font(.caption1(.bold))
+                        .foreground(LegacyColor.Yellow.netural)
+                        .background(LegacyColor.Fill.normal)
+                        .clipShape(size: 12)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .inset(by: 5)
+                                .stroke(lineWidth: 1)
+                                .foreground(LegacyColor.Yellow.netural)
+                        )
+                }
+                .padding(.bottom, 10)
+                .padding(.horizontal, 20)
+                .padding(.vertical, 4)
             }
-            .padding(.bottom, 10)
-            .padding(.horizontal, 18)
         }
         .frame(maxWidth: .infinity)
         .frame(height: 520)
         .background(LegacyColor.Background.normal)
         .clipShape(size: 20)
         .padding(16)
+        .onAppear {
+            Task {
+                await viewModel.fetchMail()
+            }
+        }
     }
 }

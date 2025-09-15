@@ -15,7 +15,7 @@ public struct CommentItem: View {
     public var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
-                KFImage(URL(string: data.userImgUrl))
+                KFImage(URL(string: data.userImgUrl ?? ""))
                     .placeholder { _ in
                         Circle()
                             .fill(Color.gray.opacity(0.3))
@@ -24,11 +24,12 @@ public struct CommentItem: View {
                             .shimmering()
                     }
                     .resizable()
+                    .aspectRatio(contentMode: .fit)
                     .frame(width: 40, height: 40)
                     .clipShape(size: 999)
                 
-                VStack(spacing: 8) {
-                    Text(data.userName)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(data.userName ?? "")
                         .font(.body1(.bold))
                         .foreground(LegacyColor.Common.white)
                     
@@ -37,13 +38,19 @@ public struct CommentItem: View {
                         .foreground(LegacyColor.Label.alternative)
                 }
             }
+            .padding(.vertical, 4)
             
             HStack(spacing: 6) {
                 ForEach(0..<5, id: \.self) { index in
                     HStack(spacing: 0) {
                         Image(icon: .leftStar)
+                            .resizable()
+                            .frame(width: 7, height: 13)
                             .foreground(data.rating >= Double(index) + 0.5 ? LegacyColor.Primary.normal : LegacyColor.Common.white)
+                        
                         Image(icon: .rightStar)
+                            .resizable()
+                            .frame(width: 7, height: 13)
                             .foreground(data.rating >= Double(index) + 1.0 ? LegacyColor.Primary.normal : LegacyColor.Common.white)
                     }
                 }
@@ -55,5 +62,6 @@ public struct CommentItem: View {
                 .foreground(LegacyColor.Common.white)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.horizontal, 8)
     }
 }

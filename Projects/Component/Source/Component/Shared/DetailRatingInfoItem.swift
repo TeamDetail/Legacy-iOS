@@ -40,7 +40,7 @@ public struct DetailRatingInfoItem: View {
                         .font(.caption2(.regular))
                         .foreground(LegacyColor.Label.alternative)
                     
-                    Text("200001명")
+                    Text("20000명")
                         .font(.body2(.bold))
                         .foreground(LegacyColor.Label.normal)
                 }

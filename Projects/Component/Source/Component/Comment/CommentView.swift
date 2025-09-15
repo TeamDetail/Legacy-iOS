@@ -71,6 +71,7 @@ public struct CommentView: View {
                             .font(.headline(.bold))
                             .foreground(LegacyColor.Label.normal)
                     }
+                    .frame(maxWidth: .infinity, alignment: .leading)
                     
                     Button {
                         withAnimation(.spring(response: 0.55, dampingFraction: 0.85)) {
@@ -87,9 +88,9 @@ public struct CommentView: View {
                                 }
                             }
                         }
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     }
                 }
-                .frame(maxWidth: .infinity, alignment: .topLeading)
                 .padding(8)
                 
                 CommentField(commentText: $commentText, isKeyboardFocused: $isKeyboardFocused)

@@ -22,38 +22,38 @@ public struct LegacyTabBar<Content: View>: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .ignoresSafeArea(edges: .bottom)
                 
-                if !isTabBarHidden {
-                    RoundedRectangle(cornerRadius: 20)
-                        .foreground(LegacyColor.Background.normal)
-                        .frame(height: 72)
-                        .frame(maxWidth: .infinity)
-                        .padding(.horizontal, 10)
-                        .overlay {
-                            VStack {
-                                HStack(spacing: 35) {
-                                    ForEach(LegacyTabItem.allCases, id: \.self) { item in
-                                        LegacyNavigationCell(item: item, isSelected: item == selection) {
-                                            if selection == item {
-                                                withAnimation(.easeInOut(duration: 0.6)) {
-                                                    scrollViewProxy.scrollTo(
-                                                        "ScrollToTop-\(item.rawValue)",
-                                                        anchor: .top
-                                                    )
-                                                }
-                                            } else {
-                                                selection = item
+                RoundedRectangle(cornerRadius: 20)
+                    .foreground(LegacyColor.Background.normal)
+                    .frame(height: 72)
+                    .frame(maxWidth: .infinity)
+                    .padding(.horizontal, 10)
+                    .overlay {
+                        VStack {
+                            HStack(spacing: 35) {
+                                ForEach(LegacyTabItem.allCases, id: \.self) { item in
+                                    LegacyNavigationCell(item: item, isSelected: item == selection) {
+                                        if selection == item {
+                                            withAnimation(.easeInOut(duration: 0.6)) {
+                                                scrollViewProxy.scrollTo(
+                                                    "ScrollToTop-\(item.rawValue)",
+                                                    anchor: .top
+                                                )
                                             }
+                                        } else {
+                                            selection = item
                                         }
-                                        
                                     }
                                 }
                             }
                         }
-                        .ignoresSafeArea(edges: .bottom)
-                        .safeAreaInset(edge: .bottom) {
-                            Color.clear.frame(height: 20)
-                        }
-                }
+                    }
+                    .ignoresSafeArea(edges: .bottom)
+                    .safeAreaInset(edge: .bottom) {
+                        Color.clear.frame(height: 20)
+                    }
+                    .offset(y: isTabBarHidden ? 150 : 0)
+                    .animation(.easeInOut(duration: 0.3), value: isTabBarHidden)
+                
             }
             .ignoresSafeArea(.all, edges: .bottom)
         }

@@ -66,8 +66,15 @@ public struct RuinsDetailView: View {
                     
                 }
                 .padding(.horizontal, 6)
+                .padding(.bottom, 14)
                 
-                //MARK: 잘되는지 확인해야함
+                Text(data.description)
+                    .font(.body2(.medium))
+                    .foreground(LegacyColor.Label.normal)
+                    .padding(.horizontal, 8)
+                
+                LegacyDivider()
+                
                 if let data = commentData {
                     ForEach(data, id: \.self) { data in
                         CommentItem(data: data)

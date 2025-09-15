@@ -21,6 +21,11 @@ public struct ExploreView: View {
     
     @State private var showSearchModal = false
     
+    // MARK: - 알람 관련 State
+    @State private var lastAlarmLocation: CLLocation?
+    @State private var alarmSentRuinIds: Set<Int> = []
+    private let minAlarmDistance: CLLocationDistance = 100
+    
     public init (
         _ isTabBarHidden: Binding<Bool>
     ) {
@@ -47,6 +52,9 @@ public struct ExploreView: View {
                                 maxLng: location.northEast.longitude
                             )
                         )
+                        
+                        // 지도 데이터가 새로 로드된 후 근처 유적지 알람 체크
+                        await checkNearbyRuinsAlarm()
                     }
                 } onPolygonTap: { ruinsId in
                     HapticManager.instance.impact(style: .light)
@@ -162,22 +170,11 @@ public struct ExploreView: View {
         .onChange(of: locationManager.location) { newLocation in
             guard let newLocation, newLocation.horizontalAccuracy < 100 else { return }
             
-            // 1. 근처 유적지 필터
-            if let nearbyRuin = viewModel.ruins?.first(where: { ruin in
-                let distance = newLocation.distance(from: CLLocation(latitude: ruin.latitude, longitude: ruin.longitude))
-                return distance < 50 // 50m 안쪽이면 알람
-            }) {
-                // 2. FCM 토큰 가져오기
-                if let token = UserDefaults.standard.string(forKey: "FCMToken") {
-                    let request = AlarmRequest(
-                        lat: nearbyRuin.latitude,
-                        lng: nearbyRuin.longitude,
-                        title: "근처에 유적지가 있어요!",
-                        targetToken: token
-                    )
-                    Task {
-                        await viewModel.pushAlarm(request)
-                    }
+            //MARK: 일정 거리 이상 이동했을 때만 알람 체크
+            if shouldCheckAlarm(for: newLocation) {
+                Task {
+                    await checkNearbyRuinsAlarm()
+                    lastAlarmLocation = newLocation
                 }
             }
             Task {
@@ -199,28 +196,60 @@ public struct ExploreView: View {
             locationManager.stopUpdating()
         }
         .onAppear {
-            //MARK: 테스트 할 때 사용
-            //            locationManager.stopUpdating()
-            //            locationManager.setTestLocation()
             Task {
                 await viewModel.fetchMyBlock()
                 await userData.fetchMyinfo()
+                
+                //MARK: 위치 테스트
+                //                locationManager.stopUpdating()
+                //                locationManager.setTestLocation()
+                await checkNearbyRuinsAlarm()
             }
-            //            if let token = UserDefaults.standard.string(forKey: "FCMToken") {
-            //                let request = AlarmRequest(
-            //                    lat: 35.6657913817,
-            //                    lng: 128.4219071616,
-            //                    title: "테스트용 알람!",
-            //                    targetToken: token
-            //                )
-            //                Task {
-            //                    await viewModel.pushAlarm(request)
-            //                    print("알람 요청 보냄")
-            //                }
-            //            } else {
-            //                print("FCMToken 없음, 먼저 토큰 확인 필요")
-            //            }
-            //            SoundPlayer.shared.mainSound()
+        }
+    }
+    
+    // MARK: - Private Methods
+    
+    /// 알람을 체크해야 하는지 판단
+    private func shouldCheckAlarm(for newLocation: CLLocation) -> Bool {
+        guard let lastLocation = lastAlarmLocation else {
+            return true // 처음 위치면 체크
+        }
+        
+        let distance = newLocation.distance(from: lastLocation)
+        return distance >= minAlarmDistance
+    }
+    
+    /// 근처 유적지 알람 체크 및 발송
+    private func checkNearbyRuinsAlarm() async {
+        guard let currentLocation = locationManager.location,
+              let ruins = viewModel.ruins,
+              let token = UserDefaults.standard.string(forKey: "FCMToken") else {
+            return
+        }
+        
+        // 50m 반경 내 유적지 찾기
+        let nearbyRuins = ruins.filter { ruin in
+            let ruinLocation = CLLocation(latitude: ruin.latitude, longitude: ruin.longitude)
+            let distance = currentLocation.distance(from: ruinLocation)
+            return distance < 50 && !alarmSentRuinIds.contains(ruin.ruinsId)
+        }
+        
+        // 가장 가까운 유적지에만 알람 발송
+        if let closestRuin = nearbyRuins.min(by: { ruin1, ruin2 in
+            let distance1 = currentLocation.distance(from: CLLocation(latitude: ruin1.latitude, longitude: ruin1.longitude))
+            let distance2 = currentLocation.distance(from: CLLocation(latitude: ruin2.latitude, longitude: ruin2.longitude))
+            return distance1 < distance2
+        }) {
+            let request = AlarmRequest(
+                lat: closestRuin.latitude,
+                lng: closestRuin.longitude,
+                title: "근처에 유적지가 있어요!",
+                targetToken: token
+            )
+            
+            await viewModel.pushAlarm(request)
+            alarmSentRuinIds.insert(closestRuin.ruinsId)
         }
     }
 }

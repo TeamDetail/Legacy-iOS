@@ -20,6 +20,8 @@ public class MailViewModel: ObservableObject {
     func fetchMail() async {
         do {
             myMail = try await mailRepository.fetchMail()
+            //MARK: 더미
+            //            myMail = [MailResponse(mailTitle: "Test", mailContent: "Test", sendAt: "Test", itemData: [.init(itemId: 1, itemType: .cardPack, itemName: "Test", itemDescription: "Test", itemCount: 1)])]
         } catch {
             print(error.localizedDescription)
         }
@@ -29,6 +31,21 @@ public class MailViewModel: ObservableObject {
     func postAward() async {
         do {
             rewardMails = try await mailRepository.postAward()
+            //MARK: 더미
+            //            rewardMails = [
+            //                MailResponse(mailTitle: "Test", mailContent: "Test", sendAt: "Test", itemData: [.init(itemId: 1, itemType: .cardPack, itemName: "Test", itemDescription: "Test", itemCount: 1)]),
+            //                MailResponse(mailTitle: "Test", mailContent: "Test", sendAt: "Test", itemData: [.init(itemId: 1, itemType: .cardPack, itemName: "Test", itemDescription: "Test", itemCount: 1)]),
+            //                MailResponse(mailTitle: "Test", mailContent: "Test", sendAt: "Test", itemData: [.init(itemId: 1, itemType: .cardPack, itemName: "Test", itemDescription: "Test", itemCount: 1)]),
+            //                MailResponse(mailTitle: "Test", mailContent: "Test", sendAt: "Test", itemData: [.init(itemId: 1, itemType: .cardPack, itemName: "Test", itemDescription: "Test", itemCount: 1)]),
+            //                MailResponse(mailTitle: "Test", mailContent: "Test", sendAt: "Test", itemData: [.init(itemId: 1, itemType: .cardPack, itemName: "Test", itemDescription: "Test", itemCount: 1)]),
+            //                MailResponse(mailTitle: "Test", mailContent: "Test", sendAt: "Test", itemData: [.init(itemId: 1, itemType: .cardPack, itemName: "Test", itemDescription: "Test", itemCount: 1)]),
+            //                MailResponse(mailTitle: "Test", mailContent: "Test", sendAt: "Test", itemData: [.init(itemId: 1, itemType: .cardPack, itemName: "Test", itemDescription: "Test", itemCount: 1)]),
+            //                MailResponse(mailTitle: "Test", mailContent: "Test", sendAt: "Test", itemData: [.init(itemId: 1, itemType: .cardPack, itemName: "Test", itemDescription: "Test", itemCount: 1)]),
+            //                MailResponse(mailTitle: "Test", mailContent: "Test", sendAt: "Test", itemData: [.init(itemId: 1, itemType: .cardPack, itemName: "Test", itemDescription: "Test", itemCount: 1)]),
+            //                MailResponse(mailTitle: "Test", mailContent: "Test", sendAt: "Test", itemData: [.init(itemId: 1, itemType: .cardPack, itemName: "Test", itemDescription: "Test", itemCount: 1)]),
+            //                MailResponse(mailTitle: "Test", mailContent: "Test", sendAt: "Test", itemData: [.init(itemId: 1, itemType: .cardPack, itemName: "Test", itemDescription: "Test", itemCount: 1)]),
+            //                MailResponse(mailTitle: "Test", mailContent: "Test", sendAt: "Test", itemData: [.init(itemId: 1, itemType: .cardPack, itemName: "Test", itemDescription: "Test", itemCount: 1)])
+            //            ]
             await fetchMail()
         } catch {
             print(error.localizedDescription)

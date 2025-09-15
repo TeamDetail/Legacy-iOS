@@ -49,6 +49,7 @@ struct RuinsDetailModal: View {
                                 }
                             }
                         }
+                        .id("Comment-\(UUID().uuidString)")
                         .padding(.horizontal, 4)
                         .padding(.bottom, 40)
                         .transition(
@@ -71,6 +72,7 @@ struct RuinsDetailModal: View {
                                 }
                             }
                         )
+                        .id("Detail-\(UUID().uuidString)")
                         .padding(.horizontal, 4)
                         .padding(.bottom, 40)
                         .transition(

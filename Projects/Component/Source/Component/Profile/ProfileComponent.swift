@@ -34,16 +34,6 @@ public struct ProfileComponent: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: 100, height: 100)
                     .clipShape(size: 50)
-                    .overlay(alignment: .bottomTrailing) {
-                        AnimationButton {
-                            action()
-                        } label: {
-                            Image(icon: .pen)
-                                .frame(width: 32, height: 32)
-                                .background(LegacyColor.Background.normal)
-                                .clipShape(size: 8)
-                        }
-                    }
             } else {
                 Circle()
                     .frame(width: 100, height: 100)
@@ -51,21 +41,33 @@ public struct ProfileComponent: View {
                     .shimmering()
             }
             
-            VStack(alignment: .leading, spacing: 6) {
-                Text(data.nickname)
-                    .font(.title3(.bold))
-                    .foreground(LegacyColor.Common.white)
-                
-                Text("Lv.\(data.level)")
-                    .font(.body1(.bold))
-                    .foreground(LegacyColor.Label.alternative)
-                    .padding(.horizontal, 2)
-                
-                if !data.title.name.isEmpty {
-                    TitleBadge(data.title.name, color: LegacyColor.Yellow.netural, size: .big)
+            HStack {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(data.nickname)
+                        .font(.title3(.bold))
+                        .foreground(LegacyColor.Common.white)
+                    
+                    Text("Lv.\(data.level)")
+                        .font(.body1(.bold))
+                        .foreground(LegacyColor.Label.alternative)
+                        .padding(.horizontal, 2)
+                    
+                    if !data.title.name.isEmpty {
+                        TitleBadge(data.title.name, color: LegacyColor.Yellow.netural, size: .big)
+                    }
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                
+                AnimationButton {
+                    action()
+                } label: {
+                    Image(icon: .pen)
+                        .frame(width: 32, height: 32)
+                        .background(LegacyColor.Background.normal)
+                        .clipShape(size: 8)
+                }
+                .frame(maxWidth: .infinity, alignment: .trailing)
             }
-            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }

@@ -47,29 +47,11 @@ public struct CommentModal: View {
                 }
             }
             
-            Text("클릭해서 별점 선택해주세요.")
+            Text("클릭하여 별점 선택해주세요.")
                 .font(.caption1(.medium))
                 .foreground(LegacyColor.Label.alternative)
             
             HStack(spacing: 8) {
-                AnimationButton {
-                    onConfirm()
-                } label: {
-                    Text("확인")
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 40)
-                        .font(.caption1(.bold))
-                        .foreground(LegacyColor.Purple.normal)
-                        .background(LegacyColor.Fill.normal)
-                        .clipShape(size: 12)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 12)
-                                .inset(by: 5)
-                                .stroke(lineWidth: 1)
-                                .foreground(LegacyColor.Purple.normal)
-                        )
-                }
-                
                 AnimationButton {
                     onCancel()
                 } label: {
@@ -85,6 +67,24 @@ public struct CommentModal: View {
                                 .inset(by: 5)
                                 .stroke(lineWidth: 1)
                                 .foreground(LegacyColor.Line.alternative)
+                        )
+                }
+                
+                AnimationButton {
+                    onConfirm()
+                } label: {
+                    Text("확인")
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 40)
+                        .font(.caption1(.bold))
+                        .foreground(LegacyColor.Purple.normal)
+                        .background(LegacyColor.Fill.normal)
+                        .clipShape(size: 12)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .inset(by: 5)
+                                .stroke(lineWidth: 1)
+                                .foreground(LegacyColor.Purple.normal)
                         )
                 }
             }

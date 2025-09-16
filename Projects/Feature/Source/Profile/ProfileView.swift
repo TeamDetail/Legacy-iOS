@@ -26,7 +26,7 @@ struct ProfileView: View {
                 if let data = data {
                     ProfileComponent(data) {
                         withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                            //MARK: 수정 뷰로 이동 처리
+                            flow.push(EditInfoView(viewModel: viewModel))
                         }
                     }
                 } else {
@@ -94,7 +94,6 @@ struct ProfileView: View {
                                 await inventoryViewModel.openInventory(
                                     .init(cardpackId: selectedData.itemId, count: openCount)
                                 )
-                                inventoryViewModel.selectedItem = nil
                                 showCountModal = false
                                 revealCard = true
                             }
@@ -107,7 +106,7 @@ struct ProfileView: View {
                 }
             }
             
-            if revealCard, let openedCards = inventoryViewModel.openedCards {
+            if revealCard, let openedCards = inventoryViewModel.openedCards, let packName = inventoryViewModel.selectedItem {
                 Color.black.opacity(0.7)
                     .ignoresSafeArea()
                     .onTapGesture {
@@ -116,10 +115,11 @@ struct ProfileView: View {
                 
                 VStack {
                     CardRevealModal(
-                        packName: openedCards.first?.cardName ?? "카드팩",
+                        packName: packName.itemName,
                         cards: openedCards
                     ) {
                         revealCard = false
+                        inventoryViewModel.selectedItem = nil
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)

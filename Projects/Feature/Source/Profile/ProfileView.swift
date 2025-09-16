@@ -16,7 +16,9 @@ struct ProfileView: View {
     @State private var showPhotoPicker: Bool = false
     let data: UserInfoResponse?
     
+    @State private var showCountModal = false
     @State private var revealCard = false
+    @State private var openCount = 0
     
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -73,16 +75,35 @@ struct ProfileView: View {
                     .ignoresSafeArea()
                     .onTapGesture {
                         inventoryViewModel.selectedItem = nil
+                        showCountModal = false
                     }
                 
                 InventoryModal(selectedData) {
-                    Task {
-                        await inventoryViewModel.openInventory(
-                            .init(cardpackId: selectedData.itemId, count: selectedData.itemCount)
-                        )
-                        inventoryViewModel.selectedItem = nil
-                        revealCard = true
+                    showCountModal = true
+                }
+            }
+            
+            if let selectedData = inventoryViewModel.selectedItem {
+                if showCountModal {
+                    VStack {
+                        CountModal(
+                            count: $openCount,
+                            maxCount: selectedData.itemCount
+                        ) {
+                            Task {
+                                await inventoryViewModel.openInventory(
+                                    .init(cardpackId: selectedData.itemId, count: openCount)
+                                )
+                                inventoryViewModel.selectedItem = nil
+                                showCountModal = false
+                                revealCard = true
+                            }
+                        } onCancel: {
+                            showCountModal = false
+                        }
                     }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .transition(.scale.combined(with: .opacity))
                 }
             }
             
@@ -95,7 +116,7 @@ struct ProfileView: View {
                 
                 VStack {
                     CardRevealModal(
-                        packName: "카드팩",
+                        packName: openedCards.first?.cardName ?? "카드팩",
                         cards: openedCards
                     ) {
                         revealCard = false

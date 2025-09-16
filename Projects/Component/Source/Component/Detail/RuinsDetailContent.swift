@@ -55,37 +55,12 @@ struct RuinsDetailContent: View {
                 }
             }
             
-            if let url = URL(string: data.ruinsImage) {
-                ZStack(alignment: .bottomLeading) {
-                    KFImage(url)
-                        .placeholder { _ in
-                            RoundedRectangle(cornerRadius: 16)
-                                .fill(Color.gray.opacity(0.3))
-                                .frame(width: 160, height: 224)
-                                .redacted(reason: .placeholder)
-                                .shimmering()
-                        }
-                        .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: 160, height: 224)
-                        .clipShape(size: 16)
-                    
-                    
-                    Text(data.name)
-                        .font(.bitFont(size: 14))
-                        .foreground(LegacyColor.Common.white)
-                        .padding(6)
-                        .clipShape(size: 8)
-                        .padding([.leading, .bottom], 8)
-                }
-                .overlay(
-                    RuinsCategory(
-                        category: data.category
-                    )
-                    .frame(maxWidth: .infinity, alignment: .topLeading)
-                    .padding([.leading, .top], 8),
-                    alignment: .topLeading
-                )
+            if let card = data.card {
+                RuinCardView(data: card)
+                    .frame(width: 160, height: 234)
+            } else {
+                ErrorRuinsCardView()
+                    .frame(width: 160, height: 234)
             }
         }
         .padding(6)

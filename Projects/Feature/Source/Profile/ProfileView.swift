@@ -16,7 +16,7 @@ struct ProfileView: View {
     @State private var showPhotoPicker: Bool = false
     let data: UserInfoResponse?
     
-    @State private var showInventory = false
+    @State private var revealCard = false
     
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -59,40 +59,50 @@ struct ProfileView: View {
                 if selection == 3 {
                     InventoryView(
                         viewModel: inventoryViewModel,
-                        showInventory: $showInventory
+                        revealCard: $revealCard
                     )
                 }
             }
             .padding(.horizontal, 10)
-            .blur(radius: showInventory ? 2 : 0)
-            .animation(.easeInOut(duration: 0.25), value: showInventory)
+            .blur(radius: revealCard || inventoryViewModel.selectedItem != nil ? 2 : 0)
+            .animation(.easeInOut(duration: 0.25), value: revealCard)
+            .animation(.easeInOut(duration: 0.25), value: inventoryViewModel.selectedItem != nil)
             
-            if showInventory, let data = inventoryViewModel.selectedItem {
-                Color.black.opacity(0.3)
+            if let selectedData = inventoryViewModel.selectedItem {
+                Color.black.opacity(0.4)
                     .ignoresSafeArea()
                     .onTapGesture {
-                        withAnimation(.easeOut(duration: 0.2)) {
-                            showInventory = false
-                        }
+                        inventoryViewModel.selectedItem = nil
                     }
-                    .transition(.opacity.animation(.easeInOut(duration: 0.2)))
                 
-                InventoryModal(data) {
-                    withAnimation(.easeOut(duration: 0.2)) {
-                        Task {
-                            await inventoryViewModel.openInventory(
-                                .init(cardpackId: data.itemId, count: data.itemCount)
-                            )
-                        }
-                        showInventory = false
+                InventoryModal(selectedData) {
+                    Task {
+                        await inventoryViewModel.openInventory(
+                            .init(cardpackId: selectedData.itemId, count: selectedData.itemCount)
+                        )
+                        inventoryViewModel.selectedItem = nil
+                        revealCard = true
                     }
                 }
-                .transition(.asymmetric(
-                    insertion: .scale(scale: 0.7)
-                        .combined(with: .opacity.animation(.easeOut(duration: 0.1))),
-                    removal: .scale(scale: 0.9)
-                        .combined(with: .opacity.animation(.easeIn(duration: 0.15)))
-                ))
+            }
+            
+            if revealCard, let openedCards = inventoryViewModel.openedCards {
+                Color.black.opacity(0.7)
+                    .ignoresSafeArea()
+                    .onTapGesture {
+                        revealCard = false
+                    }
+                
+                VStack {
+                    CardRevealModal(
+                        packName: "카드팩",
+                        cards: openedCards
+                    ) {
+                        revealCard = false
+                    }
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .transition(.scale.combined(with: .opacity))
             }
         }
         .backButton(title: "프로필") {

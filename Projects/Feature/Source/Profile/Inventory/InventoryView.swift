@@ -11,7 +11,7 @@ import Component
 
 struct InventoryView: View {
     @ObservedObject var viewModel: InventoryViewModel
-    @Binding var showInventory: Bool
+    @Binding var revealCard: Bool
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 20), count: 7)
     
     var body: some View {
@@ -21,9 +21,6 @@ struct InventoryView: View {
                     ForEach(data, id: \.self) { item in
                         InventoryItem() {
                             viewModel.selectedItem = item
-                            withAnimation(.easeOut(duration: 0.2)) {
-                                showInventory = true
-                            }
                         }
                     }
                 }
@@ -40,4 +37,3 @@ struct InventoryView: View {
         }
     }
 }
-

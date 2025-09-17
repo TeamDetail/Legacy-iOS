@@ -8,11 +8,13 @@
 import SwiftUI
 import Component
 import Data
+import FlowKit
 
 struct AchievementView: View {
     @StateObject private var viewModel = AchievementViewModel()
     @State private var selection = 0
     @Binding var tabItem: LegacyTabItem
+    @Flow var flow
     var body: some View {
         LegacyView {
             LegacyScrollView(title: "도전과제", icon: .medal, item: tabItem) {
@@ -29,7 +31,11 @@ struct AchievementView: View {
                         
                         if let data = viewModel.achievementList {
                             ForEach(data, id:\.self) { data in
-                                AchievementItem(data: data)
+                                AchievementItem(data: data) {
+                                    flow.push(
+                                        AcheivementDetailView(data: data)
+                                    )
+                                }
                             }
                         } else {
                             LegacyLoadingView("")

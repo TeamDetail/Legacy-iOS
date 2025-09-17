@@ -24,7 +24,7 @@ struct ShopView: View {
                     VStack(spacing: 16) {
                         HStack {
                             CategoryButtonGroup(
-                                categories: ["카드 팩", "크래딧 충전"],
+                                categories: ["카드 팩"],
                                 selection: $selection
                             )
                             

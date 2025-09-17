@@ -19,16 +19,8 @@ public struct CourseDetailItem: View {
         VStack {
             if let url = URL(string: data.thumbnail) {
                 KFImage(url)
-                    .placeholder { _ in
-                        RoundedRectangle(cornerRadius: 8)
-                            .fill(Color.gray.opacity(0.3))
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 200)
-                            .redacted(reason: .placeholder)
-                            .shimmering()
-                    }
                     .resizable()
-                    .scaledToFit()
+                    .aspectRatio(contentMode: .fill)
                     .frame(maxWidth: .infinity, maxHeight: 200)
                     .clipped()
                     .clipShape(size: 8)
@@ -58,8 +50,8 @@ public struct CourseDetailItem: View {
             .frame(maxWidth: .infinity, alignment: .leading)
             
             VStack {
-                ForEach(data.ruins, id: \.self) { data in
-                    CourseDetailClearItem(data: data)
+                ForEach(Array(data.ruins.enumerated()), id: \.element) { index, ruinData in
+                    CourseDetailClearItem(data: ruinData, index: index)
                 }
                 .padding(.vertical, 8)
             }

@@ -19,8 +19,10 @@ public class RankingViewModel: ObservableObject, Refreshable {
     func fetchRanking() async {
         do {
             rankingList = try await rankingRepository.fetchRanking()
+        } catch let apiError as APIError {
+            print(apiError)
         } catch {
-            print(error.localizedDescription)
+            print("에러: \(error)")
         }
     }
     

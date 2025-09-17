@@ -19,8 +19,10 @@ public struct ShopItem: View {
     
     public var body: some View {
         HStack {
-            RoundedRectangle(cornerRadius: 12)
+            Image(icon: .cardPack)
+                .resizable()
                 .frame(width: 84, height: 84)
+                .clipShape(size: 12)
             
             VStack(alignment: .leading, spacing: 8) {
                 Text(data.cardpackName)
@@ -49,8 +51,9 @@ public struct ShopItem: View {
                         )
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading) // VStack 폭 채우기
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
+        .frame(maxWidth: .infinity) // HStack 폭 채우기
         .padding(.horizontal, 14)
     }
 }

@@ -23,19 +23,13 @@ public struct ProfileComponent: View {
         HStack {
             if let url = URL(string: data.imageUrl) {
                 KFImage(url)
-                    .placeholder { _ in
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(Color.gray.opacity(0.3))
-                            .frame(width: 140, height: 180)
-                            .redacted(reason: .placeholder)
-                            .shimmering()
-                    }
                     .resizable()
-                    .aspectRatio(contentMode: .fit)
+                    .aspectRatio(contentMode: .fill)
                     .frame(width: 100, height: 100)
-                    .clipShape(size: 50)
+                    .clipShape(size: 16)
+                    .clipped()
             } else {
-                Circle()
+                RoundedRectangle(cornerRadius: 16)
                     .frame(width: 100, height: 100)
                     .redacted(reason: .placeholder)
                     .shimmering()
@@ -63,8 +57,9 @@ public struct ProfileComponent: View {
                 } label: {
                     Image(icon: .pen)
                         .frame(width: 32, height: 32)
+                        .padding(2)
                         .background(LegacyColor.Background.normal)
-                        .clipShape(size: 8)
+                        .clipShape(size: 99)
                 }
                 .frame(maxWidth: .infinity, alignment: .trailing)
             }

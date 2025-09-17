@@ -47,6 +47,7 @@ public struct ErrorShopItem: View {
                         )
                 }
             }
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 14)

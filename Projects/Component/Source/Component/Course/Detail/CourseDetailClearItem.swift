@@ -10,23 +10,26 @@ import Domain
 
 public struct CourseDetailClearItem: View {
     let data: ClearRuinsResponse
-    public init(data: ClearRuinsResponse) {
+    let index: Int
+    
+    public init(data: ClearRuinsResponse, index: Int) {
         self.data = data
+        self.index = index
     }
+    
     public var body: some View {
-        HStack {
+        HStack(alignment: .top, spacing: 12) {
             VStack {
-                Text(data.clear ? "✓" : "✗")
+                Text("\(index + 1)")
                     .font(.heading2(.bold))
                     .foreground(LegacyColor.Common.white)
                     .frame(width: 40, height: 40)
                     .background(data.clear ? LegacyColor.Green.normal : LegacyColor.Label.alternative)
-                    .clipShape(size: 999)
+                    .clipShape(Circle())
                 Spacer()
             }
-            .padding(.vertical, 4)
             
-            VStack(alignment: .leading, spacing: 14) {
+            VStack(alignment: .leading, spacing: 4) {
                 Text("#\(data.data.ruinsId)")
                     .font(.caption1(.medium))
                     .foreground(LegacyColor.Label.alternative)
@@ -36,6 +39,7 @@ public struct CourseDetailClearItem: View {
                     .foreground(LegacyColor.Common.white)
                 
                 DetailRatingInfoItem()
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }
             .frame(maxWidth: .infinity, alignment: .topLeading)
             
@@ -47,5 +51,7 @@ public struct CourseDetailClearItem: View {
                     .frame(width: 120, height: 168)
             }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.vertical, 8)
     }
 }

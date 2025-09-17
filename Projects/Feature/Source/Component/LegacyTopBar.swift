@@ -32,17 +32,11 @@ struct LegacyTopBar: View {
                 } label: {
                     if let url = URL(string: data.imageUrl) {
                         KFImage(url)
-                            .placeholder { _ in
-                                RoundedRectangle(cornerRadius: 8)
-                                    .fill(Color.gray.opacity(0.3))
-                                    .frame(width: 140, height: 180)
-                                    .redacted(reason: .placeholder)
-                                    .shimmering()
-                            }
                             .resizable()
-                            .aspectRatio(contentMode: .fit)
+                            .aspectRatio(contentMode: .fill)
                             .frame(width: 44, height: 44)
                             .clipShape(size: 8)
+                            .clipped()
                     } else {
                         Circle()
                             .frame(width: 44, height: 44)

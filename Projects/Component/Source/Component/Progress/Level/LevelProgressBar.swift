@@ -16,6 +16,12 @@ public struct LevelProgressBar: View {
         min(currentExp / maxExp, 1.0)
     }
     
+    public init(level: Int, currentExp: CGFloat, maxExp: CGFloat) {
+        self.level = level
+        self.currentExp = currentExp
+        self.maxExp = maxExp
+    }
+    
     public var body: some View {
         ZStack {
             RoundedRectangle(cornerRadius: 20)

@@ -13,52 +13,51 @@ import Component
 import Kingfisher
 
 struct EditInfoView: View {
+    @State private var showPhotoPicker: Bool = false
     @ObservedObject var viewModel: UserViewModel
     @Flow var flow
     var body: some View {
-        VStack(alignment: .leading, spacing: 14) {
+        VStack(alignment: .leading, spacing: 16) {
             Text("프로필 이미지")
                 .font(.headline(.bold))
                 .foreground(LegacyColor.Common.white)
             
-            HStack {
-                ZStack(alignment: .bottomTrailing) {
-                    if let data = viewModel.userInfo?.imageUrl {
-                        KFImage(URL(string: data))
-                            .resizable()
-                            .aspectRatio(contentMode: .fill)
-                            .frame(width: 200, height: 200)
-                            .clipShape(size: 16)
-                            .clipped()
-                    } else {
-                        RoundedRectangle(cornerRadius: 16)
-                            .fill(Color.gray.opacity(0.3))
-                            .frame(width: 200, height: 200)
-                            .redacted(reason: .placeholder)
-                            .shimmering()
-                    }
-                    
-                    AnimationButton {
-                        
-                    } label: {
-                        Text("이미지 변경")
-                            .frame(width: 100, height: 30)
-                            .font(.caption2(.bold))
-                            .foreground(LegacyColor.Purple.normal)
-                            .background(LegacyColor.Fill.normal)
-                            .clipShape(RoundedRectangle(cornerRadius: 8))
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(lineWidth: 1)
-                                    .foreground(LegacyColor.Purple.normal)
-                            )
-                            .padding(6)
-                    }
+            HStack(alignment: .bottom) {
+                if let data = viewModel.userInfo?.imageUrl {
+                    KFImage(URL(string: data))
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 200, height: 200)
+                        .clipShape(size: 16)
+                        .clipped()
+                } else {
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(Color.gray.opacity(0.3))
+                        .frame(width: 200, height: 200)
+                        .redacted(reason: .placeholder)
+                        .shimmering()
                 }
                 
                 Spacer()
+                
+                AnimationButton {
+                    showPhotoPicker = true
+                } label: {
+                    Text("이미지 변경")
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 30)
+                        .font(.caption1(.bold))
+                        .foreground(LegacyColor.Purple.normal)
+                        .background(LegacyColor.Fill.normal)
+                        .clipShape(size: 12)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 12)
+                                .inset(by: 0.5)
+                                .stroke(lineWidth: 1)
+                                .foreground(LegacyColor.Purple.normal)
+                        )
+                }
             }
-            .padding(.vertical, 8)
             
             Text("자기소개")
                 .font(.headline(.bold))
@@ -74,7 +73,6 @@ struct EditInfoView: View {
             .padding(.horizontal, 12)
             .background(LegacyColor.Fill.normal)
             .clipShape(size: 12)
-            
             Spacer()
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -97,11 +95,16 @@ struct EditInfoView: View {
                             .foreground(LegacyColor.Status.positive)
                     )
             }
-            .padding(.horizontal, 12)
+            .padding(.horizontal, 4)
             .padding(.bottom, 8)
         }
         .backButton(title: "프로필 수정") {
             flow.pop()
+        }
+        .sheet(isPresented: $showPhotoPicker, onDismiss: {
+            Task { await viewModel.editProfileImage() }
+        }) {
+            PhotoPicker(image: $viewModel.image)
         }
     }
 }

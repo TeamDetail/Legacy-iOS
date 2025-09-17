@@ -1,5 +1,5 @@
 //
-//  FloorProgressBar.swift
+//  AdventureProgressBar.swift
 //  Component
 //
 //  Created by 김은찬 on 7/9/25.
@@ -7,12 +7,16 @@
 
 import SwiftUI
 
-public struct FloorProgressBar: View {
-    let currentFloor: CGFloat
-    let maxFloor: CGFloat
+public struct AdventureProgressBar: View {
+    let bloackCount: Int
+    private let maxBloackCount: CGFloat = 100_000
     
     var progress: CGFloat {
-        min(currentFloor / maxFloor, 1.0)
+        min(CGFloat(bloackCount) / maxBloackCount, 1.0)
+    }
+    
+    public init(bloackCount: Int) {
+        self.bloackCount = bloackCount
     }
     
     public var body: some View {
@@ -27,7 +31,7 @@ public struct FloorProgressBar: View {
                 let filledWidth = width * progress
                 
                 Rectangle()
-                    .foreground(LegacyColor.Primary.normal)
+                    .foreground(LegacyColor.Blue.netural)
                     .frame(width: filledWidth, height: height)
                     .clipShape(waveClippedShape(width: filledWidth, height: height))
             }
@@ -35,7 +39,7 @@ public struct FloorProgressBar: View {
             .frame(height: 40)
             
             HStack {
-                Text("최고 \(Int(currentFloor))층")
+                Text("총 \(bloackCount)블록 탐험")
                     .font(.headline(.bold))
                     .foreground(LegacyColor.Common.white)
             }

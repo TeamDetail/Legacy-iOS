@@ -8,26 +8,6 @@
 import Foundation
 
 public struct RecordData: ResponseProtocol {
-    public let allBlocks: Int
-    public let ruinsBlocks: Int
-    public let maxFloor: Int
-    public let maxScore: Int
-    public let cardCount: Int
-    public let shiningCardCount: Int
-    
-    public init(
-        allBlocks: Int,
-        ruinsBlocks: Int,
-        maxFloor: Int,
-        maxScore: Int,
-        cardCount: Int,
-        shiningCardCount: Int
-    ) {
-        self.allBlocks = allBlocks
-        self.ruinsBlocks = ruinsBlocks
-        self.maxFloor = maxFloor
-        self.maxScore = maxScore
-        self.cardCount = cardCount
-        self.shiningCardCount = shiningCardCount
-    }
+    public let adventure: AdventureRecord
+    public let experience: ExperienceRecord
 }

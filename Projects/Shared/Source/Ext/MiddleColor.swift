@@ -36,3 +36,12 @@ public func makeConfirmModalText(_ price: Int) -> AttributedString {
     }
     return attributed
 }
+
+public func rankText(_ rank: Int) -> AttributedString {
+    var attributed = AttributedString("#\(rank) 위")
+    
+    if let range = attributed.range(of: "위") {
+        attributed[range].foregroundColor = LegacyColor.Common.white.color.rawValue
+    }
+    return attributed
+}

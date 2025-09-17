@@ -11,4 +11,5 @@ public struct TitleData: ResponseProtocol {
     public let name: String
     public let content: String
     public let styleId: Int
+    public let grade: Int
 }

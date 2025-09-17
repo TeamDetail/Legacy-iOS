@@ -13,7 +13,6 @@ struct ProfileView: View {
     @StateObject var viewModel = UserViewModel()
     @StateObject private var inventoryViewModel = InventoryViewModel()
     @State private var selection = 0
-    @State private var showPhotoPicker: Bool = false
     let data: UserInfoResponse?
     
     @State private var showCountModal = false
@@ -128,11 +127,6 @@ struct ProfileView: View {
         }
         .backButton(title: "프로필") {
             flow.pop()
-        }
-        .sheet(isPresented: $showPhotoPicker, onDismiss: {
-            Task { await viewModel.editProfileImage() }
-        }) {
-            PhotoPicker(image: $viewModel.image)
         }
         .task {
             await viewModel.fetchMyinfo()

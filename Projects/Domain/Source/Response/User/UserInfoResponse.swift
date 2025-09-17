@@ -10,32 +10,30 @@ import Foundation
 public struct UserInfoResponse: ResponseProtocol {
     public let userId: Int
     public let nickname: String
-    public let level: Int
-    public let exp: Int
-    public let credit: Int
-    public let stats: StatsData
-    public let record: RecordData
     public let imageUrl: String
+    public let description: String
+    public let credit: Int
+    public let level: Int
     public let title: TitleData
+    public let record: RecordData
     
     public init(
         userId: Int,
         nickname: String,
-        level: Int, exp: Int,
-        credit: Int,
-        stats: StatsData,
-        record: RecordData,
         imageUrl: String,
-        title: TitleData
+        description: String,
+        credit: Int,
+        level: Int,
+        title: TitleData,
+        record: RecordData
     ) {
         self.userId = userId
         self.nickname = nickname
-        self.level = level
-        self.exp = exp
-        self.credit = credit
-        self.stats = stats
-        self.record = record
         self.imageUrl = imageUrl
+        self.description = description
+        self.credit = credit
+        self.level = level
         self.title = title
+        self.record = record
     }
 }

@@ -21,7 +21,7 @@ public struct InventoryModal: View {
         VStack(spacing: 14) {
             HStack(spacing: 8) {
                 VStack {
-                    Image(icon: .cap)
+                    Image(icon: .cardPack)
                         .resizable()
                         .frame(width: 96, height: 96)
                 }

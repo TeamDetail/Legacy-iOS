@@ -19,7 +19,9 @@ public struct InventoryItem: View {
             action()
         } label: {
             VStack {
-                Image(icon: .cap)
+                Image(icon: .cardPack)
+                    .resizable()
+                    .frame(width: 48, height: 48)
             }
             .frame(width: 48, height: 48)
             .background(LegacyColor.Fill.normal)

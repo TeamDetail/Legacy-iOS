@@ -47,6 +47,7 @@ struct QuizView: View {
                                         .foreground(LegacyColor.Common.white)
                                         .multilineTextAlignment(.center)
                                         .padding(.horizontal, 8)
+                                        .fixedSize(horizontal: false, vertical: true)
                                 }
                                 
                                 //MARK: 문제목록

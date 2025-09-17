@@ -16,7 +16,7 @@ public enum ProgressStatus: String, CaseIterable {
 public enum SortType: String, CaseIterable {
     case latest = "최신"
     case popular = "인기"
-    case clearCount = "클리어인원"
+    case clearCount = "클리어수"
 }
 
 public enum ContentType: String, CaseIterable {

@@ -36,7 +36,7 @@ public struct RegionItem: View {
                     .padding(2)
                 
                 HStack {
-                    Text("\(cardLength) / 50")
+                    Text("\(cardLength) / 80")
                         .font(.caption2(.medium))
                         .foreground(cardLength == 50 ? LegacyColor.Yellow.netural : LegacyColor.Common.white)
                 }

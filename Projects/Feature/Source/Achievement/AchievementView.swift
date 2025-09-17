@@ -1,5 +1,5 @@
 //
-//  QuestView.swift
+//  AchievementView.swift
 //  Feature
 //
 //  Created by 김은찬 on 7/25/25.
@@ -9,7 +9,8 @@ import SwiftUI
 import Component
 import Data
 
-struct QuestView: View {
+struct AchievementView: View {
+    @StateObject private var viewModel = AchievementViewModel()
     @State private var selection = 0
     @Binding var tabItem: LegacyTabItem
     var body: some View {
@@ -26,12 +27,24 @@ struct QuestView: View {
                         
                         AllRewardButton() {}
                         
-                        ForEach(1...20, id:\.self) { _ in
-                            AchievementView()
+                        if let data = viewModel.achievementList {
+                            ForEach(data, id:\.self) { data in
+                                AchievementItem(data: data)
+                            }
+                        } else {
+                            LegacyLoadingView("")
                         }
                     }
                 }
                 .padding(.horizontal, 14)
+            }
+            .refreshable {
+                await viewModel.onRefresh()
+            }
+        }
+        .onAppear {
+            Task {
+                await viewModel.fetchAchievement()
             }
         }
     }

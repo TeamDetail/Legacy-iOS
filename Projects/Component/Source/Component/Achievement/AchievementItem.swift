@@ -6,10 +6,15 @@
 //
 
 import SwiftUI
+import Domain
 
-public struct AchievementView: View {
-    //TODO: data response 추가
-    public init() {}
+public struct AchievementItem: View {
+    let data: AchievementResponse
+    
+    public init(data: AchievementResponse) {
+        self.data = data
+    }
+    
     public var body: some View {
         HStack {
             RoundedRectangle(cornerRadius: 8)
@@ -19,14 +24,14 @@ public struct AchievementView: View {
             VStack(alignment: .leading, spacing: 8) {
                 VStack(alignment: .leading, spacing: 4) {
                     HStack(spacing: 2) {
-                        Text("오늘의 탐색 작업")
+                        Text(data.achievementName ?? "")
                             .font(.label(.bold))
                             .foreground(LegacyColor.Common.white)
                         Text("#탐색")
                             .font(.caption1(.medium))
                             .foreground(LegacyColor.Red.normal)
                     }
-                    Text("매일매일 하는 게 제일 중요합니다.")
+                    Text(data.achievementContent ?? "")
                         .font(.caption2(.medium))
                         .foreground(LegacyColor.Label.alternative)
                 }
@@ -56,8 +61,4 @@ public struct AchievementView: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
-}
-
-#Preview {
-    AchievementView()
 }

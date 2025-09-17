@@ -41,7 +41,7 @@ struct RuinsSearchModal: View {
             
             ScrollView(.vertical, showsIndicators: false) {
                 if viewModel.isLoadingSearch {
-                    LegacyLoadingView(description: "")
+                    LegacyLoadingView("")
                 } else if let data = viewModel.searchResult {
                     ForEach(data, id: \.ruinsId) { ruinsData in
                         RuinsSearchResultItem(data: ruinsData) {

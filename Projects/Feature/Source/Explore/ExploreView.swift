@@ -35,7 +35,7 @@ public struct ExploreView: View {
     public var body: some View {
         ZStack {
             if locationManager.isLoading {
-                LegacyLoadingView(description: "위치를 가져오는 중이에요!")
+                LegacyLoadingView("위치를 가져오는 중이에요!")
             } else {
                 GMSMapViewRepresentable(
                     userLocation: locationManager.location,

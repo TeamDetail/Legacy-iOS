@@ -19,7 +19,7 @@ public struct RootView: View {
                 case .shop:
                     ShopView(tabItem: $selection)
                 case .medal:
-                    QuestView(tabItem: $selection)
+                    AchievementView(tabItem: $selection)
                 case .flag:
                     ExploreView($isTabBarHidden)
                 case .course:

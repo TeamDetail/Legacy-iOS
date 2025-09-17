@@ -58,7 +58,7 @@ struct MailView: View {
                                     }
                                 }
                             } else {
-                                LegacyLoadingView(description: "")
+                                LegacyLoadingView("")
                                     .padding(.top, 10)
                             }
                         }
@@ -74,7 +74,7 @@ struct MailView: View {
                                 selection = 0
                             }
                         } else {
-                            LegacyLoadingView(description: "")
+                            LegacyLoadingView("")
                                 .padding(.top, 10)
                         }
                     }

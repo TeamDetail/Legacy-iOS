@@ -63,9 +63,7 @@ struct ShopView: View {
                         } else {
                             VStack {
                                 Spacer()
-                                LegacyLoadingView(
-                                    description: ""
-                                )
+                                LegacyLoadingView("")
                             }
                         }
                     }

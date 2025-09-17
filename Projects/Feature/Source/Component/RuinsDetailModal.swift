@@ -12,6 +12,8 @@ import Component
 struct RuinsDetailModal: View {
     @StateObject private var commentViewModel = CommentViewModel()
     @State private var showComment = false
+    @State private var rating: Double = 0.0
+    @State private var commentText: String = ""
     @Binding var showDetail: Bool
     @Binding var isTabBarHidden: Bool
     let detail: RuinsDetailResponse
@@ -39,11 +41,17 @@ struct RuinsDetailModal: View {
                     if showComment {
                         CommentView(
                             detail,
-                            rating: $commentViewModel.rating,
-                            commentText: $commentViewModel.commentText
+                            rating: $rating,
+                            commentText: $commentText
                         ) {
                             Task {
-                                await commentViewModel.createComment(detail.ruinsId)
+                                await commentViewModel.createComment(
+                                    .init(
+                                        ruinsId: detail.ruinsId,
+                                        rating: rating,
+                                        comment: commentText
+                                    )
+                                )
                                 withAnimation(.spring(response: 0.55, dampingFraction: 0.85)) {
                                     showComment = false
                                 }

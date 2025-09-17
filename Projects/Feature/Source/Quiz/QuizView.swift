@@ -110,9 +110,7 @@ struct QuizView: View {
                 }
                 
                 if quizViewModel.isLoadingQuiz {
-                    LegacyLoadingView(
-                        description: "퀴즈를 불러오는 중..."
-                    )
+                    LegacyLoadingView("퀴즈를 불러오는 중...")
                 }
             }
             .padding(.horizontal, 16)

@@ -11,7 +11,7 @@ public struct LegacyLoadingView: View {
     @State private var animate = false
     let description: String
     
-    public init(animate: Bool = false, description: String) {
+    public init(animate: Bool = false, _ description: String) {
         self.animate = animate
         self.description = description
     }

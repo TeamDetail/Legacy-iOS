@@ -12,22 +12,14 @@ import Data
 
 public class CommentViewModel: ObservableObject {
     @Published var ruinComments: [CommentResponse]?
-    @Published var rating: Double = 0.0
-    @Published var commentText: String = ""
     
     @Inject var exploreRepository: any ExploreRepository
     
     //MARK: 유적지 평점
     @MainActor
-    func createComment(_ ruinsId: Int) async {
+    func createComment(_ request: CommentRequest) async {
         do {
-            try await exploreRepository.createComment(
-                .init(
-                    ruinsId: ruinsId,
-                    rating: rating,
-                    comment: commentText
-                )
-            )
+            try await exploreRepository.createComment(request)
         } catch {
             print("에러\(error.localizedDescription)")
         }

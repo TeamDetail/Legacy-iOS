@@ -52,6 +52,10 @@ public struct DataSourceAssembly: Assembly {
             MailDataSource()
         }.inObjectScope(.container)
         
+        container.register(AchievementDataSource.self) { _ in
+            AchievementDataSource()
+        }.inObjectScope(.container)
+        
         container.register(BlockRepository.self) { _ in //MARK: 나중에 구현
             BlockService()
         }.inObjectScope(.container)

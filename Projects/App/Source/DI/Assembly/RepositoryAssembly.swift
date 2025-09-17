@@ -62,5 +62,10 @@ public struct RepositoryAssembly: Assembly {
             let dataSource = resolver.resolve(MailDataSource.self)!
             return MailRepositoryImpl(dataSource: dataSource)
         }.inObjectScope(.container)
+        
+        container.register(AchievementRepository.self) { resolver in
+            let dataSource = resolver.resolve(AchievementDataSource.self)!
+            return AchievementRepositoryImpl(dataSource: dataSource)
+        }.inObjectScope(.container)
     }
 }

@@ -91,7 +91,7 @@ struct CourseListView: View {
                     .frame(maxWidth: .infinity)
                     .zIndex(0)
                 } else {
-                    LegacyLoadingView(description: "")
+                    LegacyLoadingView("")
                 }
             }
         }

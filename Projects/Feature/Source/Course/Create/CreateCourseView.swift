@@ -100,7 +100,7 @@ struct CreateCourseView: View {
                         .padding(.horizontal, 8)
                         
                         if viewModel.isLoading {
-                            LegacyLoadingView(description: "")
+                            LegacyLoadingView("")
                         } else if let data = viewModel.searchResult {
                             ForEach(data, id: \.ruinsId) { item in
                                 RuinsSearchItem(

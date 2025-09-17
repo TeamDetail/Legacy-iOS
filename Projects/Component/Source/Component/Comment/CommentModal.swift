@@ -9,6 +9,7 @@ import SwiftUI
 
 public struct CommentModal: View {
     @Binding var rating: Double
+    @State private var tempRating: Double
     let onConfirm: () -> Void
     let onCancel: () -> Void
     
@@ -18,13 +19,14 @@ public struct CommentModal: View {
         onCancel: @escaping () -> Void
     ) {
         self._rating = rating
+        self._tempRating = State(initialValue: rating.wrappedValue)
         self.onConfirm = onConfirm
         self.onCancel = onCancel
     }
     
     public var body: some View {
         VStack(spacing: 20) {
-            Text(String(format: "%.1f", rating))
+            Text(String(format: "%.1f", tempRating))
                 .font(.title2(.bold))
                 .foreground(LegacyColor.Primary.normal)
             
@@ -32,22 +34,21 @@ public struct CommentModal: View {
                 ForEach(0..<5, id: \.self) { index in
                     HStack(spacing: 0) {
                         Image(icon: .leftStar)
-                            .foreground(rating >= Double(index) + 0.5 ? LegacyColor.Primary.normal : LegacyColor.Common.white)
+                            .foreground(tempRating >= Double(index) + 0.5 ? LegacyColor.Primary.normal : LegacyColor.Common.white)
+                            .onTapGesture {
+                                tempRating = Double(index) + 0.5
+                            }
+                        
                         Image(icon: .rightStar)
-                            .foreground(rating >= Double(index) + 1.0 ? LegacyColor.Primary.normal : LegacyColor.Common.white)
+                            .foreground(tempRating >= Double(index) + 1.0 ? LegacyColor.Primary.normal : LegacyColor.Common.white)
+                            .onTapGesture {
+                                tempRating = Double(index) + 1.0
+                            }
                     }
-                }
-                .foreground(LegacyColor.Common.white)
-            }
-            .onTapGesture {
-                if rating >= 5.0 {
-                    rating = 0.0
-                } else {
-                    rating += 0.5
                 }
             }
             
-            Text("클릭하여 별점 선택해주세요.")
+            Text("별점을 선택해주세요.")
                 .font(.caption1(.medium))
                 .foreground(LegacyColor.Label.alternative)
             
@@ -64,13 +65,14 @@ public struct CommentModal: View {
                         .clipShape(size: 12)
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
-                                .inset(by: 5)
+                                .inset(by: 0.5)
                                 .stroke(lineWidth: 1)
                                 .foreground(LegacyColor.Line.alternative)
                         )
                 }
                 
                 AnimationButton {
+                    rating = tempRating
                     onConfirm()
                 } label: {
                     Text("확인")
@@ -82,7 +84,7 @@ public struct CommentModal: View {
                         .clipShape(size: 12)
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
-                                .inset(by: 5)
+                                .inset(by: 0.5)
                                 .stroke(lineWidth: 1)
                                 .foreground(LegacyColor.Purple.normal)
                         )

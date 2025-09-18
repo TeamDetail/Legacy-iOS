@@ -11,17 +11,20 @@ public struct RegionItem: View {
     let regionType: RegionEnum
     let cardLength: Int
     let select: Bool
+    let maxCount: Int
     let action: () -> Void
     
     public init(
         regionType: RegionEnum,
         cardLength: Int,
         select: Bool,
+        maxCount: Int,
         action: @escaping () -> Void
     ) {
         self.regionType = regionType
         self.cardLength = cardLength
         self.select = select
+        self.maxCount = maxCount
         self.action = action
     }
     
@@ -29,21 +32,21 @@ public struct RegionItem: View {
         AnimationButton {
             action()
         } label: {
-            HStack(alignment: .center, spacing: 30) {
+            HStack(alignment: .center, spacing: 8) {
                 Text(regionType.regionName)
                     .font(.body2(.bold))
                     .foreground(LegacyColor.Common.white)
-                    .padding(2)
+                    .lineLimit(1)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading, 6)
                 
-                HStack {
-                    Text("\(cardLength) / 80")
-                        .font(.caption2(.medium))
-                        .foreground(cardLength == 50 ? LegacyColor.Yellow.netural : LegacyColor.Common.white)
-                }
-                .padding(.vertical, 4)
-                .padding(.horizontal, 6)
-                .background(select ? LegacyColor.Primary.alternative : LegacyColor.Background.normal)
-                .clipShape(size: 8)
+                Text("\(cardLength) / \(maxCount)")
+                    .font(.caption2(.medium))
+                    .foreground(cardLength == maxCount ? LegacyColor.Yellow.netural : LegacyColor.Common.white)
+                    .padding(.vertical, 4)
+                    .padding(.horizontal, 6)
+                    .background(select ? LegacyColor.Primary.alternative : LegacyColor.Background.normal)
+                    .clipShape(size: 8)
             }
             .padding(4)
             .frame(width: 120, height: 32, alignment: .center)

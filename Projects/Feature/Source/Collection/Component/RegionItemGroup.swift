@@ -15,15 +15,14 @@ struct RegionItemGroup: View {
     var body: some View {
         VStack(spacing: 8) {
             ForEach(RegionEnum.allCases, id: \.self) { region in
-                let cards = data.regionCardMap[region] ?? []
                 RegionItem(
                     regionType: region,
-                    cardLength: cards.count,
+                    cardLength: data.regionCardMap[region]?.cards.count ?? 0,
                     select: selectedRegion == region,
-                    action: {
-                        selectedRegion = region
-                    }
-                )
+                    maxCount: data.regionCardMap[region]?.maxCount ?? 0
+                ) {
+                    selectedRegion = region
+                }
             }
         }
     }

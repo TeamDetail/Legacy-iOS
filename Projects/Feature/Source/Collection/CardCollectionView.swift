@@ -20,7 +20,6 @@ struct CardCollectionView: View {
     var body: some View {
         VStack {
             HStack(alignment: .top) {
-                //MARK: TODO: refactor
                 RegionItemGroup(data: viewModel, selectedRegion: $selectedRegion)
                     .padding(.vertical, 12)
                 
@@ -28,13 +27,13 @@ struct CardCollectionView: View {
                     if viewModel.regionCardMap.isEmpty {
                         LegacyLoadingView("")
                     } else if let cards = viewModel.regionCardMap[selectedRegion] {
-                        if cards.isEmpty {
+                        if cards.cards.isEmpty {
                             Text("\(selectedRegion.regionName) 지역의 카드가 없어요!")
                                 .font(.title2(.bold))
                                 .foreground(LegacyColor.Common.white)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                         } else {
-                            MyCardListView(cards: cards)
+                            MyCardListView(cards: cards.cards)
                         }
                     } else {
                         LegacyLoadingView("")

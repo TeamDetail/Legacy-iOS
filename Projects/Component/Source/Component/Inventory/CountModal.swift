@@ -131,5 +131,8 @@ public struct CountModal: View {
         .frame(width: 280, height: 240)
         .background(LegacyColor.Background.normal)
         .clipShape(size: 20)
+        .onAppear {
+            count = 0
+        }
     }
 }

@@ -112,6 +112,7 @@ public struct CommentView: View {
                                 .foreground(LegacyColor.Blue.netural)
                         )
                 }
+                .disabled(commentText.isEmpty)
                 .padding(.bottom, 8)
             }
             .padding(10)

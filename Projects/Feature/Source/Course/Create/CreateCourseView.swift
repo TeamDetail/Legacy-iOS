@@ -24,6 +24,9 @@ struct CreateCourseView: View {
     @FocusState private var isTitleFocused: Bool
     @FocusState private var isDescriptionFocused: Bool
     @FocusState private var isSearchFocused: Bool
+    private var courseDisabled: Bool {
+        title.isEmpty || description.isEmpty || tagList.isEmpty || ruinsIdList.isEmpty
+    }
     
     @State private var keyboardHeight: CGFloat = 0
     
@@ -187,6 +190,7 @@ struct CreateCourseView: View {
                             .foreground(LegacyColor.Blue.netural)
                     )
             }
+            .disabled(courseDisabled)
             .padding(.horizontal, 12)
             .padding(.bottom, 8)
         }

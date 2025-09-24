@@ -19,7 +19,7 @@ public struct QuizProblem: View {
     }
     
     public var body: some View {
-        AnimationButton {
+        Button {
             HapticManager.instance.impact(style: .rigid)
             action()
         } label: {

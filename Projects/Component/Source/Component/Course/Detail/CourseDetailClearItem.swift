@@ -24,7 +24,7 @@ public struct CourseDetailClearItem: View {
                     .font(.heading2(.bold))
                     .foreground(LegacyColor.Common.white)
                     .frame(width: 40, height: 40)
-                    .background(data.clear ? LegacyColor.Green.normal : LegacyColor.Label.alternative)
+                    .background(data.clear ? LegacyColor.Blue.netural : LegacyColor.Label.alternative)
                     .clipShape(Circle())
                 Spacer()
             }

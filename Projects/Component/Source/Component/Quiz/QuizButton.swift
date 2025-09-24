@@ -19,7 +19,7 @@ public struct QuizButton: View {
     }
     
     public var body: some View {
-        AnimationButton {
+        Button {
             action()
         } label: {
             Text(title)

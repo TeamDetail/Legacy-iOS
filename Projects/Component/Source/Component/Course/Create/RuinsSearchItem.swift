@@ -37,7 +37,7 @@ public struct RuinsSearchItem: View {
                             .foreground(LegacyColor.Common.white)
                             .frame(maxWidth: .infinity)
                             .frame(height: 20)
-                            .background(LegacyColor.Green.normal)
+                            .background(LegacyColor.Blue.netural)
                             .clipShape(size: 12)
                     }
                     

@@ -32,11 +32,11 @@ public struct CourseClearTag: View {
                 
                 if current >= max {
                     RoundedRectangle(cornerRadius: 12)
-                        .foreground(LegacyColor.Green.normal)
+                        .foreground(LegacyColor.Blue.netural)
                         .frame(width: filledWidth, height: height)
                 } else {
                     Rectangle()
-                        .foreground(LegacyColor.Green.normal)
+                        .foreground(LegacyColor.Blue.netural)
                         .frame(width: filledWidth, height: height)
                         .clipShape(waveClippedShape(width: filledWidth, height: height))
                 }

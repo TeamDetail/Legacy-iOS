@@ -12,6 +12,8 @@ struct StatusModalView: View {
     let message: String
     let statusType: LegacyStatusType
     let onClear: () -> Void
+    let bottomPadding: CGFloat
+    
     @State private var isVisible = false
     
     var body: some View {
@@ -21,11 +23,11 @@ struct StatusModalView: View {
                     statusType: statusType,
                     description: message
                 )
-                .padding(.bottom, 110)
+                .padding(.bottom, bottomPadding)
                 .scaleEffect(isVisible ? 1.0 : 0.8)
                 .opacity(isVisible ? 1.0 : 0.0)
                 .offset(y: isVisible ? 0 : 20)
-                .animation(.spring(response: 0.5, dampingFraction: 0.7, blendDuration: 0), value: isVisible)
+                .animation(.spring(response: 0.5, dampingFraction: 0.7), value: isVisible)
                 .onAppear {
                     withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
                         isVisible = true
@@ -50,6 +52,7 @@ extension View {
     func statusModal(
         message: String,
         statusType: LegacyStatusType,
+        bottomPadding: CGFloat = 75,
         onClear: @escaping () -> Void
     ) -> some View {
         self.overlay(
@@ -58,7 +61,8 @@ extension View {
                 StatusModalView(
                     message: message,
                     statusType: statusType,
-                    onClear: onClear
+                    onClear: onClear,
+                    bottomPadding: bottomPadding
                 )
             }
                 .allowsHitTesting(false)

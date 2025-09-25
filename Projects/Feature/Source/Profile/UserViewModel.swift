@@ -8,25 +8,30 @@ import DIContainer
 import Domain
 import Data
 
-public class UserViewModel: ObservableObject {
+class UserViewModel: ObservableObject, APIMessageable {
+    @Published var successMessage: String = ""
+    @Published var errorMessage: String = ""
+    
     @Published var userInfo: UserInfoResponse?
     @Published var isLoading: Bool = false
     @Published var profileImageUrl: String = ""
+    @Published var imageUrlResponse: ImageUrlResponse?
     @Published var image: Data?
+    
     @Inject var userRepository: any UserRepository
     
     public init() {}
     
     @MainActor
     func fetchMyinfo() async {
-        guard !isLoading else { return } // 중복 호출 방지
+        guard !isLoading else { return }
         isLoading = true
         defer { isLoading = false }
         
         do {
             userInfo = try await userRepository.fetchMyinfo()
         } catch {
-            print("\(error) 에러")
+            print("\(error) fetchMyinfo 에러")
         }
     }
     
@@ -35,12 +40,10 @@ public class UserViewModel: ObservableObject {
         guard let image else { return }
         
         do {
-            // 파일명 생성
             let fileName = UUID().uuidString + ".jpg"
-            let presignedUrl = try await userRepository.uploadUrl(fileName)
-            try await uploadImage(to: presignedUrl, data: image)
-            try await userRepository.changeProfileImage(.init(profileImageUrl: presignedUrl))
-            await fetchMyinfo()
+            imageUrlResponse = try await userRepository.uploadUrl(fileName)
+            guard let uploadUrl = imageUrlResponse?.uploadUrl else { return }
+            try await uploadImage(to: uploadUrl, data: image)
         } catch {
             print("\(error) 업로드 에러")
         }
@@ -62,7 +65,16 @@ public class UserViewModel: ObservableObject {
     }
     
     @MainActor
-    func refreshUserInfo() async {
-        await fetchMyinfo()
+    func editProfile() async {
+        guard let imageUrl = imageUrlResponse?.imageUrl else { return }
+        
+        do {
+            try await userRepository.changeProfileImage(.init(profileImageUrl: imageUrl))
+            successMessage = "저장 완료!"
+        } catch let apiError as APIError {
+            errorMessage = apiError.message
+        } catch {
+            print("에러: \(error)")
+        }
     }
 }

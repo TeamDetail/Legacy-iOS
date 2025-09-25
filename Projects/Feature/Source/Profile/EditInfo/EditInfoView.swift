@@ -1,10 +1,3 @@
-//
-//  EditInfoView.swift
-//  Feature
-//
-//  Created by 김은찬 on 9/16/25.
-//
-
 import Domain
 import SwiftUI
 import FlowKit
@@ -16,6 +9,7 @@ struct EditInfoView: View {
     @State private var showPhotoPicker: Bool = false
     @ObservedObject var viewModel: UserViewModel
     @Flow var flow
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("프로필 이미지")
@@ -23,8 +17,15 @@ struct EditInfoView: View {
                 .foreground(LegacyColor.Common.white)
             
             HStack(alignment: .bottom) {
-                if let data = viewModel.userInfo?.imageUrl {
-                    KFImage(URL(string: data))
+                if let data = viewModel.image {
+                    Image(uiImage: UIImage(data: data)!)
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 200, height: 200)
+                        .clipShape(size: 16)
+                        .clipped()
+                } else if let urlString = viewModel.userInfo?.imageUrl {
+                    KFImage(URL(string: urlString))
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                         .frame(width: 200, height: 200)
@@ -73,18 +74,25 @@ struct EditInfoView: View {
             .padding(.horizontal, 12)
             .background(LegacyColor.Fill.normal)
             .clipShape(size: 12)
+            
             Spacer()
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 14)
+        .padding(.top, 16)
         .overlay(alignment: .bottom) {
             AnimationButton {
-                
+                Task {
+                    await viewModel.editProfile()
+                    try? await Task.sleep(nanoseconds: 2_000_000_000)
+                    flow.pop()
+                    flow.pop()
+                }
             } label: {
                 Text("변경사항 저장")
                     .frame(maxWidth: .infinity)
                     .frame(height: 45)
-                    .font(.caption1(.bold))
+                    .font(.body1(.bold))
                     .foreground(LegacyColor.Status.positive)
                     .background(LegacyColor.Fill.normal)
                     .clipShape(size: 12)
@@ -95,8 +103,21 @@ struct EditInfoView: View {
                             .foreground(LegacyColor.Status.positive)
                     )
             }
-            .padding(.horizontal, 4)
+            .disabled(viewModel.image == nil)
+            .padding(.horizontal, 14)
             .padding(.bottom, 8)
+        }
+        .statusModal(
+            message: viewModel.successMessage,
+            statusType: .success
+        ) {
+            viewModel.successMessage = ""
+        }
+        .statusModal(
+            message: viewModel.errorMessage,
+            statusType: .failure
+        ) {
+            viewModel.errorMessage = ""
         }
         .backButton(title: "프로필 수정") {
             flow.pop()

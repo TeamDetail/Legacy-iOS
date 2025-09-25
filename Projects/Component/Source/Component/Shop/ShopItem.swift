@@ -51,9 +51,9 @@ public struct ShopItem: View {
                         )
                 }
             }
-            .frame(maxWidth: .infinity, alignment: .leading) // VStack 폭 채우기
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
-        .frame(maxWidth: .infinity) // HStack 폭 채우기
+        .frame(maxWidth: .infinity)
         .padding(.horizontal, 14)
     }
 }

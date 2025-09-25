@@ -10,7 +10,7 @@ import Component
 
 struct ProfileView: View {
     @Flow var flow
-    @StateObject var viewModel = UserViewModel()
+    @EnvironmentObject var viewModel: UserViewModel
     @StateObject private var inventoryViewModel = InventoryViewModel()
     @State private var selection = 0
     let data: UserInfoResponse?
@@ -62,6 +62,11 @@ struct ProfileView: View {
                         viewModel: inventoryViewModel,
                         revealCard: $revealCard
                     )
+                }
+            }
+            .refreshable {
+                Task {
+                    await viewModel.fetchMyinfo()
                 }
             }
             .padding(.horizontal, 10)

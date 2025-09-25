@@ -17,7 +17,7 @@ public struct UserDataSource: DataSourceProtocol {
         try await performRequest(.fetchMyinfo)
     }
     
-    public func uploadUrl(_ fileName: String) async throws -> String {
+    public func uploadUrl(_ fileName: String) async throws -> ImageUrlResponse {
         try await performRequest(.uploadUrl(fileName))
     }
     

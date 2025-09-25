@@ -35,7 +35,7 @@ struct ActivityRecordView: View {
                 .clipShape(size: 8)
             }
             
-            VStack(spacing: 14) {
+            VStack(spacing: 18) {
                 HStack {
                     Text("숙련")
                         .font(.title3(.bold))
@@ -58,7 +58,7 @@ struct ActivityRecordView: View {
                 )
             }
             
-            VStack(spacing: 14) {
+            VStack(spacing: 18) {
                 HStack {
                     Text("탐험")
                         .font(.title3(.bold))

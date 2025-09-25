@@ -16,6 +16,7 @@ struct ShopView: View {
     @State private var selection = 0
     @Binding var tabItem: LegacyTabItem
     @StateObject private var viewModel = ShopViewModel()
+    @EnvironmentObject var userViewModel: UserViewModel
     
     var body: some View {
         ZStack {
@@ -87,6 +88,7 @@ struct ShopView: View {
                         confirm: {
                             Task {
                                 await viewModel.buyCard(selected.cardpackId)
+                                await userViewModel.fetchMyinfo()
                             }
                             showModal = false
                         },
@@ -105,13 +107,17 @@ struct ShopView: View {
         .statusModal(
             message: viewModel.successMessage,
             statusType: .success,
-            onClear: { viewModel.successMessage = "" }
-        )
+            bottomPadding: 110
+        ) {
+            viewModel.successMessage = ""
+        }
         .statusModal(
             message: viewModel.errorMessage,
             statusType: .failure,
-            onClear: { viewModel.errorMessage = "" }
-        )
+            bottomPadding: 110
+        ) {
+            viewModel.errorMessage = ""
+        }
         .onAppear {
             //MARK: 상점 브금 로그인 브금으로 대체
             SoundPlayer.shared.loginSound()

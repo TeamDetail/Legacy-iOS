@@ -56,6 +56,10 @@ public struct DataSourceAssembly: Assembly {
             AchievementDataSource()
         }.inObjectScope(.container)
         
+        container.register(FriendsDataSource.self) { _ in
+            FriendsDataSource()
+        }.inObjectScope(.container)
+        
         container.register(BlockRepository.self) { _ in //MARK: 나중에 구현
             BlockService()
         }.inObjectScope(.container)

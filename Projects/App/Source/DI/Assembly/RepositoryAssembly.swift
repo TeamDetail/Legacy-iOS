@@ -67,5 +67,10 @@ public struct RepositoryAssembly: Assembly {
             let dataSource = resolver.resolve(AchievementDataSource.self)!
             return AchievementRepositoryImpl(dataSource: dataSource)
         }.inObjectScope(.container)
+        
+        container.register(FriendsRepository.self) { resolver in
+            let dataSource = resolver.resolve(FriendsDataSource.self)!
+            return FriendsRepositoryImpl(dataSource: dataSource)
+        }.inObjectScope(.container)
     }
 }

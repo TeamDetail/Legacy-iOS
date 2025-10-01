@@ -36,4 +36,6 @@ public enum LegacyIconography: String, Hashable {
     case checkStatus = "CheckStatus"
     case closeStatus = "CloseStatus"
     case cardPack = "CardPack"
+    case appleLogo = "AppleLogo"
+    case googleLogo = "GoogleLogo"
 }

@@ -30,11 +30,26 @@ enum StatEnum {
     }
 }
 
+enum StatSize {
+    case small
+    case big
+    
+    var iconSize: CGFloat {
+        switch self {
+        case .small:
+            return 14
+        case .big:
+            return 20
+        }
+    }
+}
+
 
 struct HeartStatItem: View {
     @Binding var isChecked: Bool
     let statType: StatEnum
     let text: String
+    let size: StatSize
     let action: () -> Void
     
     var body: some View {
@@ -44,12 +59,11 @@ struct HeartStatItem: View {
             HStack(spacing: 4) {
                 Image(icon: statType.icon)
                     .resizable()
-                    .frame(width: 14, height: 14)
+                    .frame(width: size.iconSize, height: size.iconSize)
                 Text(text)
-                    .font(.caption2(.medium))
+                    .font(size == .small ? .caption2(.medium) : .body2(.medium))
             }
             .foreground(isChecked ? statType.selectColor : LegacyColor.Label.alternative)
         }
     }
 }
-

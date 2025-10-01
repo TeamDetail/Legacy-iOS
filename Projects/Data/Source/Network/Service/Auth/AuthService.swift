@@ -2,17 +2,20 @@ import Moya
 import Domain
 
 public enum AuthService: ServiceProtocol {
-    case postLogin(_ request: AuthRequest)
+    case kakaoLogin(_ request: AuthRequest)
     case postReissue(_ request: RefreshRequest)
+    case appleLogin(_ request: AppleLoginRequest)
 }
 
 extension AuthService {
     public var host: String {
         switch self {
-        case .postLogin:
+        case .kakaoLogin:
             "/kakao/accessToken"
         case .postReissue:
             "/auth/refresh"
+        case .appleLogin:
+            "/apple/accessToken"
         }
     }
     
@@ -22,17 +25,20 @@ extension AuthService {
     
     public var method: Moya.Method {
         switch self {
-        case .postLogin: .post
+        case .kakaoLogin: .post
         case .postReissue: .post
+        case .appleLogin: .post
         }
     }
     
     public var task: Moya.Task {
         switch self {
-        case let .postLogin(request):
+        case let .kakaoLogin(request):
             request.toJSONParameters()
         case let .postReissue(request):
             request.toJSONParameters()
+        case let .appleLogin(request):
+            request .toJSONParameters()
         }
     }
     

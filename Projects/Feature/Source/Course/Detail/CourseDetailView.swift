@@ -17,7 +17,11 @@ struct CourseDetailView: View {
     var body: some View {
         ScrollView(showsIndicators: false) {
             if let data = viewModel.courseDetail {
-                CourseDetailItem(data: data)
+                CourseDetailItem(data: data) {
+                    Task {
+                        await viewModel.likeCourse(data.courseId)
+                    }
+                }
             } else {
                 ErrorCourseDetailItem()
             }

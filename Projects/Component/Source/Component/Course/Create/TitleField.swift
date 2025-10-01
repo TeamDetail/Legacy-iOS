@@ -28,12 +28,16 @@ public struct TitleField: View {
                     .submitLabel(.done)
                     .frame(height: 56)
                     .focused(_isTextFieldFocused)
+                    .disableAutocorrection(true)
+                    .autocapitalization(.none)
+                    .textInputAutocapitalization(.never)
                 
                 HStack {
                     if titleText.isEmpty {
                         Text("코스 이름을 입력해주세요.")
                             .font(.headline(.medium))
                             .foreground(LegacyColor.Label.alternative)
+                            .allowsHitTesting(false)
                     }
                     Spacer()
                 }

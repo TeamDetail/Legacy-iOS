@@ -33,4 +33,12 @@ public struct Sign {
     public static var refreshToken: String? {
         try? KeychainStore.read(key: "refreshToken")
     }
+    
+    public static func saveUserName(_ userName: String) {
+        UserDefaultsStore.set(userName, for: "userName")
+    }
+    
+    public static var userName: String? {
+        try? UserDefaultsStore.read(key: "userName")
+    }
 }

@@ -83,7 +83,8 @@ public struct CourseItem: View {
                             HeartStatItem(
                                 isChecked: $isHearted,
                                 statType: .heart,
-                                text: "\(heartCount)"
+                                text: "\(heartCount)",
+                                size: .small
                             ) {
                                 if isHearted {
                                     isHearted = false
@@ -98,7 +99,8 @@ public struct CourseItem: View {
                             ClearStatItem(
                                 statType: .flag,
                                 text: "\(data.clearCount)",
-                                isChecked: data.clear
+                                isChecked: data.clear,
+                                size: .small
                             )
                         }
                         

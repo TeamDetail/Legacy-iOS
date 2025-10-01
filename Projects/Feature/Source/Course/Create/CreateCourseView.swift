@@ -25,7 +25,7 @@ struct CreateCourseView: View {
     @FocusState private var isDescriptionFocused: Bool
     @FocusState private var isSearchFocused: Bool
     private var courseDisabled: Bool {
-        title.isEmpty || description.isEmpty || tagList.isEmpty || ruinsIdList.isEmpty
+        title.isEmpty || description.isEmpty || tagList.isEmpty || viewModel.selectedRuins.isEmpty
     }
     
     @State private var keyboardHeight: CGFloat = 0

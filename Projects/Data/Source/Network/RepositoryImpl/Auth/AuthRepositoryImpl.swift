@@ -15,8 +15,8 @@ public struct AuthRepositoryImpl: AuthRepository {
         self.dataSource = dataSource
     }
     
-    public func postLogin(_ request: AuthRequest) async throws -> TokenResponse {
-        let data = try await dataSource.postLogin(request)
+    public func kakaoLogin(_ request: AuthRequest) async throws -> TokenResponse {
+        let data = try await dataSource.kakaoLogin(request)
         Sign.login(
             accessToken: data.accessToken,
             refreshToken: data.refreshToken
@@ -32,5 +32,14 @@ public struct AuthRepositoryImpl: AuthRepository {
         )
         print("재발급후\(data.accessToken)")
         print("재발급후\(data.refreshToken)")
+    }
+    
+    public func appleLogin(_ requset: AppleLoginRequest) async throws -> TokenResponse {
+        let data = try await dataSource.appleLogin(requset)
+        Sign.login(
+            accessToken: data.accessToken,
+            refreshToken: data.refreshToken
+        )
+        return data
     }
 }

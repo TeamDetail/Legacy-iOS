@@ -41,6 +41,9 @@ public struct SearchField: View {
                     .tint(LegacyColor.Common.white)
                     .submitLabel(.search)
                     .frame(height: 40)
+                    .disableAutocorrection(true)
+                    .autocapitalization(.none)
+                    .textInputAutocapitalization(.never)
                     .onSubmit {
                         action()
                     }
@@ -49,6 +52,7 @@ public struct SearchField: View {
                         Text(fieldDescription)
                             .font(.label(.medium))
                             .foreground(LegacyColor.Common.white)
+                            .allowsHitTesting(false)
                     }
                     Spacer()
                 }

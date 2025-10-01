@@ -8,9 +8,9 @@ import DIContainer
 import Domain
 import Data
 
-class UserViewModel: ObservableObject, APIMessageable {
-    @Published var successMessage: String = ""
-    @Published var errorMessage: String = ""
+public class UserViewModel: ObservableObject, APIMessageable {
+    @Published public var successMessage: String = ""
+    @Published public var errorMessage: String = ""
     
     @Published var userInfo: UserInfoResponse?
     @Published var isLoading: Bool = false

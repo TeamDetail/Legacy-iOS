@@ -124,6 +124,7 @@ public struct CountModal: View {
                                 .foreground(LegacyColor.Purple.normal)
                         )
                 }
+                .disabled(count == 0)
             }
             .frame(width: 240)
             .padding(.bottom, 14)

@@ -30,12 +30,18 @@ public struct DescriptionField: View {
                         .scrollIndicators(.hidden)
                         .frame(height: 100)
                         .focused(_isTextEditorFocused)
+                        .disableAutocorrection(true)
+                        .autocapitalization(.none)
+                        .textInputAutocapitalization(.never)
                 } else {
                     TextEditor(text: $descriptionText)
                         .font(.body2(.medium))
                         .tint(LegacyColor.Common.white)
                         .frame(height: 100)
                         .focused(_isTextEditorFocused)
+                        .disableAutocorrection(true)
+                        .autocapitalization(.none)
+                        .textInputAutocapitalization(.never)
                 }
                 
                 if descriptionText.isEmpty {

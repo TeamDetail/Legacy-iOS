@@ -33,6 +33,9 @@ public struct CommentField: View {
                         .scrollIndicators(.hidden)
                         .frame(height: 130)
                         .focused($isTextEditorFocused)
+                        .disableAutocorrection(true)
+                        .autocapitalization(.none)
+                        .textInputAutocapitalization(.never)
                         .onTapGesture {
                             isTextEditorFocused = true
                         }
@@ -42,6 +45,9 @@ public struct CommentField: View {
                         .tint(LegacyColor.Common.white)
                         .frame(height: 130)
                         .focused($isTextEditorFocused)
+                        .disableAutocorrection(true)
+                        .autocapitalization(.none)
+                        .textInputAutocapitalization(.never)
                         .onTapGesture {
                             isTextEditorFocused = true
                         }

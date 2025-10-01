@@ -11,14 +11,15 @@ struct ClearStatItem: View {
     let statType: StatEnum
     let text: String
     let isChecked: Bool
+    let size: StatSize
     
     var body: some View {
         HStack(spacing: 4) {
             Image(icon: statType.icon)
                 .resizable()
-                .frame(width: 14, height: 14)
+                .frame(width: size.iconSize, height: size.iconSize)
             Text(text)
-                .font(.caption2(.medium))
+                .font(size == .small ? .caption2(.medium) : .body2(.medium))
         }
         .foreground(isChecked ? statType.selectColor : LegacyColor.Label.alternative)
     }

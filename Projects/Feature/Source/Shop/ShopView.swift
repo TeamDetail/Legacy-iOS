@@ -57,8 +57,12 @@ struct ShopView: View {
                                     .padding(.bottom, 20)
                                 }
                             } else {
-                                ForEach(1...6, id: \.self) { _ in
-                                    ErrorShopItem()
+                                //                                ForEach(1...6, id: \.self) { _ in
+                                //                                    ErrorShopItem()
+                                //                                }
+                                VStack {
+                                    Spacer()
+                                    LegacyLoadingView("")
                                 }
                             }
                         } else {

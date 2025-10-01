@@ -64,8 +64,10 @@ public struct CourseCard: View {
                         Text(data.courseName)
                             .font(.body2(.bold))
                             .foreground(LegacyColor.Label.normal)
+                            .lineLimit(1)
+                            .truncationMode(.tail)
                         
-                        Text(data.description)
+                        Text(data.creator)
                             .font(.caption2(.medium))
                             .foreground(LegacyColor.Label.assistive)
                     }
@@ -74,7 +76,8 @@ public struct CourseCard: View {
                         HeartStatItem(
                             isChecked: $isHearted,
                             statType: .heart,
-                            text: "\(heartCount)"
+                            text: "\(heartCount)",
+                            size: .small
                         ) {
                             if isHearted {
                                 isHearted = false
@@ -89,7 +92,8 @@ public struct CourseCard: View {
                         ClearStatItem(
                             statType: .flag,
                             text: "\(data.clearCount)",
-                            isChecked: data.clear
+                            isChecked: data.clear,
+                            size: .small
                         )
                     }
                 }

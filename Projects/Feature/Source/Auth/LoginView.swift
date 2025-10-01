@@ -1,6 +1,7 @@
 import SwiftUI
 import FlexibleKit
 import Component
+import AuthenticationServices
 
 struct LoginView: View {
     @StateObject private var sessionManager = LoginViewModel()
@@ -18,9 +19,10 @@ struct LoginView: View {
             
             VStack {
                 Spacer()
-                VStack(spacing: 8) {
+                Spacer()
+                VStack(spacing: 14) {
                     Image(icon: .logo)
-                    Text("지역 문화를 쉽게 레거시")
+                    Text("지역 문화 유산을 쉽게, 레거시")
                         .font(.headline(.medium))
                         .foreground(LegacyColor.Common.white)
                 }
@@ -32,24 +34,16 @@ struct LoginView: View {
                         .font(.body2(.bold))
                         .foreground(LegacyColor.Common.white)
                     
-                    AnimationButton {
-                        sessionManager.kakaoLogin()
-                    } label: {
-                        RoundedRectangle(cornerRadius: 12)
-                            .foregroundStyle(Color(0xFEE500))
-                            .frame(width: 300, height: 45)
-                            .overlay {
-                                HStack {
-                                    Image(icon: .talk)
-                                    Spacer()
-                                    Text("카카오 로그인")
-                                        .font(.body2(.bold))
-                                        .foreground(LegacyColor.Common.black)
-                                    Spacer()
-                                }
-                                .padding(.horizontal, 20)
-                                .frame(width: 300)
-                            }
+                    KaKaoButton() {
+                        sessionManager.startKakaoLogin()
+                    }
+                    
+                    GoogleButton() {
+                        
+                    }
+                    
+                    AppleButton() {
+                        sessionManager.startAppleLogin()
                     }
                 }
                 

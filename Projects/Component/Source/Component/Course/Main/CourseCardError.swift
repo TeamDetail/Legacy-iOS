@@ -55,7 +55,8 @@ public struct CourseCardError: View {
                     HeartStatItem(
                         isChecked: $isPresented,
                         statType: .heart,
-                        text: ""
+                        text: "",
+                        size: .small
                     ) {}
                         .redacted(reason: .placeholder)
                         .shimmering()
@@ -63,7 +64,8 @@ public struct CourseCardError: View {
                     ClearStatItem(
                         statType: .flag,
                         text: "",
-                        isChecked: false
+                        isChecked: false,
+                        size: .small
                     )
                     .redacted(reason: .placeholder)
                     .shimmering()

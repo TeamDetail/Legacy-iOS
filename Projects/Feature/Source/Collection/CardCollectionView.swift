@@ -33,7 +33,10 @@ struct CardCollectionView: View {
                                 .foreground(LegacyColor.Common.white)
                                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                         } else {
-                            MyCardListView(cards: cards.cards)
+                            MyCardListView(
+                                selectedRegion: $selectedRegion,
+                                cardResponse: cards
+                            )
                         }
                     } else {
                         LegacyLoadingView("")

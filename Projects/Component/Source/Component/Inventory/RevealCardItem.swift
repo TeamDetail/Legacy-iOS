@@ -12,36 +12,45 @@ struct RevealCardItem: View {
     let cardData: Card
     @Binding var revealedCount: Int
     var onRevealCompleted: (() -> Void)?
+    let forceReveal: Bool
     
     @State private var isFlipping: Bool = false
     @State private var showingBack: Bool = false
     @State private var rotation: Double = 0
     
     var body: some View {
-        ZStack {
-            AnimationButton {
-                revealCard()
-            } label: {
-                Image(icon: .emptyCard)
+        if #available(iOS 17.0, *) {
+            ZStack {
+                AnimationButton {
+                    revealCard()
+                } label: {
+                    Image(icon: .emptyCard)
+                        .rotation3DEffect(
+                            .degrees(rotation),
+                            axis: (x: 0, y: 1, z: 0),
+                            perspective: 0.6
+                        )
+                }
+                .disabled(isFlipping || showingBack)
+                .opacity(showingBack ? 0 : 1)
+                
+                RuinCardView(data: cardData)
+                    .aspectRatio(4/7, contentMode: .fit)
                     .rotation3DEffect(
-                        .degrees(rotation),
+                        .degrees(rotation - 180),
                         axis: (x: 0, y: 1, z: 0),
                         perspective: 0.6
                     )
+                    .opacity(showingBack ? 1 : 0)
             }
-            .disabled(isFlipping || showingBack)
-            .opacity(showingBack ? 0 : 1)
-            
-            RuinCardView(data: cardData)
-                .aspectRatio(4/7, contentMode: .fit)
-                .rotation3DEffect(
-                    .degrees(rotation - 180),
-                    axis: (x: 0, y: 1, z: 0),
-                    perspective: 0.6
-                )
-                .opacity(showingBack ? 1 : 0)
+            .aspectRatio(4/7, contentMode: .fit)
+            .onChange(of: forceReveal) { oldValue, newValue in
+                if newValue && !showingBack {
+                    revealCard()
+                }
+            }
+        } else {
         }
-        .aspectRatio(4/7, contentMode: .fit)
     }
     
     private func revealCard() {
@@ -63,4 +72,3 @@ struct RevealCardItem: View {
         }
     }
 }
-

@@ -9,6 +9,7 @@ import SwiftUI
 import Component
 import Data
 import Shared
+import Domain
 import FlowKit
 
 struct CourseListView: View {
@@ -22,6 +23,13 @@ struct CourseListView: View {
     @FocusState.Binding var isFocused: Bool
     @Flow var flow
     
+    var filteredCourses: [CourseResponse] {
+        guard !searchText.isEmpty else { return viewModel.courses ?? [] }
+        return viewModel.courses?.filter {
+            $0.courseName.localizedCaseInsensitiveContains(searchText)
+        } ?? []
+    }
+    
     var body: some View {
         VStack(spacing: 16) {
             CourseButton(title: "추천 페이지로 보기") {
@@ -31,11 +39,12 @@ struct CourseListView: View {
             
             VStack(spacing: 8) {
                 SearchField("코스 이름으로 검색해주세요.", searchText: $searchText) {
-                    //MARK: 검색 기능 구현
+                    isFocused = false
                 }
                 .focused($isFocused)
                 .padding(.horizontal, 8)
                 
+                // 드롭다운 필터
                 HStack {
                     DropDown(
                         isExpanded: Binding(
@@ -74,10 +83,10 @@ struct CourseListView: View {
                 .zIndex(1)
                 .padding(.horizontal, 8)
                 
-                if let data = viewModel.courses {
+                if let _ = viewModel.courses {
                     ScrollView {
                         LazyVStack(spacing: 4) {
-                            ForEach(data, id: \.self) { data in
+                            ForEach(filteredCourses, id: \.self) { data in
                                 CourseItem(data: data) {
                                     Task {
                                         await viewModel.likeCourse(data.courseId)
@@ -91,7 +100,6 @@ struct CourseListView: View {
                         }
                     }
                     .frame(maxWidth: .infinity)
-                    .zIndex(0)
                 } else {
                     LegacyLoadingView("")
                 }

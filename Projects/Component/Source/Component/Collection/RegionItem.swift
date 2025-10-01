@@ -40,9 +40,11 @@ public struct RegionItem: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.leading, 6)
                 
-                Text("\(cardLength) / \(maxCount)")
+                let percentage = maxCount > 0 ? Int(Double(cardLength) / Double(maxCount) * 100) : 0
+                
+                Text("\(percentage)%")
                     .font(.caption2(.medium))
-                    .foreground(cardLength == maxCount ? LegacyColor.Yellow.netural : LegacyColor.Common.white)
+                    .foreground(LegacyColor.Common.white)
                     .padding(.vertical, 4)
                     .padding(.horizontal, 6)
                     .background(select ? LegacyColor.Primary.alternative : LegacyColor.Background.normal)

@@ -78,8 +78,9 @@ struct ProfileView: View {
                 Color.black.opacity(0.4)
                     .ignoresSafeArea()
                     .onTapGesture {
-                        inventoryViewModel.selectedItem = nil
-                        showCountModal = false
+                        if !showCountModal {
+                            inventoryViewModel.selectedItem = nil
+                        }
                     }
                 
                 InventoryModal(selectedData) {
@@ -113,9 +114,9 @@ struct ProfileView: View {
             if revealCard, let openedCards = inventoryViewModel.openedCards, let packName = inventoryViewModel.selectedItem {
                 Color.black.opacity(0.7)
                     .ignoresSafeArea()
-                    .onTapGesture {
-                        revealCard = false
-                    }
+                //                    .onTapGesture {
+                //                        revealCard = false
+                //                    }
                 
                 VStack {
                     CardRevealModal(
@@ -124,10 +125,10 @@ struct ProfileView: View {
                     ) {
                         revealCard = false
                         inventoryViewModel.selectedItem = nil
+                        flow.pop()
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .transition(.scale.combined(with: .opacity))
             }
         }
         .backButton(title: "프로필") {

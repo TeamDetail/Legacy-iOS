@@ -61,6 +61,8 @@ struct LegacyTopBar: View {
                     Text("\(data.credit)")
                         .font(.bitFont(size: 16))
                         .foreground(LegacyColor.Yellow.normal)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.5)
                 }
                 .padding(16)
                 .background(LegacyColor.Fill.normal)
@@ -105,7 +107,7 @@ struct LegacyTopBar: View {
                             showMenu = false
                         }
                     case .people:
-                        print("사람")
+                        flow.push(FriendsView())
                     case .mail:
                         withAnimation(.appSpring) {
                             showMail = true

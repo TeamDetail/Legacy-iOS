@@ -106,7 +106,7 @@ struct MailView: View {
                     }
                 }
                 .frame(maxWidth: .infinity)
-                .frame(height: 520)
+                .frame(height: UIScreen.main.bounds.height * 0.60)
                 .background(LegacyColor.Background.normal)
                 .clipShape(size: 20)
                 .padding(16)

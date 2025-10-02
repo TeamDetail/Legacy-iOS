@@ -19,13 +19,13 @@ class ShopViewModel: ObservableObject, APIMessageable {
         startTimer()
     }
     
-    var groupedCardPacks: [(StoreType, [CardPack])] {
+    var groupedCardPacks: [(StoreSubType, [CardPack])] {
         guard let storeData = storeData else { return [] }
         
-        return StoreType.allCases
+        return StoreSubType.allCases
             .sorted(by: { $0.sortOrder < $1.sortOrder })
             .compactMap { storeType in
-                let filteredPacks = storeData.cardpack.filter { $0.storeType == storeType }
+                let filteredPacks = storeData.cardpack.filter { $0.storeSubType == storeType }
                 return filteredPacks.isEmpty ? nil : (storeType, filteredPacks)
             }
     }

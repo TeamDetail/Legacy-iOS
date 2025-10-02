@@ -12,13 +12,15 @@ public struct CardPack: ResponseProtocol {
     public let cardpackContent: String
     public let price: Int
     public let storeType: StoreType
+    public let storeSubType: StoreSubType
     public let cardpackId: Int
     
-    public init(cardpackName: String, cardpackContent: String, price: Int, storeType: StoreType, cardpackId: Int) {
+    public init(cardpackName: String, cardpackContent: String, price: Int, storeType: StoreType, storeSubType: StoreSubType, cardpackId: Int) {
         self.cardpackName = cardpackName
         self.cardpackContent = cardpackContent
         self.price = price
         self.storeType = storeType
+        self.storeSubType = storeSubType
         self.cardpackId = cardpackId
     }
 }

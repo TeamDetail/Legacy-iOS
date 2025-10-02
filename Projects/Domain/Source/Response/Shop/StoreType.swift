@@ -7,27 +7,6 @@
 
 import Foundation
 
-public enum StoreType: String, EnumProtocol, CaseIterable, Hashable {
-    case region = "REGION"
-    case nation = "NATION"
-    case line = "LINE"
-    
-    public var typeName: String {
-        switch self {
-        case .region:
-            return "지역"
-        case .nation:
-            return "시대"
-        case .line:
-            return "계열"
-        }
-    }
-    
-    public var sortOrder: Int {
-        switch self {
-        case .nation: return 0
-        case .line: return 1
-        case .region: return 2 
-        }
-    }
+public enum StoreType: String, EnumProtocol {
+    case cardPack = "CARD_PACK"
 }

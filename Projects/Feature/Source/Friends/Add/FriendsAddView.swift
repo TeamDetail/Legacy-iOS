@@ -6,13 +6,45 @@
 //
 
 import SwiftUI
+import Component
 
 struct FriendsAddView: View {
+    @ObservedObject var viewModel: FriendsViewModel
+    @State private var searchText = ""
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ScrollView(showsIndicators: false) {
+            if let data = viewModel.myCode {
+                VStack(spacing: 26) {
+                    VStack(spacing: 12) {
+                        FriendsOptionView(.myCode)
+                        MyCodeField(myCode: data)
+                    }
+                    
+                    VStack(spacing: 12) {
+                        FriendsOptionView(.addFriendsCode)
+                        FriendCodeField($searchText) {
+                            
+                        }
+                    }
+                    
+                    LegacyDivider()
+                    
+                    VStack(spacing: 12) {
+                        FriendsOptionView(.searchName)
+                        
+                        SearchField(
+                            "친구 이름으로 검색..",
+                            searchText: $searchText
+                        ) {
+                            
+                        }
+                        .padding(.horizontal, 6)
+                    }
+                }
+                .padding(.vertical, 8)
+            } else {
+                LegacyLoadingView("")
+            }
+        }
     }
-}
-
-#Preview {
-    FriendsAddView()
 }

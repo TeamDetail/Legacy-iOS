@@ -7,8 +7,11 @@
 
 import SwiftUI
 
-struct LegacyDivider: View {
-    var body: some View {
+public struct LegacyDivider: View {
+    
+    public init(){}
+    
+    public var body: some View {
         Rectangle()
             .foreground(LegacyColor.Line.alternative)
             .frame(maxWidth: .infinity)

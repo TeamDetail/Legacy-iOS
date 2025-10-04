@@ -1,15 +1,15 @@
 //
-//  FriendsItem.swift
+//  AddFriendsItem.swift
 //  Component
 //
-//  Created by 김은찬 on 10/2/25.
+//  Created by 김은찬 on 10/4/25.
 //
 
 import SwiftUI
 import Domain
 import Kingfisher
 
-public struct FriendsItem: View {
+public struct AddFriendsItem: View {
     let data: FriendsResponse
     let action: () -> Void
     
@@ -46,9 +46,7 @@ public struct FriendsItem: View {
                     .frame(width: 36, height: 36)
                     .foreground(LegacyColor.Fill.netural)
                     .overlay {
-                        Image(systemName: "xmark")
-                            .resizable()
-                            .frame(width: 14, height: 14)
+                        Image(icon: .airPlane)
                             .font(.headline(.bold))
                             .foreground(LegacyColor.Label.netural)
                     }
@@ -57,3 +55,4 @@ public struct FriendsItem: View {
         .padding(.horizontal, 8)
     }
 }
+

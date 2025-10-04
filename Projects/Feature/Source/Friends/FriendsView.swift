@@ -11,10 +11,11 @@ import FlowKit
 import Component
 
 struct FriendsView: View {
+    @StateObject private var viewModel = FriendsViewModel()
     @Flow var flow
     @State private var selection = 0
     var body: some View {
-        ScrollView(showsIndicators: false) {
+        VStack {
             HStack {
                 CategoryButtonGroup(
                     categories: ["목록", "대기 중", "추가"],
@@ -22,10 +23,12 @@ struct FriendsView: View {
                 )
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.top, 20)
             
             if selection == 0 {
-                FriendListView()
+                FriendListView(
+                    viewModel: viewModel,
+                    selection: $selection
+                )
             }
             
             if selection == 1 {
@@ -33,10 +36,17 @@ struct FriendsView: View {
             }
             
             if selection == 2 {
-                FriendsAddView()
+                FriendsAddView(viewModel: viewModel)
+            }
+            
+            Spacer()
+        }
+        .onAppear {
+            Task {
+                await viewModel.fetchAllData()
             }
         }
-        .padding(.horizontal, 10)
+        .padding(.horizontal, 8)
         .backButton(title: "친구") {
             flow.pop()
         }

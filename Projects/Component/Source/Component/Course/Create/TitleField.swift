@@ -44,7 +44,7 @@ public struct TitleField: View {
                 .padding(.horizontal, 4)
             }
             .padding(.horizontal, 10)
-            .padding(.vertical, 8)
+            .padding(.vertical, 4)
             .background(LegacyColor.Fill.normal)
             .clipShape(size: 12)
         }

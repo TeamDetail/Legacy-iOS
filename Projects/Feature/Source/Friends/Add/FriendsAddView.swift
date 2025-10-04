@@ -15,12 +15,12 @@ struct FriendsAddView: View {
         ScrollView(showsIndicators: false) {
             if let data = viewModel.myCode {
                 VStack(spacing: 26) {
-                    VStack(spacing: 12) {
+                    VStack(spacing: 14) {
                         FriendsOptionView(.myCode)
                         MyCodeField(myCode: data)
                     }
                     
-                    VStack(spacing: 12) {
+                    VStack(spacing: 14) {
                         FriendsOptionView(.addFriendsCode)
                         FriendCodeField($searchText) {
                             
@@ -29,7 +29,7 @@ struct FriendsAddView: View {
                     
                     LegacyDivider()
                     
-                    VStack(spacing: 12) {
+                    VStack(spacing: 14) {
                         FriendsOptionView(.searchName)
                         
                         SearchField(
@@ -44,6 +44,11 @@ struct FriendsAddView: View {
                 .padding(.vertical, 8)
             } else {
                 LegacyLoadingView("")
+            }
+        }
+        .refreshable {
+            Task {
+                await viewModel.fetchAllData()
             }
         }
     }

@@ -50,6 +50,10 @@ public struct FriendsRepositoryImpl: FriendsRepository {
         try await dataSource.fetchMyFriends()
     }
     
+    public func searchFriends(_ nickName: String) async throws -> [SearchFriendsResponse] {
+        try await dataSource.searchFriends(nickName)
+    }
+    
     // MARK: - Delete
     public func deleteFriend(_ friendId: Int) async throws -> String {
         try await dataSource.deleteFriend(friendId)

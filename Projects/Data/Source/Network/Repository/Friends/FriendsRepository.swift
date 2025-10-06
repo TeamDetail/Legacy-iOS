@@ -20,6 +20,7 @@ public protocol FriendsRepository {
     func fetchRequestFriend() async throws -> [FriendRequestResponse]
     func fetchSentRequests() async throws -> [FriendRequestResponse]
     func fetchMyFriends() async throws -> [FriendsResponse]
+    func searchFriends(_ nickName: String) async throws -> [SearchFriendsResponse]
     
     // MARK: - Delete
     func deleteFriend(_ friendId: Int) async throws -> String

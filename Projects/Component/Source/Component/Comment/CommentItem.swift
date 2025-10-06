@@ -24,8 +24,9 @@ public struct CommentItem: View {
                             .shimmering()
                     }
                     .resizable()
-                    .aspectRatio(contentMode: .fit)
+                    .aspectRatio(contentMode: .fill)
                     .frame(width: 40, height: 40)
+                    .clipped()
                     .clipShape(size: 999)
                 
                 VStack(alignment: .leading, spacing: 4) {

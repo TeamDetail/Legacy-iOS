@@ -14,13 +14,25 @@ public struct FriendRequestResponse: ResponseProtocol {
     public let senderNickname: String
     public let senderProfileImage: String
     public let senderLevel: Int
-    public let receiverNickname: String
-    public let receiverProfileImage: String
+    public let receiverNickname: String?
+    public let receiverProfileImage: String?
     public let receiverLevel: Int
     public let status: FriendsStatusType
     public let createdAt: String
     
-    public init(requestId: Int, senderId: Int, receiverId: Int, senderNickname: String, senderProfileImage: String, senderLevel: Int, receiverNickname: String, receiverProfileImage: String, receiverLevel: Int, status: FriendsStatusType, createdAt: String) {
+    public init(
+        requestId: Int,
+        senderId: Int,
+        receiverId: Int,
+        senderNickname: String,
+        senderProfileImage: String,
+        senderLevel: Int,
+        receiverNickname: String?,
+        receiverProfileImage: String?,
+        receiverLevel: Int,
+        status: FriendsStatusType,
+        createdAt: String
+    ) {
         self.requestId = requestId
         self.senderId = senderId
         self.receiverId = receiverId
@@ -34,4 +46,5 @@ public struct FriendRequestResponse: ResponseProtocol {
         self.createdAt = createdAt
     }
 }
+
 

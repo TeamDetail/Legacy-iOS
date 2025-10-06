@@ -21,6 +21,7 @@ public enum FriendsService: ServiceProtocol {
     case fetchRequestFriend
     case fetchSentRequests
     case fetchMyFriends
+    case searchFriends(_ nickName: String)
     
     //MARK: delete
     case deleteFriend(_ friendId: Int)
@@ -45,6 +46,7 @@ extension FriendsService {
         case .fetchRequestFriend: "/requests"
         case .fetchSentRequests: "/sent"
         case .fetchMyFriends: ""
+        case .searchFriends: "/search"
             
             //MARK: delete
         case let .deleteFriend(friendId): "/sent/\(friendId)"
@@ -56,7 +58,7 @@ extension FriendsService {
         switch self {
         case .acceptFriend, .refuseFriend, .requestFriend, .requestAutoKakaoFriend:
             .post
-        case .fetchMyCode, .fetchRequestFriend, .fetchSentRequests, .fetchMyFriends:
+        case .fetchMyCode, .fetchRequestFriend, .fetchSentRequests, .fetchMyFriends, .searchFriends:
             .get
         case .deleteFriend, .cancelSentRequest:
             .delete
@@ -74,6 +76,11 @@ extension FriendsService {
             .requestParameters(
                 parameters: ["Authorization": Authorization],
                 encoding: JSONEncoding.default
+            )
+        case let .searchFriends(nickName):
+            .requestParameters(
+                parameters: ["nickname": nickName],
+                encoding: URLEncoding.queryString
             )
         default:
             .requestPlain

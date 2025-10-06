@@ -11,6 +11,7 @@ import Component
 struct FriendsAddView: View {
     @ObservedObject var viewModel: FriendsViewModel
     @State private var searchText = ""
+    @State private var friendsCode = ""
     var body: some View {
         ScrollView(showsIndicators: false) {
             if let data = viewModel.myCode {
@@ -22,8 +23,10 @@ struct FriendsAddView: View {
                     
                     VStack(spacing: 14) {
                         FriendsOptionView(.addFriendsCode)
-                        FriendCodeField($searchText) {
-                            
+                        FriendCodeField($friendsCode) {
+                            Task {
+                                await viewModel.requestFriend(friendsCode)
+                            }
                         }
                     }
                     
@@ -36,9 +39,32 @@ struct FriendsAddView: View {
                             "친구 이름으로 검색..",
                             searchText: $searchText
                         ) {
-                            
+                            Task {
+                                await viewModel.searchFriends(searchText)
+                            }
                         }
                         .padding(.horizontal, 6)
+                        
+                        ScrollView(.vertical, showsIndicators: false) {
+                            if viewModel.isLoading {
+                                LegacyLoadingView("")
+                            } else if let data = viewModel.searchResult {
+                                if data.isEmpty {
+                                    Text("검색 결과가 없어요")
+                                        .font(.headline(.bold))
+                                        .foreground(LegacyColor.Common.white)
+                                        .padding(.top, 40)
+                                } else {
+                                    ForEach(data, id: \.self) { friend in
+                                        AddFriendsItem(data: friend) {
+                                            Task {
+                                                await viewModel.requestFriend(friend.friendCode)
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
                 .padding(.vertical, 8)

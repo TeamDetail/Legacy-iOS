@@ -105,16 +105,23 @@ struct CreateCourseView: View {
                         if viewModel.isLoading {
                             LegacyLoadingView("")
                         } else if let data = viewModel.searchResult {
-                            ForEach(data, id: \.ruinsId) { item in
-                                RuinsSearchItem(
-                                    data: item,
-                                    selectedRuins: viewModel.selectedRuins,
-                                    onSelect: { selected in
-                                        viewModel.toggleSelection(selected)
-                                    }
-                                )
+                            if data.isEmpty {
+                                Text("검색 결과가 없어요")
+                                    .font(.headline(.bold))
+                                    .foreground(LegacyColor.Common.white)
+                                    .padding(.top, 40)
+                            } else {
+                                ForEach(data, id: \.ruinsId) { item in
+                                    RuinsSearchItem(
+                                        data: item,
+                                        selectedRuins: viewModel.selectedRuins,
+                                        onSelect: { selected in
+                                            viewModel.toggleSelection(selected)
+                                        }
+                                    )
+                                }
+                                .padding(.bottom, 12)
                             }
-                            .padding(.bottom, 12)
                         }
                     }
                 }

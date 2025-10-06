@@ -10,11 +10,11 @@ import Domain
 import Kingfisher
 
 public struct RequestFriendsItem: View {
-    let data: FriendsResponse
+    let data: FriendRequestResponse
     let onConfirm: () -> Void
     let onCancel: () -> Void
     
-    public init(data: FriendsResponse, onConfirm: @escaping () -> Void, onCancel: @escaping () -> Void) {
+    public init(data: FriendRequestResponse, onConfirm: @escaping () -> Void, onCancel: @escaping () -> Void) {
         self.data = data
         self.onConfirm = onConfirm
         self.onCancel = onCancel
@@ -22,7 +22,7 @@ public struct RequestFriendsItem: View {
     
     public var body: some View {
         HStack(spacing: 12) {
-            KFImage(URL(string: data.profileImage))
+            KFImage(URL(string: data.senderProfileImage))
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 80, height: 80)
@@ -30,11 +30,11 @@ public struct RequestFriendsItem: View {
                 .clipShape(size: 8)
             
             VStack(alignment: .leading, spacing: 6) {
-                Text(data.nickname)
+                Text(data.senderNickname)
                     .font(.headline(.bold))
                     .foreground(LegacyColor.Common.white)
                 
-                Text("Lv. \(data.level)")
+                Text("Lv. \(data.senderLevel)")
                     .font(.label(.medium))
                     .foreground(LegacyColor.Label.alternative)
             }

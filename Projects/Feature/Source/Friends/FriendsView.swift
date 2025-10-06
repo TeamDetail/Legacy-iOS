@@ -32,7 +32,7 @@ struct FriendsView: View {
             }
             
             if selection == 1 {
-                FriendsPendingView()
+                FriendsPendingView(viewModel: viewModel)
             }
             
             if selection == 2 {
@@ -40,6 +40,18 @@ struct FriendsView: View {
             }
             
             Spacer()
+        }
+        .statusModal(
+            message: viewModel.successMessage,
+            statusType: .success
+        ) {
+            viewModel.successMessage = ""
+        }
+        .statusModal(
+            message: viewModel.errorMessage,
+            statusType: .failure
+        ) {
+            viewModel.errorMessage = ""
         }
         .onAppear {
             Task {

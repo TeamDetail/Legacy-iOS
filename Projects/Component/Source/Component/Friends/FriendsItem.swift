@@ -54,6 +54,6 @@ public struct FriendsItem: View {
                     }
             }
         }
-        .padding(.horizontal, 8)
+        .padding(.horizontal, 6)
     }
 }

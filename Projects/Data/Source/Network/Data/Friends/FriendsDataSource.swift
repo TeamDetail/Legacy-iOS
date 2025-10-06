@@ -48,6 +48,10 @@ public struct FriendsDataSource: DataSourceProtocol {
         try await performRequest(.fetchMyFriends)
     }
     
+    public func searchFriends(_ nickName: String) async throws -> [SearchFriendsResponse] {
+        try await performRequest(.searchFriends(nickName))
+    }
+    
     
     //MARK: delete
     public func deleteFriend(_ friendId: Int) async throws -> String {

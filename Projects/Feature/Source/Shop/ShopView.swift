@@ -74,7 +74,7 @@ struct ShopView: View {
                     }
                 }
             }
-            .blur(radius: showModal ? 2 : 0)
+            .blur(radius: showModal ? 1 : 0)
             .animation(.easeInOut(duration: 0.25), value: showModal)
             
             if showModal {

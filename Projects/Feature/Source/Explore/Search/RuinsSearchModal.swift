@@ -43,12 +43,19 @@ struct RuinsSearchModal: View {
                 if viewModel.isLoadingSearch {
                     LegacyLoadingView("")
                 } else if let data = viewModel.searchResult {
-                    ForEach(data, id: \.ruinsId) { ruinsData in
-                        RuinsSearchResultItem(data: ruinsData) {
-                            clickEvent(ruinsData)
+                    if data.isEmpty {
+                        Text("검색 결과가 없어요")
+                            .font(.headline(.bold))
+                            .foreground(LegacyColor.Common.white)
+                            .padding(.top, 40)
+                    } else {
+                        ForEach(data, id: \.ruinsId) { ruinsData in
+                            RuinsSearchResultItem(data: ruinsData) {
+                                clickEvent(ruinsData)
+                            }
                         }
+                        .padding(.vertical, 4)
                     }
-                    .padding(.vertical, 4)
                 }
             }
             

@@ -11,5 +11,6 @@ import Domain
 public protocol AuthRepository {
     func kakaoLogin(_ request: AuthRequest) async throws -> TokenResponse
     func postReissue(_ request: RefreshRequest) async throws
-    func appleLogin(_ requset: AppleLoginRequest) async throws -> TokenResponse
+    func appleLogin(_ request: AppleLoginRequest) async throws -> TokenResponse
+    func googleLogin(_ request: GoogleLoginRequest) async throws -> TokenResponse
 }

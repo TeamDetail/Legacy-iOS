@@ -25,7 +25,9 @@ public struct QuizButton: View {
             Text(title)
                 .font(.caption1(.bold))
                 .foreground(buttonType.color)
-                .frame(width: buttonType.width, height: 40)
+                .lineLimit(1)
+                .minimumScaleFactor(0.7)
+                .frame(minWidth: 60, maxWidth: buttonType.width, minHeight: 40, maxHeight: 40)
                 .background(LegacyColor.Fill.normal)
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)

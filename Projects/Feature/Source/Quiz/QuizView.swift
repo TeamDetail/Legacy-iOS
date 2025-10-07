@@ -3,6 +3,7 @@ import Domain
 import Component
 
 struct QuizView: View {
+    @State private var hint = "흰트 확인하기"
     @ObservedObject var quizViewModel: QuizViewModel
     @ObservedObject var stateViewModel: QuizStateViewModel
     
@@ -80,10 +81,13 @@ struct QuizView: View {
                                     
                                     //MARK: Hint
                                     QuizButton(
-                                        title: "힌트 확인하기",
+                                        title: hint,
                                         buttonType: .medium
                                     ) {
-                                        // TODO: 힌트 구현
+                                        Task {
+                                            await quizViewModel.fetchHint(quizId)
+                                            hint = "힌트: \(quizViewModel.quizHint)"
+                                        }
                                     }
                                     
                                     QuizButton(

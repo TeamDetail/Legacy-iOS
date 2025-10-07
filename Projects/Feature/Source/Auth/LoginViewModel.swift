@@ -1,10 +1,12 @@
 import Foundation
 import AuthenticationServices
+import GoogleSignIn
 import KakaoSDKUser
 import DIContainer
 import Data
 import Domain
 import UIKit
+import Shared
 
 class LoginViewModel: NSObject, ObservableObject {
     @Inject var authRepository: any AuthRepository
@@ -59,6 +61,56 @@ class LoginViewModel: NSObject, ObservableObject {
         controller.performRequests()
     }
     
+    // MARK: - Google 로그인
+    func startGoogleLogin() {
+        guard let clientID = googleKey as String? else {
+            print("❌ Google Client ID 누락됨")
+            return
+        }
+        
+        // Google 로그인 설정
+        let config = GIDConfiguration(clientID: clientID)
+        GIDSignIn.sharedInstance.configuration = config
+        
+        // 최상단 ViewController 찾기
+        guard let rootViewController = UIApplication.shared.connectedScenes
+            .compactMap({ ($0 as? UIWindowScene)?.keyWindow?.rootViewController })
+            .first else {
+            print("❌ rootViewController 탐색 실패")
+            return
+        }
+        
+        // 로그인 실행
+        GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController) { result, error in
+            if let error = error {
+                print("❌ Google 로그인 실패: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let result = result else {
+                print("❌ Google 로그인 결과가 nil입니다.")
+                return
+            }
+            
+            let user = result.user
+            guard let idToken = user.idToken?.tokenString else {
+                print("❌ Google ID Token 없음")
+                return
+            }
+            
+            print("✅ Google 로그인 성공: \(user.profile?.name ?? "Unknown")")
+            print("🔑 ID Token: \(idToken)")
+            
+            let request = GoogleLoginRequest(
+                idToken: idToken
+            )
+            
+            Task {
+                await self.googleLogin(request)
+            }
+        }
+    }
+    
     // MARK: - API Calls
     @MainActor
     func kakaoLogin(_ request: AuthRequest) async {
@@ -73,6 +125,15 @@ class LoginViewModel: NSObject, ObservableObject {
     func appleLogin(_ request: AppleLoginRequest) async {
         do {
             _ = try await authRepository.appleLogin(request)
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    @MainActor
+    func googleLogin(_ request: GoogleLoginRequest) async {
+        do {
+            _ = try await authRepository.googleLogin(request)
         } catch {
             print(error.localizedDescription)
         }

@@ -1,3 +1,4 @@
+import UIKit
 import GoogleMaps
 import KakaoSDKCommon
 import KakaoSDKAuth
@@ -5,17 +6,20 @@ import Shared
 import Firebase
 import FirebaseMessaging
 import UserNotifications
+import GoogleSignIn
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         
-        // MARK: 기존 설정
-        GMSServices.provideAPIKey(mapApiKey)
+        // MARK: Kakao
         KakaoSDK.initSDK(appKey: kakaoKey)
         
-        // MARK: Firebase 설정
+        // MARK: Google Maps
+        GMSServices.provideAPIKey(mapApiKey)
+        
+        // MARK: Firebase
         FirebaseApp.configure()
         
         // MARK: 알림 권한 요청
@@ -37,6 +41,19 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         Messaging.messaging().delegate = self
         
         return true
+    }
+    
+    // MARK: - Google 로그인 URL 처리
+    func application(_ app: UIApplication,
+                     open url: URL,
+                     options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        if GIDSignIn.sharedInstance.handle(url) {
+            return true
+        }
+        if AuthApi.isKakaoTalkLoginUrl(url) {
+            return AuthController.handleOpenUrl(url: url)
+        }
+        return false
     }
 }
 
@@ -81,19 +98,9 @@ extension AppDelegate: MessagingDelegate {
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         guard let token = fcmToken else { return }
         print("Firebase registration token: \(token)")
-        
-        // UserDefaults에 저장
         UserDefaults.standard.set(token, forKey: "FCMToken")
-        
-        // NotificationCenter로 브로드캐스트 (옵션)
-        let dataDict: [String: String] = ["token": token]
-        NotificationCenter.default.post(
-            name: Notification.Name("FCMToken"),
-            object: nil,
-            userInfo: dataDict
-        )
-        
-        // TODO: 필요시 서버에 바로 전송
-        // sendTokenToServer(token)
+        NotificationCenter.default.post(name: Notification.Name("FCMToken"),
+                                        object: nil,
+                                        userInfo: ["token": token])
     }
 }

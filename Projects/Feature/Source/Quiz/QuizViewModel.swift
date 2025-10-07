@@ -12,6 +12,7 @@ public class QuizViewModel: ObservableObject {
     @Published var clearQuiz = false
     @Published var wrongNumbers: [Int] = []
     @Published var isLoadingQuiz = false
+    @Published var quizHint: String = "흰트가 없어요!"
     
     @Inject var quizRepository: any QuizRepository
     
@@ -65,6 +66,15 @@ public class QuizViewModel: ObservableObject {
             }
         } catch {
             print("❌ Error checking quizzes: \(error)")
+        }
+    }
+    
+    @MainActor
+    func fetchHint(_ quizId: Int) async {
+        do {
+            quizHint = try await quizRepository.fetchHint(quizId)
+        } catch {
+            print(error.localizedDescription)
         }
     }
 }

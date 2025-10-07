@@ -11,6 +11,7 @@ import Domain
 public enum QuizService: ServiceProtocol {
     case fetchQuiz(_ id: Int)
     case checkQuiz(_ request: [CheckQuizRequest])
+    case fetchHint(_ quizId: Int)
 }
 
 extension QuizService {
@@ -22,6 +23,7 @@ extension QuizService {
         switch self {
         case let .fetchQuiz(id): "/\(id)"
         case .checkQuiz: "/check"
+        case let .fetchHint(quizId): "/hint/\(quizId)"
         }
     }
     
@@ -29,6 +31,7 @@ extension QuizService {
         switch self {
         case .fetchQuiz: .get
         case .checkQuiz: .post
+        case .fetchHint: .get
         }
     }
     
@@ -36,6 +39,7 @@ extension QuizService {
         switch self {
         case .fetchQuiz: .requestPlain
         case let .checkQuiz(request): .requestJSONEncodable(request)
+        case .fetchHint: .requestPlain
         }
     }
 }

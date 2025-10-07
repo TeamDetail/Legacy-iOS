@@ -21,4 +21,8 @@ public struct QuizDataSource: DataSourceProtocol {
     public func checkQuiz(_ request: [CheckQuizRequest]) async throws -> CheckQuizResponse {
         try await performRequest(.checkQuiz(request))
     }
+    
+    public func fetchHint(_ quizId: Int) async throws -> String {
+        try await performRequest(.fetchHint(quizId))
+    }
 }

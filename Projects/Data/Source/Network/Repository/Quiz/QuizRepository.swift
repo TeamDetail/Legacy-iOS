@@ -11,4 +11,5 @@ import Domain
 public protocol QuizRepository {
     func fetchQuiz(_ id: Int) async throws -> [QuizResponse]
     func checkQuiz(_ request: [CheckQuizRequest]) async throws -> CheckQuizResponse
+    func fetchHint(_ quizId: Int) async throws -> String
 }

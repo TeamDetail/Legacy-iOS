@@ -27,6 +27,8 @@ let project = Project(
                 .external(name: "Kingfisher"),
                 .external(name: "Realm"),
                 .external(name: "RealmSwift"),
+                .external(name: "GoogleSignIn"),
+                .external(name: "GoogleSignInSwift")
             ],
             settings: .settings(
                 base: [

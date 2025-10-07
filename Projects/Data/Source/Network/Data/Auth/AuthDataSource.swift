@@ -14,7 +14,11 @@ public struct AuthDataSource: DataSourceProtocol {
         try await performRequest(.postReissue(request))
     }
     
-    public func appleLogin(_ requset: AppleLoginRequest) async throws -> TokenResponse {
-        try await performRequest(.appleLogin(requset))
+    public func appleLogin(_ request: AppleLoginRequest) async throws -> TokenResponse {
+        try await performRequest(.appleLogin(request))
+    }
+    
+    public func googleLogin(_ request: GoogleLoginRequest) async throws -> TokenResponse {
+        try await performRequest(.googleLogin(request))
     }
 }

@@ -32,5 +32,6 @@ let package = Package(
         .package(url: "https://github.com/markiv/SwiftUI-Shimmer", from: "1.5.1"),
         .package(url: "https://github.com/realm/realm-swift", exact: "20.0.0"),
         .package(url: "https://github.com/firebase/firebase-ios-sdk.git", from: "10.0.0"),
+        .package(url: "https://github.com/google/GoogleSignIn-iOS", from: "7.0.0")
     ]
 )

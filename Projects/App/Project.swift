@@ -51,6 +51,11 @@ let project = Project(
                             "CFBundleURLSchemes": [
                                 "kakaob1cc10d264e3d7cb3022fab63c4632f3"
                             ]
+                        ],
+                        [
+                            "CFBundleURLSchemes": [
+                                "com.googleusercontent.apps.919022966133-jivjj8g1sir5u49j9h5fcfk5qh9lum9v"
+                            ]
                         ]
                     ],
                     "NSAppTransportSecurity": [
@@ -79,6 +84,8 @@ let project = Project(
                 .external(name: "KakaoSDKAuth"),
                 .external(name: "KakaoSDKCommon"),
                 .external(name: "FirebaseMessaging"),
+                .external(name: "GoogleSignIn"),
+                .external(name: "GoogleSignInSwift")
             ]
         )
     ]

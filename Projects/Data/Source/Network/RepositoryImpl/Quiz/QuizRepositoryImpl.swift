@@ -25,4 +25,9 @@ public struct QuizRepositoryImpl: QuizRepository {
         let data = try await dataSource.checkQuiz(requst)
         return data
     }
+    
+    public func fetchHint(_ quizId: Int) async throws -> String {
+        let data = try await dataSource.fetchHint(quizId)
+        return data
+    }
 }

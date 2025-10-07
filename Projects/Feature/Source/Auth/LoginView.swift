@@ -39,7 +39,7 @@ struct LoginView: View {
                     }
                     
                     GoogleButton() {
-                        
+                        sessionManager.startGoogleLogin()
                     }
                     
                     AppleButton() {

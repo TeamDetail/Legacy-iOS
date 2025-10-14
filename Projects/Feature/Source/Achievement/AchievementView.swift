@@ -27,7 +27,11 @@ struct AchievementView: View {
                         )
                         .frame(maxWidth: .infinity, alignment: .leading)
                         
-                        AllRewardButton() {}
+                        AllRewardButton() {
+                            Task {
+                                await viewModel.fetchAward()
+                            }
+                        }
                         
                         if let data = viewModel.achievementList {
                             ForEach(data, id:\.self) { data in

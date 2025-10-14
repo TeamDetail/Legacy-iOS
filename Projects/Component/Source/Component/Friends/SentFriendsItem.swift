@@ -20,7 +20,7 @@ public struct SentFriendsItem: View {
     
     public var body: some View {
         HStack(spacing: 12) {
-            KFImage(URL(string: data.receiverNickname ?? ""))
+            KFImage(URL(string: data.receiverProfileImage ?? ""))
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 80, height: 80)

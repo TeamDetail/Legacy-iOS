@@ -19,4 +19,9 @@ public struct AchievementRepositoryImpl: AchievementRepository {
         let data = try await dataSource.fetchAchievement()
         return data
     }
+    
+    public func fetchAward() async throws -> AchievementAwardResponse {
+        let data = try await dataSource.fetchAward()
+        return data
+    }
 }

@@ -12,6 +12,7 @@ import Data
 
 public class AchievementViewModel: ObservableObject, Refreshable {
     @Published var achievementList: [AchievementResponse]?
+    @Published var achievementAward: AchievementAwardResponse?
     
     @Inject var achievementRepository: any AchievementRepository
     
@@ -21,6 +22,15 @@ public class AchievementViewModel: ObservableObject, Refreshable {
             achievementList = try await achievementRepository.fetchAchievement()
         } catch let apiError as APIError {
             print(apiError.message)
+        } catch {
+            print("에러: \(error)")
+        }
+    }
+    
+    @MainActor
+    func fetchAward() async {
+        do {
+            achievementAward = try await achievementRepository.fetchAward()
         } catch {
             print("에러: \(error)")
         }

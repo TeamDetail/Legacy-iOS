@@ -27,7 +27,7 @@ struct FriendListView: View {
                                 .foreground(LegacyColor.Common.white)
                             
                             AnimationButton {
-                                selection = 1
+                                selection = 2
                             } label: {
                                 Text("추가하러 가기")
                                     .frame(width: 170, height: 50)

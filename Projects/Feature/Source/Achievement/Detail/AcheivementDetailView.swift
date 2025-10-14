@@ -22,11 +22,15 @@ struct AcheivementDetailView: View {
                     .foreground(LegacyColor.Purple.normal)
                     .frame(width: 200, height: 200)
                 
-                HStack(spacing: 2) {
+                HStack(spacing: 6) {
                     Text(data.achievementName)
                         .font(.title2(.bold))
                         .foreground(LegacyColor.Common.white)
-                    Text("#탐색")
+                        .lineLimit(2)
+                        .multilineTextAlignment(.center)
+                        .minimumScaleFactor(0.8)
+                    
+                    Text("#미션")
                         .font(.title3(.bold))
                         .foreground(LegacyColor.Red.normal)
                 }
@@ -43,7 +47,7 @@ struct AcheivementDetailView: View {
                 
                 Spacer()
                 
-                Text("5블록 탐험")
+                Text("\(data.goalRate)블록 탐험")
                     .font(.body1(.bold))
                     .foreground(LegacyColor.Common.white)
             }
@@ -56,7 +60,7 @@ struct AcheivementDetailView: View {
                 
                 Spacer()
                 
-                Text("6 / 5")
+                Text("\(data.currentRate) / \(data.goalRate)")
                     .font(.body1(.bold))
                     .foreground(LegacyColor.Red.netural)
             }
@@ -69,7 +73,7 @@ struct AcheivementDetailView: View {
                 
                 Spacer()
                 
-                Text("23.73%")
+                Text("\(data.achieveUserPercent)%")
                     .font(.body1(.bold))
                     .foreground(LegacyColor.Common.white)
             }

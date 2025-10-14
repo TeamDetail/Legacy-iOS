@@ -22,7 +22,7 @@ public struct RequestFriendsItem: View {
     
     public var body: some View {
         HStack(spacing: 12) {
-            KFImage(URL(string: data.senderProfileImage))
+            KFImage(URL(string: data.senderProfileImage ?? ""))
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 80, height: 80)
@@ -30,7 +30,7 @@ public struct RequestFriendsItem: View {
                 .clipShape(size: 8)
             
             VStack(alignment: .leading, spacing: 6) {
-                Text(data.senderNickname)
+                Text(data.senderNickname ?? "알 수 없음")
                     .font(.headline(.bold))
                     .foreground(LegacyColor.Common.white)
                 

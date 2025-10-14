@@ -28,11 +28,11 @@ public struct AchievementItem: View {
                 
                 VStack(alignment: .leading, spacing: 8) {
                     VStack(alignment: .leading, spacing: 4) {
-                        HStack(spacing: 2) {
+                        HStack(spacing: 6) {
                             Text(data.achievementName)
                                 .font(.label(.bold))
                                 .foreground(LegacyColor.Common.white)
-                            Text("#탐색")
+                            Text("#미션")
                                 .font(.caption1(.medium))
                                 .foreground(LegacyColor.Red.normal)
                         }
@@ -47,7 +47,7 @@ public struct AchievementItem: View {
                                 .font(.caption1(.regular))
                                 .foreground(LegacyColor.Label.netural)
                             
-                            Text("5블록 탐험")
+                            Text("\(data.goalRate)블록 탐험")
                                 .font(.caption1(.extraBold))
                                 .foreground(LegacyColor.Label.normal)
                         }
@@ -57,7 +57,7 @@ public struct AchievementItem: View {
                                 .font(.caption1(.regular))
                                 .foreground(LegacyColor.Label.netural)
                             
-                            Text("0 / 5")
+                            Text("\(data.currentRate) / \(data.goalRate)")
                                 .font(.caption1(.extraBold))
                                 .foreground(LegacyColor.Label.normal)
                         }

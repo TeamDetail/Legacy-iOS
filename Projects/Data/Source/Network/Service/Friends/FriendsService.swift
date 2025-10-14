@@ -49,41 +49,41 @@ extension FriendsService {
         case .searchFriends: "/search"
             
             //MARK: delete
-        case let .deleteFriend(friendId): "/sent/\(friendId)"
-        case let .cancelSentRequest(friendId): "/\(friendId)"
+        case let .cancelSentRequest(friendId): "/sent/\(friendId)"
+        case let .deleteFriend(friendId): "/\(friendId)"
         }
     }
     
     public var method: Moya.Method {
         switch self {
         case .acceptFriend, .refuseFriend, .requestFriend, .requestAutoKakaoFriend:
-            .post
+                .post
         case .fetchMyCode, .fetchRequestFriend, .fetchSentRequests, .fetchMyFriends, .searchFriends:
-            .get
+                .get
         case .deleteFriend, .cancelSentRequest:
-            .delete
+                .delete
         }
     }
     
     public var task: Moya.Task {
         switch self {
         case let .requestFriend(friendCode):
-            .requestParameters(
-                parameters: ["friendCode": friendCode],
-                encoding: JSONEncoding.default
-            )
+                .requestParameters(
+                    parameters: ["friendCode": friendCode],
+                    encoding: URLEncoding.queryString
+                )
         case let .requestAutoKakaoFriend(Authorization):
-            .requestParameters(
-                parameters: ["Authorization": Authorization],
-                encoding: JSONEncoding.default
-            )
+                .requestParameters(
+                    parameters: ["Authorization": Authorization],
+                    encoding: JSONEncoding.default
+                )
         case let .searchFriends(nickName):
-            .requestParameters(
-                parameters: ["nickname": nickName],
-                encoding: URLEncoding.queryString
-            )
+                .requestParameters(
+                    parameters: ["nickname": nickName],
+                    encoding: URLEncoding.queryString
+                )
         default:
-            .requestPlain
+                .requestPlain
         }
     }
 }

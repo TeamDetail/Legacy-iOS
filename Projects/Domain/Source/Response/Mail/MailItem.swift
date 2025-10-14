@@ -13,18 +13,21 @@ public struct MailItem: ResponseProtocol {
     public let itemName: String
     public let itemDescription: String
     public let itemCount: Int
+    public let styleId: Int
     
     public init(
         itemId: Int,
         itemType: ItemType,
         itemName: String,
         itemDescription: String,
-        itemCount: Int
+        itemCount: Int,
+        styleId: Int
     ) {
         self.itemId = itemId
         self.itemType = itemType
         self.itemName = itemName
         self.itemDescription = itemDescription
         self.itemCount = itemCount
+        self.styleId = styleId
     }
 }

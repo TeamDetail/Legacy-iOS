@@ -10,4 +10,5 @@ import Domain
 
 public protocol AchievementRepository {
     func fetchAchievement() async throws -> [AchievementResponse]
+    func fetchAward() async throws -> AchievementAwardResponse
 }

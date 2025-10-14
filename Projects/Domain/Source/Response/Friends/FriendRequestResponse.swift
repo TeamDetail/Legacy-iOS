@@ -11,8 +11,8 @@ public struct FriendRequestResponse: ResponseProtocol {
     public let requestId: Int
     public let senderId: Int
     public let receiverId: Int
-    public let senderNickname: String
-    public let senderProfileImage: String
+    public let senderNickname: String?
+    public let senderProfileImage: String?
     public let senderLevel: Int
     public let receiverNickname: String?
     public let receiverProfileImage: String?
@@ -24,8 +24,8 @@ public struct FriendRequestResponse: ResponseProtocol {
         requestId: Int,
         senderId: Int,
         receiverId: Int,
-        senderNickname: String,
-        senderProfileImage: String,
+        senderNickname: String?,
+        senderProfileImage: String?,
         senderLevel: Int,
         receiverNickname: String?,
         receiverProfileImage: String?,

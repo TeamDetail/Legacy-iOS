@@ -11,6 +11,7 @@ import Component
 
 public enum AchievementService: ServiceProtocol {
     case fetchAchievement
+    case fetchAward
 }
 
 extension AchievementService {
@@ -22,18 +23,22 @@ extension AchievementService {
         switch self {
         case .fetchAchievement:
             "/all"
+        case .fetchAward:
+            "/award"
         }
     }
     
     public var method: Moya.Method {
         switch self {
         case .fetchAchievement: .get
+        case .fetchAward: .post
         }
     }
     
     public var task: Moya.Task {
         switch self {
         case .fetchAchievement: .requestPlain
+        case .fetchAward: .requestPlain
         }
     }
 }

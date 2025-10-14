@@ -16,4 +16,8 @@ public struct AchievementDataSource: DataSourceProtocol {
     public func fetchAchievement() async throws -> [AchievementResponse] {
         try await performRequest(.fetchAchievement)
     }
+    
+    public func fetchAward() async throws -> AchievementAwardResponse {
+        try await performRequest(.fetchAward)
+    }
 }

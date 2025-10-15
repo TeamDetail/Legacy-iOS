@@ -195,16 +195,14 @@ public struct ExploreView: View {
         .onDisappear {
             locationManager.stopUpdating()
         }
-        .onAppear {
-            Task {
-                await viewModel.fetchMyBlock()
-                await userData.fetchMyinfo()
-                
-                //MARK: 위치 테스트
-                //                locationManager.stopUpdating()
-                //                locationManager.setTestLocation()
-                await checkNearbyRuinsAlarm()
-            }
+        .task {
+            await viewModel.fetchMyBlock()
+            await userData.fetchMyinfo()
+            
+            //MARK: 위치 테스트
+            //                locationManager.stopUpdating()
+            //                locationManager.setTestLocation()
+            await checkNearbyRuinsAlarm()
         }
     }
     

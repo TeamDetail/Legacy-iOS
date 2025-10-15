@@ -45,10 +45,8 @@ struct CardCollectionView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
-        .onAppear {
-            Task {
-                await viewModel.fetchAllCards()
-            }
+        .task {
+            await viewModel.fetchAllCards()
         }
     }
 }

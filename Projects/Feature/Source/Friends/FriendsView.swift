@@ -53,10 +53,8 @@ struct FriendsView: View {
         ) {
             viewModel.errorMessage = ""
         }
-        .onAppear {
-            Task {
-                await viewModel.fetchAllData()
-            }
+        .task {
+            await viewModel.fetchAllData()
         }
         .padding(.horizontal, 8)
         .backButton(title: "친구") {

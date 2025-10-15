@@ -79,10 +79,8 @@ struct RankingView: View {
                 await viewModel.onRefresh()
             }
         }
-        .onAppear {
-            Task {
-                await viewModel.fetchRanking()
-            }
+        .task {
+            await viewModel.fetchRanking()
         }
     }
 }

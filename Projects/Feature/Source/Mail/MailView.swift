@@ -110,10 +110,8 @@ struct MailView: View {
                 .background(LegacyColor.Background.normal)
                 .clipShape(size: 20)
                 .padding(16)
-                .onAppear {
-                    Task {
-                        await viewModel.fetchMail()
-                    }
+                .task {
+                    await viewModel.fetchMail()
                 }
             }
         }

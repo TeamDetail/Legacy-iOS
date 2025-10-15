@@ -17,10 +17,17 @@ struct InventoryView: View {
     var body: some View {
         VStack {
             if let data = viewModel.inventory {
-                LazyVGrid(columns: columns, spacing: 16) {
-                    ForEach(data, id: \.self) { item in
-                        InventoryItem() {
-                            viewModel.selectedItem = item
+                if data.isEmpty {
+                    Text("인벤토리가 비었어요!")
+                        .font(.title2(.bold))
+                        .foreground(LegacyColor.Common.white)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                } else {
+                    LazyVGrid(columns: columns, spacing: 16) {
+                        ForEach(data, id: \.self) { item in
+                            InventoryItem() {
+                                viewModel.selectedItem = item
+                            }
                         }
                     }
                 }
@@ -30,10 +37,8 @@ struct InventoryView: View {
         }
         .padding(.horizontal, 10)
         .padding(.top, 10)
-        .onAppear {
-            Task {
-                await viewModel.fetchInventory()
-            }
+        .task {
+            await viewModel.fetchInventory()
         }
     }
 }

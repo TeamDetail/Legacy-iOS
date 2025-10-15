@@ -63,10 +63,8 @@ struct CourseView: View {
                 activeDropDown = .none
                 isFocused = false
             }
-            .onAppear {
-                Task {
-                    await viewModel.fetchAllData()
-                }
+            .task {
+                await viewModel.fetchAllData()
             }
             .refreshable {
                 Task {

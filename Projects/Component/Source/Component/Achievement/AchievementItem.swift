@@ -32,7 +32,7 @@ public struct AchievementItem: View {
                             Text(data.achievementName)
                                 .font(.label(.bold))
                                 .foreground(LegacyColor.Common.white)
-                            Text("#미션")
+                            Text("#\(data.achievementType)")
                                 .font(.caption1(.medium))
                                 .foreground(LegacyColor.Red.normal)
                         }

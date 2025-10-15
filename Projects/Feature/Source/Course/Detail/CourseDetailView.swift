@@ -29,10 +29,8 @@ struct CourseDetailView: View {
         .backButton(title: "목록으로") {
             flow.pop()
         }
-        .onAppear {
-            Task {
-                await viewModel.fetchCourseDatail(courseId)
-            }
+        .task {
+            await viewModel.fetchCourseDatail(courseId)
         }
         .refreshable {
             Task {

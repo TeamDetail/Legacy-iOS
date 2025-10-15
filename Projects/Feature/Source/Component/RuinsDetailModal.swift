@@ -91,10 +91,8 @@ struct RuinsDetailModal: View {
                                 removal: .move(edge: .leading).combined(with: .opacity)
                             )
                         )
-                        .onAppear {
-                            Task {
-                                await commentViewModel.fetchComment(detail.ruinsId)
-                            }
+                        .task {
+                            await commentViewModel.fetchComment(detail.ruinsId)
                         }
                     }
                 }

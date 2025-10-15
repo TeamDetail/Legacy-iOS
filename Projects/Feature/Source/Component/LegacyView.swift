@@ -33,10 +33,8 @@ struct LegacyView<Content: View>: View {
                     }
                 }
         }
-        .onAppear {
-            Task {
-                await viewModel.fetchMyinfo()
-            }
+        .task {
+            await viewModel.fetchMyinfo()
         }
         .onTapGesture {
             withAnimation(.appSpring) {

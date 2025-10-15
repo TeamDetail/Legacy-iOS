@@ -20,4 +20,8 @@ public struct AchievementDataSource: DataSourceProtocol {
     public func fetchAward() async throws -> AchievementAwardResponse {
         try await performRequest(.fetchAward)
     }
+    
+    public func fetchAchievementType(_ categoryType: AchievementCategoryType) async throws -> [AchievementResponse] {
+        try await performRequest(.fetchAchievementType(categoryType))
+    }
 }

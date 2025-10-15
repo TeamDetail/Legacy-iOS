@@ -10,40 +10,47 @@ import DIContainer
 import Domain
 import Data
 
-public class AchievementViewModel: ObservableObject, Refreshable {
+@MainActor
+public final class AchievementViewModel: ObservableObject, Refreshable {
     @Published var achievementList: [AchievementResponse]?
     @Published var achievementAward: AchievementAwardResponse?
+    @Published var achievementTypeList: [AchievementResponse]?
     
     @Inject var achievementRepository: any AchievementRepository
     
-    @MainActor
     func fetchAchievement() async {
         do {
             achievementList = try await achievementRepository.fetchAchievement()
         } catch let apiError as APIError {
-            print(apiError.message)
+            print("API Error:", apiError.message)
         } catch {
-            print("에러: \(error)")
+            print("에러:", error)
         }
     }
     
-    @MainActor
     func fetchAward() async {
         do {
             achievementAward = try await achievementRepository.fetchAward()
         } catch {
-            print("에러: \(error)")
+            print("에러:", error)
         }
     }
     
-    @MainActor
-    func onRefresh() async {
-        clearData()
-        await fetchAchievement()
+    func fetchAchievementType(_ categoryType: AchievementCategoryType) async {
+        do {
+            achievementTypeList = try await achievementRepository.fetchAchievementType(categoryType)
+        } catch {
+            print("에러:", error)
+        }
     }
     
     func clearData() {
         achievementList = nil
+        achievementTypeList = nil
+    }
+    
+    func onRefresh() async {
+        clearData()
+        await fetchAchievement()
     }
 }
-

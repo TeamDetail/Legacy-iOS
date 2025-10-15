@@ -12,6 +12,7 @@ import Component
 public enum AchievementService: ServiceProtocol {
     case fetchAchievement
     case fetchAward
+    case fetchAchievementType(_ categoryType: AchievementCategoryType)
 }
 
 extension AchievementService {
@@ -25,6 +26,8 @@ extension AchievementService {
             "/all"
         case .fetchAward:
             "/award"
+        case let .fetchAchievementType(categoryType):
+            "/\(categoryType.rawValue)"
         }
     }
     
@@ -32,6 +35,7 @@ extension AchievementService {
         switch self {
         case .fetchAchievement: .get
         case .fetchAward: .post
+        case .fetchAchievementType: .get
         }
     }
     
@@ -39,6 +43,7 @@ extension AchievementService {
         switch self {
         case .fetchAchievement: .requestPlain
         case .fetchAward: .requestPlain
+        case .fetchAchievementType: .requestPlain
         }
     }
 }

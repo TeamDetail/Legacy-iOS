@@ -44,7 +44,9 @@ let project = Project(
                     //MARK: kakao
                     "LSApplicationQueriesSchemes": [
                         "kakaokompassauth",
-                        "kakaolink"
+                        "kakaolink",
+                        "instagram-stories",
+                        "instagram"
                     ],
                     "CFBundleURLTypes": [
                         [

@@ -61,7 +61,7 @@ public struct RuinCardView: View {
                         .lineLimit(2)
                         .multilineTextAlignment(.leading)
                 }
-                .padding(8)
+                .padding(12)
                 
                 RoundedRectangle(cornerRadius: 12)
                     .stroke(lineWidth: 2)

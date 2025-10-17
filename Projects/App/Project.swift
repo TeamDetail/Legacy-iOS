@@ -41,6 +41,9 @@ let project = Project(
                     //MARK: 다크모드만 지원
                     "UIUserInterfaceStyle": "Dark",
                     
+                    //MARK: Instagram App ID
+                    "META_APP_ID": "826905676417975",
+                    
                     //MARK: kakao
                     "LSApplicationQueriesSchemes": [
                         "kakaokompassauth",

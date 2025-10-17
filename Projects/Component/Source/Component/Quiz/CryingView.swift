@@ -48,7 +48,8 @@ public struct CryingView: View {
                         .clipShape(size: 12)
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
-                                .stroke(lineWidth: 2)
+                                .inset(by: 5)
+                                .stroke(lineWidth: 1)
                                 .foreground(LegacyColor.Blue.netural)
                         )
                 }

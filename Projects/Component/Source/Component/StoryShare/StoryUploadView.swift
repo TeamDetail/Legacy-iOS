@@ -14,19 +14,23 @@ import Kingfisher
 class StoryPhotoStore: ObservableObject {
     static let shared = StoryPhotoStore()
     @Published var capturedImage: UIImage?
+    @Published var isCapturing = false
+    
     private init() {}
     
-    // 뷰 전체를 UIImage로 캡처
-    func capture(view: UIView, size: CGSize? = nil) {
+    func capture(view: UIView, size: CGSize? = nil, completion: @escaping () -> Void) {
         let targetSize = size ?? view.bounds.size
-        let renderer = UIGraphicsImageRenderer(size: targetSize)
-        let image = renderer.image { _ in
-            view.drawHierarchy(in: CGRect(origin: .zero, size: targetSize), afterScreenUpdates: true)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            let renderer = UIGraphicsImageRenderer(size: targetSize)
+            let image = renderer.image { _ in
+                view.drawHierarchy(in: CGRect(origin: .zero, size: targetSize), afterScreenUpdates: true)
+            }
+            self.capturedImage = image
+            completion()
         }
-        self.capturedImage = image
     }
     
-    // Instagram 스토리 공유
     func shareToInstagram(appId: String) {
         guard let stickerData = capturedImage?.pngData() else { return }
         
@@ -48,20 +52,26 @@ class StoryPhotoStore: ObservableObject {
 
 // MARK: - StoryUploadView
 public struct StoryUploadView: View {
-    let data = Card(
-        cardId: 1,
-        cardName: "손흥민",
-        cardImageUrl: "https://cloudfront-ap-northeast-1.images.arcpublishing.com/chosun/6PJ3YC3PFZSBE3BU36H6TGW7XM.jpg",
-        cardType: .start,
-        nationAttributeName: "대한민국",
-        lineAttributeName: "LAFC",
-        regionAttributeName: "Son"
-    )
-    
-    private let instagramAppId = "826905676417975"
+    let data: Card
+    private var instagramAppId: String {
+        Bundle.main.object(forInfoDictionaryKey: "META_APP_ID") as? String ?? ""
+    }
     @ObservedObject private var photoStore = StoryPhotoStore.shared
+    @State private var isImageLoaded = false
     
-    public init() {}
+    // 자동 캡처 트리거
+    let shouldAutoCapture: Bool
+    let onComplete: (() -> Void)?
+    
+    public init(
+        data: Card,
+        shouldAutoCapture: Bool = false,
+        onComplete: (() -> Void)? = nil
+    ) {
+        self.data = data
+        self.shouldAutoCapture = shouldAutoCapture
+        self.onComplete = onComplete
+    }
     
     public var body: some View {
         ZStack {
@@ -80,7 +90,7 @@ public struct StoryUploadView: View {
                     .foreground(LegacyColor.Common.white)
                 
                 VStack {
-                    RuinCardView(data: data)
+                    RuinCardViewForStory(data: data, isImageLoaded: $isImageLoaded)
                         .frame(width: 200, height: 260)
                 }
                 .frame(width: 245, height: 310)
@@ -90,26 +100,102 @@ public struct StoryUploadView: View {
                 Text("LEGACY")
                     .font(.bitFont(size: 40))
                     .foregroundColor(.white)
-                
-                Button("스토리 공유") {
-                    captureAndShare()
-                }
-                .padding()
-                .background(Color.blue)
-                .foregroundColor(.white)
-                .cornerRadius(10)
             }
             .padding()
+            .onChange(of: isImageLoaded) { loaded in
+                if loaded && shouldAutoCapture {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        captureAndShare()
+                    }
+                }
+            }
+            
+            if photoStore.isCapturing {
+                Color.clear
+            }
         }
     }
     
-    // MARK: - 전체 화면 캡처 후 공유
     private func captureAndShare() {
+        photoStore.isCapturing = true
+        
         let controller = UIHostingController(rootView: self)
         controller.view.frame = UIScreen.main.bounds
         
-        photoStore.capture(view: controller.view, size: UIScreen.main.bounds.size)
-        
-        photoStore.shareToInstagram(appId: instagramAppId)
+        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let window = windowScene.windows.first {
+            window.addSubview(controller.view)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                photoStore.capture(view: controller.view, size: UIScreen.main.bounds.size) {
+                    controller.view.removeFromSuperview()
+                    photoStore.isCapturing = false
+                    photoStore.shareToInstagram(appId: instagramAppId)
+                    onComplete?()
+                }
+            }
+        }
+    }
+}
+
+// MARK: - RuinCardViewForStory
+struct RuinCardViewForStory: View {
+    let data: Card
+    @Binding var isImageLoaded: Bool
+    
+    var body: some View {
+        if let url = URL(string: data.cardImageUrl) {
+            ZStack(alignment: .topLeading) {
+                KFImage(url)
+                    .onSuccess { _ in
+                        isImageLoaded = true
+                    }
+                    .onFailure { _ in
+                        isImageLoaded = false
+                    }
+                    .placeholder { _ in
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.gray.opacity(0.3))
+                            .frame(maxWidth: .infinity)
+                            .aspectRatio(140/196, contentMode: .fit)
+                    }
+                    .resizable()
+                    .aspectRatio(140/196, contentMode: .fill)
+                    .frame(maxWidth: .infinity)
+                    .clipShape(size: 12)
+                
+                LinearGradient(
+                    gradient: Gradient(stops: [
+                        .init(color: Color.black.opacity(0.0), location: 0.4),
+                        .init(color: Color.black.opacity(0.8), location: 0.7),
+                        .init(color: Color.black.opacity(1.0), location: 1.0)
+                    ]),
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+                .clipShape(size: 12)
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    CardCategory(category: data.nationAttributeName, backgroundColor: LegacyColor.Primary.normal)
+                    CardCategory(category: data.lineAttributeName, backgroundColor: LegacyColor.Blue.netural)
+                    CardCategory(category: data.regionAttributeName, backgroundColor: LegacyColor.Red.netural)
+                    
+                    Spacer()
+                    
+                    Text(data.cardName)
+                        .font(.bitFont(size: 16))
+                        .foreground(LegacyColor.Common.white)
+                        .lineLimit(2)
+                        .multilineTextAlignment(.leading)
+                }
+                .padding(12)
+                
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(lineWidth: 2)
+                    .foreground(LegacyColor.Line.netural)
+            }
+            .frame(maxWidth: .infinity)
+            .aspectRatio(140/196, contentMode: .fit)
+        }
     }
 }

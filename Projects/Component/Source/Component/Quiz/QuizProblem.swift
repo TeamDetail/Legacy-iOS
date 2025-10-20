@@ -20,7 +20,6 @@ public struct QuizProblem: View {
     
     public var body: some View {
         Button {
-            HapticManager.instance.impact(style: .rigid)
             action()
         } label: {
             VStack {
@@ -30,9 +29,10 @@ public struct QuizProblem: View {
             }
             .frame(width: 322, height: 50)
             .background(LegacyColor.Fill.normal)
-            .clipShape(size: 8)
+            .clipShape(size: 12)
             .overlay(
-                RoundedRectangle(cornerRadius: 8)
+                RoundedRectangle(cornerRadius: 12)
+                    .inset(by: 5)
                     .stroke(lineWidth: 2)
                     .foreground(isSelected ? LegacyColor.Primary.normal : LegacyColor.Line.alternative)
             )

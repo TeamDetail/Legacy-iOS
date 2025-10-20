@@ -3,7 +3,8 @@ import Domain
 import Component
 
 struct QuizView: View {
-    @State private var hint = "흰트 확인하기"
+    @State private var hint = "힌트 확인하기"
+    @State private var isHintLoading = false
     @ObservedObject var quizViewModel: QuizViewModel
     @ObservedObject var stateViewModel: QuizStateViewModel
     
@@ -13,13 +14,10 @@ struct QuizView: View {
     var body: some View {
         LegacyModalView {
             VStack {
-                Color.clear
-                    .frame(height: 40)
+                Color.clear.frame(height: 40)
                 if let quizzes = quizViewModel.quizList {
                     if quizzes.isEmpty {
-                        QuizNotExist {
-                            stateViewModel.dismissQuiz()
-                        }
+                        QuizNotExist { stateViewModel.dismissQuiz() }
                     } else {
                         VStack {
                             ProgressIndicator(
@@ -31,7 +29,6 @@ struct QuizView: View {
                                 let quiz = quizzes[stateViewModel.currentIndex]
                                 let selectedIndex = stateViewModel.getCurrentSelectedIndex()
                                 
-                                //MARK: 문제
                                 VStack(spacing: 20) {
                                     Text("Q\(stateViewModel.currentIndex + 1)")
                                         .font(.title2(.bold))
@@ -51,15 +48,16 @@ struct QuizView: View {
                                         .fixedSize(horizontal: false, vertical: true)
                                 }
                                 
-                                //MARK: 문제목록
                                 VStack {
                                     ForEach(quiz.optionValue.indices, id: \.self) { idx in
-                                        QuizProblem(
-                                            isSelected: selectedIndex == idx,
-                                            description: quiz.optionValue[idx]
-                                        ) {
-                                            stateViewModel.selectOption(at: idx)
-                                        }
+                                        EquatableView(
+                                            content: QuizProblemViewWrapper(
+                                                description: quiz.optionValue[idx],
+                                                isSelected: selectedIndex == idx
+                                            ) {
+                                                stateViewModel.selectOption(at: idx)
+                                            }
+                                        )
                                     }
                                     .padding(.vertical, 4)
                                 }
@@ -71,22 +69,26 @@ struct QuizView: View {
                                         buttonType: .small
                                     ) {
                                         if stateViewModel.currentIndex == 0 {
-                                            Task {
-                                                stateViewModel.dismissQuiz()
-                                            }
+                                            Task { stateViewModel.dismissQuiz() }
                                         } else {
                                             stateViewModel.previousQuestion()
                                         }
                                     }
                                     
-                                    //MARK: Hint
                                     QuizButton(
-                                        title: hint,
+                                        title: isHintLoading ? "불러오는 중..." : hint,
                                         buttonType: .medium
                                     ) {
                                         Task {
+                                            isHintLoading = true
+                                            hint = "힌트 불러오는 중..."
+                                            
                                             await quizViewModel.fetchHint(quizId)
-                                            hint = "힌트: \(quizViewModel.quizHint)"
+                                            
+                                            withAnimation {
+                                                hint = "힌트: \(quizViewModel.quizHint)"
+                                                isHintLoading = false
+                                            }
                                         }
                                     }
                                     
@@ -96,16 +98,16 @@ struct QuizView: View {
                                     ) {
                                         if stateViewModel.isLastQuestion(totalQuestions: quizzes.count) {
                                             Task {
-                                                await quizViewModel.checkQuiz(stateViewModel.getAllSelectedAnswers(from: quizzes), stateViewModel: stateViewModel)
+                                                await quizViewModel.checkQuiz(
+                                                    stateViewModel.getAllSelectedAnswers(from: quizzes),
+                                                    stateViewModel: stateViewModel
+                                                )
                                             }
                                         } else {
-                                            withAnimation(.easeInOut(duration: 0.2)) {
-                                                stateViewModel.nextQuestion(totalQuestions: quizzes.count)
-                                            }
+                                            stateViewModel.nextQuestion(totalQuestions: quizzes.count)
                                         }
                                     }
                                     .disabled(!stateViewModel.hasSelectedOption())
-                                    .animation(.easeInOut(duration: 0.15), value: stateViewModel.hasSelectedOption())
                                 }
                                 .padding(.bottom, 30)
                             }

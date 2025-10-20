@@ -15,25 +15,27 @@ struct MapUtilityView: View {
     
     var body: some View {
         VStack {
-            HStack {
-                HStack(spacing: 8) {
-                    LocationButton() {
-                        locationAction()
-                    }
-                    SearchButton() {
-                        searchAction()
-                    }
-                }
-                
+            HStack(spacing: 8) {
+                LocationButton { locationAction() }
+                SearchButton { searchAction() }
                 Spacer()
-                
-                LegacyErrorAlert(
-                    isPresented: $isPresented,
-                    description: "줌을 많이 당기면 화면이\n멈출 수도 있어요!"
-                )
             }
             .padding(.horizontal, 14)
+            .padding(.vertical, 4)
         }
-        .padding(.vertical, 4)
+        .overlay(
+            VStack {
+                if isPresented {
+                    LegacyErrorAlert(
+                        isPresented: $isPresented,
+                        description: "줌을 많이 당기면 화면이\n멈출 수도 있어요!"
+                    )
+                    .padding(.horizontal, 14)
+                }
+                Spacer()
+            }
+            , alignment: .topLeading
+        )
     }
 }
+

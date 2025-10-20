@@ -19,15 +19,16 @@ public struct QuizButton: View {
     }
     
     public var body: some View {
-        Button {
-            action()
-        } label: {
+        Button(action: action) {
             Text(title)
                 .font(.caption1(.bold))
                 .foreground(buttonType.color)
-                .lineLimit(1)
-                .minimumScaleFactor(0.7)
-                .frame(minWidth: 60, maxWidth: buttonType.width, minHeight: 40, maxHeight: 40)
+                .multilineTextAlignment(.center)
+                .lineLimit(nil)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.horizontal, 10)
+                .padding(.vertical, 12)
+                .frame(width: buttonType.width)
                 .background(LegacyColor.Fill.normal)
                 .overlay(
                     RoundedRectangle(cornerRadius: 12)

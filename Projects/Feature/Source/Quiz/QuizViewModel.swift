@@ -12,7 +12,7 @@ public class QuizViewModel: ObservableObject {
     @Published var clearQuiz = false
     @Published var wrongNumbers: [Int] = []
     @Published var isLoadingQuiz = false
-    @Published var quizHint: String = "흰트가 없어요!"
+    @Published var quizHint: String = "힌트가 없어요!"
     
     @Inject var quizRepository: any QuizRepository
     

@@ -33,6 +33,9 @@ public struct LegacyErrorAlert: View {
                     Text(description)
                         .font(.body1(.bold))
                         .foregroundColor(.white)
+                        .multilineTextAlignment(.leading)
+                        .lineLimit(nil)
+                        .fixedSize(horizontal: false, vertical: true)
                         .opacity(showText ? 1.0 : 0)
                         .offset(x: showText ? 0 : -10)
                         .animation(.easeOut(duration: 0.3).delay(0.1), value: showText)
@@ -48,12 +51,12 @@ public struct LegacyErrorAlert: View {
                 )
                 .clipShape(size: 16)
                 .shadow(color: Color.red.opacity(0.3), radius: 10, x: 0, y: 4)
-                .frame(maxWidth: .infinity, alignment: .trailing)
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .transition(.move(edge: .leading).combined(with: .opacity))
                 .onAppear {
                     showIcon = true
                     showText = true
-                    delayRun(2) {
+                    delayRun(4) {
                         withAnimation {
                             isPresented = false
                         }

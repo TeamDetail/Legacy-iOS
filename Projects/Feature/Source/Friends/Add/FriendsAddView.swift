@@ -47,7 +47,7 @@ struct FriendsAddView: View {
                         
                         ScrollView(.vertical, showsIndicators: false) {
                             if viewModel.isLoading {
-                                LegacyLoadingView("")
+                                LegacyLoadingView()
                             } else if let data = viewModel.searchResult {
                                 if data.isEmpty {
                                     Text("검색 결과가 없어요")
@@ -69,7 +69,7 @@ struct FriendsAddView: View {
                 }
                 .padding(.vertical, 8)
             } else {
-                LegacyLoadingView("")
+                LegacyLoadingView()
             }
         }
         .refreshable {

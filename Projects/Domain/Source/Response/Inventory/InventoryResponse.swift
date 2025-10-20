@@ -9,12 +9,12 @@ import Foundation
 
 public struct InventoryResponse: ResponseProtocol {
     public let itemId: Int
-    public let itemType: ItemType
+    public let itemType: StoreType
     public let itemName: String
     public let itemDescription: String
     public let itemCount: Int
     
-    public init(itemId: Int, itemType: ItemType, itemName: String, itemDescription: String, itemCount: Int) {
+    public init(itemId: Int, itemType: StoreType, itemName: String, itemDescription: String, itemCount: Int) {
         self.itemId = itemId
         self.itemType = itemType
         self.itemName = itemName

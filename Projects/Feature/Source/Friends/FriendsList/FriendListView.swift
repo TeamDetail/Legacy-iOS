@@ -61,7 +61,7 @@ struct FriendListView: View {
                         }
                     }
                 } else {
-                    LegacyLoadingView("")
+                    LegacyLoadingView()
                     Spacer()
                 }
             }

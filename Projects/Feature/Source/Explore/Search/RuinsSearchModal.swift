@@ -41,7 +41,7 @@ struct RuinsSearchModal: View {
             
             ScrollView(.vertical, showsIndicators: false) {
                 if viewModel.isLoadingSearch {
-                    LegacyLoadingView("")
+                    LegacyLoadingView()
                 } else if let data = viewModel.searchResult {
                     if data.isEmpty {
                         Text("검색 결과가 없어요")

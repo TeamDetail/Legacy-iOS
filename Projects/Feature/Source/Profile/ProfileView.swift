@@ -45,12 +45,12 @@ struct ProfileView: View {
                         ActivityRecordView(data: data)
                             .padding(.top, 8)
                     } else {
-                        LegacyLoadingView("")
+                        LegacyLoadingView()
                     }
                 }
                 
                 if selection == 1 {
-                    LegacyLoadingView("")
+                    LegacyLoadingView()
                 }
                 
                 if selection == 2 {

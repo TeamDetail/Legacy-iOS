@@ -9,4 +9,6 @@ import Foundation
 
 public enum StoreType: String, EnumProtocol {
     case cardPack = "CARD_PACK"
+    case creditPack = "CREDIT_PACK"
+    case style = "STYLE"
 }

@@ -71,7 +71,7 @@ struct RankingView: View {
                         .clipShape(size: 16)
                         .padding(.horizontal, 12)
                     } else {
-                        LegacyLoadingView("")
+                        LegacyLoadingView()
                     }
                 }
             }

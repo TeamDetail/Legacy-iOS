@@ -18,6 +18,7 @@ struct LegacyTopBar: View {
     @Flow var flow
     @Binding var showMenu: Bool
     @State private var showMail = false
+    @State private var showDaily = false
     @State private var buttonFrame: CGRect = .zero
     @State private var showAnimation = false
     let data: UserInfoResponse
@@ -106,6 +107,11 @@ struct LegacyTopBar: View {
                         withAnimation(.appSpring) {
                             showMenu = false
                         }
+                    case .calendar:
+                        withAnimation(.appSpring) {
+                            showDaily = true
+                            showMenu = false
+                        }
                     case .people:
                         flow.push(FriendsView())
                     case .mail:
@@ -150,6 +156,28 @@ struct LegacyTopBar: View {
                     .zIndex(1)
                 }
                 .animation(.spring(response: 0.35, dampingFraction: 0.7), value: showMail)
+            }
+            
+            if showDaily {
+                ZStack {
+                    Color.black.opacity(0.4)
+                        .ignoresSafeArea()
+                        .blur(radius: 2)
+                        .onTapGesture {
+                            withAnimation(.appSpring) {
+                                showDaily = false
+                            }
+                        }
+                    
+                    DailyView {
+                        withAnimation(.appSpring) {
+                            showDaily = false
+                        }
+                    }
+                    .transition(.scale.combined(with: .opacity))
+                    .zIndex(999)
+                }
+                .animation(.spring(response: 0.35, dampingFraction: 0.7), value: showDaily)
             }
         }
     }

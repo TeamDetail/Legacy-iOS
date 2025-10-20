@@ -32,7 +32,7 @@ struct InventoryView: View {
                     }
                 }
             } else {
-                LegacyLoadingView("")
+                LegacyLoadingView()
             }
         }
         .padding(.horizontal, 10)

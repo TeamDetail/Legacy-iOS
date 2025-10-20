@@ -103,7 +103,7 @@ struct CreateCourseView: View {
                         .padding(.horizontal, 8)
                         
                         if viewModel.isLoading {
-                            LegacyLoadingView("")
+                            LegacyLoadingView()
                         } else if let data = viewModel.searchResult {
                             if data.isEmpty {
                                 Text("검색 결과가 없어요")

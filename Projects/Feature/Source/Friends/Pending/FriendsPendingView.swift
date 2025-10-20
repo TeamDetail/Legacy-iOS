@@ -59,7 +59,7 @@ struct FriendsPendingView: View {
                         }
                     }
                 } else {
-                    LegacyLoadingView("")
+                    LegacyLoadingView()
                 }
             }
             .padding(.top, 14)

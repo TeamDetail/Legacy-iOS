@@ -60,6 +60,10 @@ public struct DataSourceAssembly: Assembly {
             FriendsDataSource()
         }.inObjectScope(.container)
         
+        container.register(DailyDataSource.self) { _ in
+            DailyDataSource()
+        }.inObjectScope(.container)
+        
         container.register(BlockRepository.self) { _ in //MARK: 나중에 구현
             BlockService()
         }.inObjectScope(.container)

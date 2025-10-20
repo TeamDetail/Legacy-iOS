@@ -63,7 +63,7 @@ struct AchievementView: View {
                             }
                         }
                     } else {
-                        LegacyLoadingView("")
+                        LegacyLoadingView()
                     }
                 }
                 .padding(.horizontal, 14)

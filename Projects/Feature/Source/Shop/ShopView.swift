@@ -62,13 +62,13 @@ struct ShopView: View {
                                 //                                }
                                 VStack {
                                     Spacer()
-                                    LegacyLoadingView("")
+                                    LegacyLoadingView()
                                 }
                             }
                         } else {
                             VStack {
                                 Spacer()
-                                LegacyLoadingView("")
+                                LegacyLoadingView()
                             }
                         }
                     }

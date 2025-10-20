@@ -25,7 +25,7 @@ struct CardCollectionView: View {
                 
                 VStack {
                     if viewModel.regionCardMap.isEmpty {
-                        LegacyLoadingView("")
+                        LegacyLoadingView()
                     } else if let cards = viewModel.regionCardMap[selectedRegion] {
                         if cards.cards.isEmpty {
                             Text("\(selectedRegion.regionName) 지역의 카드가 없어요!")
@@ -39,7 +39,7 @@ struct CardCollectionView: View {
                             )
                         }
                     } else {
-                        LegacyLoadingView("")
+                        LegacyLoadingView()
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)

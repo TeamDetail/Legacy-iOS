@@ -10,15 +10,18 @@ import DIContainer
 import Domain
 import Data
 
-public class RankingViewModel: ObservableObject, Refreshable {
+public class RankingViewModel: ObservableObject {
     @Published var rankingList: [RankResponse]?
-    
     @Inject var rankingRepository: any RankRepository
     
     @MainActor
-    func fetchRanking() async {
+    func fetchRanking(isExplore: Bool, type: RankType) async {
         do {
-            rankingList = try await rankingRepository.fetchRanking()
+            if isExplore {
+                rankingList = try await rankingRepository.fetchExploreRanking(type)
+            } else {
+                rankingList = try await rankingRepository.fetchLevelRanking(type)
+            }
         } catch let apiError as APIError {
             print(apiError)
         } catch {
@@ -27,12 +30,8 @@ public class RankingViewModel: ObservableObject, Refreshable {
     }
     
     @MainActor
-    func onRefresh() async {
-        clearData()
-        await fetchRanking()
+    func onRefresh(isExplore: Bool, type: RankType) async {
+        await fetchRanking(isExplore: isExplore, type: type)
     }
     
-    func clearData() {
-        rankingList = nil
-    }
 }

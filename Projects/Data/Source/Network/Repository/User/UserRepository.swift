@@ -12,5 +12,7 @@ public protocol UserRepository {
     func fetchMyinfo() async throws -> UserInfoResponse
     func uploadUrl(_ fileName: String) async throws -> ImageUrlResponse
     func changeProfileImage(_ request: ChangeProfileImageRequest) async throws
+    func fetchTitle() async throws -> [UserTitleResponse]
+    func applyTitle(_ styleId: Int) async throws
 }
 

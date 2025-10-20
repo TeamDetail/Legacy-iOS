@@ -45,10 +45,12 @@ public struct RankingBoardView: View {
                 }
                 .padding(.horizontal, 8)
                 
-                if !data.title.name.isEmpty {
-                    TitleBadge(data.title.name, color: LegacyColor.Yellow.alternative)
-                        .frame(width: 120, alignment: .leading)
-                }
+                TitleBadge(
+                    title: data.title.name,
+                    styleId: data.title.styleId
+                )
+                .frame(width: 120, alignment: .leading)
+                
             }
             
             Text("\(data.allBlocks)블록")

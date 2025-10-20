@@ -54,10 +54,11 @@ public struct TopRankersView: View {
             .multilineTextAlignment(.center)
             .padding(.vertical, 14)
             
+            TitleBadge(
+                title: data.title.name,
+                styleId: data.title.styleId
+            )
             
-            if !data.title.name.isEmpty {
-                TitleBadge(data.title.name, color: LegacyColor.Yellow.alternative)
-            }
         }
         .frame(width: 100, height: 230)
         .background(LegacyColor.Background.normal)

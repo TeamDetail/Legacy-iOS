@@ -13,6 +13,8 @@ public enum UserService: ServiceProtocol {
     case fetchMyinfo
     case uploadUrl(_ fileName: String)
     case changeProfileImage(_ request: ChangeProfileImageRequest)
+    case fetchTitle
+    case applyTitle(_ styleId: Int)
 }
 
 extension UserService {
@@ -28,6 +30,10 @@ extension UserService {
             "/uploadUrl"
         case .changeProfileImage:
             "/image"
+        case .fetchTitle:
+            "/titles"
+        case .applyTitle:
+            "/title"
         }
     }
     
@@ -36,6 +42,8 @@ extension UserService {
         case .fetchMyinfo: .get
         case .uploadUrl: .get
         case .changeProfileImage: .patch
+        case .fetchTitle: .get
+        case .applyTitle: .patch
         }
     }
     
@@ -50,6 +58,13 @@ extension UserService {
             )
         case let .changeProfileImage(request):
             return .requestJSONEncodable(request)
+        case .fetchTitle:
+            return .requestPlain
+        case let .applyTitle(styleId):
+            return .requestParameters(
+                parameters: ["styleId": styleId],
+                encoding: JSONEncoding.default
+            )
         }
     }
 }

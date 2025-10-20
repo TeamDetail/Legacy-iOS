@@ -46,11 +46,14 @@ public struct ProfileComponent: View {
                         .foreground(LegacyColor.Label.alternative)
                         .padding(.horizontal, 2)
                     
-                    if !data.title.name.isEmpty {
-                        TitleBadge(data.title.name, color: LegacyColor.Yellow.netural, size: .big)
-                    }
+                    TitleBadge(
+                        title: data.title.name,
+                        styleId: data.title.styleId
+                    )
+                    .layoutPriority(1)
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Spacer()
                 
                 AnimationButton {
                     action()
@@ -61,7 +64,6 @@ public struct ProfileComponent: View {
                         .background(LegacyColor.Background.normal)
                         .clipShape(size: 99)
                 }
-                .frame(maxWidth: .infinity, alignment: .trailing)
             }
         }
     }

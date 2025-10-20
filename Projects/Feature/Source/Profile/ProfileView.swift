@@ -50,7 +50,8 @@ struct ProfileView: View {
                 }
                 
                 if selection == 1 {
-                    LegacyLoadingView()
+                    UserTitleView()
+                        .padding(.top, 8)
                 }
                 
                 if selection == 2 {

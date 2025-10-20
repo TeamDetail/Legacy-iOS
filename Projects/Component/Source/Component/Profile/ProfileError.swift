@@ -37,8 +37,6 @@ public struct ProfileError: View {
                     .font(.body1(.bold))
                     .foreground(LegacyColor.Label.alternative)
                     .padding(.horizontal, 2)
-                
-                TitleBadge("은둔 고수 플레이어", color: LegacyColor.Purple.normal, size: .big)
             }
         }
     }

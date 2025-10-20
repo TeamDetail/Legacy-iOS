@@ -24,4 +24,12 @@ public struct UserDataSource: DataSourceProtocol {
     public func changeProfileImage(_ request: ChangeProfileImageRequest) async throws -> UserInfoResponse {
         try await performRequest(.changeProfileImage(request))
     }
+    
+    public func fetchTitle() async throws -> [UserTitleResponse] {
+        try await performRequest(.fetchTitle)
+    }
+    
+    public func applyTitle(_ styleId: Int) async throws -> String {
+        try await performRequest(.applyTitle(styleId))
+    }
 }

@@ -55,7 +55,7 @@ private extension DateButton {
     
     var backgroundColor: LegacyColorable {
         if lastDate {
-            return LegacyColor.Fill.netural
+            return LegacyColor.Fill.assistive
         } else if isSelceted {
             return LegacyColor.Primary.normal
         } else {

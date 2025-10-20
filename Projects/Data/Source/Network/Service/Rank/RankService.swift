@@ -9,7 +9,8 @@ import Moya
 import Domain
 
 public enum RankService: ServiceProtocol {
-    case fetchRanking
+    case fetchLevelRanking(_ type: RankType)
+    case fetchExploreRanking(_ type: RankType)
 }
 
 extension RankService {
@@ -19,20 +20,18 @@ extension RankService {
     
     public var path: String {
         switch self {
-        case .fetchRanking:
-            "/explore/all"
+        case let .fetchLevelRanking(type):
+            "/level/\(type.rawValue)"
+        case let .fetchExploreRanking(type):
+            "/explore/\(type.rawValue)"
         }
     }
     
     public var method: Moya.Method {
-        switch self {
-        case .fetchRanking: .get
-        }
+        .get
     }
-     
+    
     public var task: Moya.Task {
-        switch self {
-        case .fetchRanking: .requestPlain
-        }
+        .requestPlain
     }
 }

@@ -75,8 +75,8 @@ public struct RuinsDetailView: View {
                 
                 LegacyDivider()
                 
-                if let data = commentData {
-                    ForEach(data, id: \.self) { data in
+                if let commentData {
+                    ForEach(commentData, id: \.self) { data in
                         CommentItem(data: data)
                     }
                 }

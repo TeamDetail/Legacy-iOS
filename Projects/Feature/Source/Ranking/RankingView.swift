@@ -1,11 +1,13 @@
 import SwiftUI
 import Component
 import Shared
+import Domain
 
 struct RankingView: View {
     @StateObject private var viewModel = RankingViewModel()
     @Binding var tabItem: LegacyTabItem
     @State private var selection = 0
+    @State private var rankType: RankType = .all
     
     var body: some View {
         LegacyView {
@@ -13,74 +15,33 @@ struct RankingView: View {
                 VStack(spacing: 16) {
                     HStack {
                         CategoryButtonGroup(
-                            categories: ["전체", "친구"],
+                            categories: ["탐험", "숙련"],
                             selection: $selection
                         )
                         
                         Spacer()
+                        
+                        RankingTypeButtonGroup(rankType: $rankType)
                     }
                     .padding(.horizontal, 14)
                     
-                    if selection == 0 {
-                        VStack {
-                            HStack(spacing: 0) {
-                                if let data = viewModel.rankingList {
-                                    let top3 = Array(data.prefix(3))
-                                    
-                                    HStack(spacing: 16) {
-                                        if top3.count > 1 {
-                                            TopRankersView(rankType: .two, data: top3[1])
-                                        }
-                                        if top3.count > 0 {
-                                            TopRankersView(rankType: .one, data: top3[0])
-                                                .padding(.bottom, 40)
-                                        }
-                                        if top3.count > 2 {
-                                            TopRankersView(rankType: .three, data: top3[2])
-                                        }
-                                    }
-                                    
-                                } else {
-                                    HStack(spacing: 16) {
-                                        LoadingTopLankingview()
-                                        LoadingTopLankingview()
-                                            .padding(.bottom, 40)
-                                        LoadingTopLankingview()
-                                    }
-                                    .padding(.horizontal, 14)
-                                }
-                            }
-                            .padding(.horizontal, 12)
-                        }
-                        VStack(spacing: 12) {
-                            if let data = viewModel.rankingList {
-                                let others = Array(data.dropFirst(3))
-                                ForEach(Array(others.enumerated()), id: \.1) { (index, data) in
-                                    let rank = index + 4
-                                    RankingBoardView(rank: rank, data: data)
-                                        .padding(.horizontal, 4)
-                                }
-                            } else {
-                                ForEach(1...20, id: \.self) { _ in
-                                    LoadingRankingBoardView()
-                                }
-                            }
-                        }
-                        .padding(.vertical, 16)
-                        .background(LegacyColor.Background.netural)
-                        .clipShape(size: 16)
-                        .padding(.horizontal, 12)
-                    } else {
-                        LegacyLoadingView()
-                    }
+                    RankingContentView(
+                        rankingList: viewModel.rankingList
+                    )
                 }
             }
-            .refreshable {
-                await viewModel.onRefresh()
+            .task {
+                await viewModel.fetchRanking(isExplore: selection == 0, type: rankType)
             }
-        }
-        .task {
-            await viewModel.fetchRanking()
+            .refreshable {
+                await viewModel.fetchRanking(isExplore: selection == 0, type: rankType)
+            }
+            .onChange(of: selection) { newValue in
+                Task { await viewModel.fetchRanking(isExplore: newValue == 0, type: rankType) }
+            }
+            .onChange(of: rankType) { newValue in
+                Task { await viewModel.fetchRanking(isExplore: selection == 0, type: newValue) }
+            }
         }
     }
 }

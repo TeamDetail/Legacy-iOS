@@ -11,7 +11,8 @@ import Domain
 
 public enum InventoryService: ServiceProtocol {
     case fetchInventory
-    case openInventory(_ request: InventoryRequest)
+    case openInventory(_ request: InventoryCardpackRequest)
+    case openCredit(_ request: InventoryCreditRequest)
 }
 
 extension InventoryService {
@@ -23,6 +24,7 @@ extension InventoryService {
         switch self {
         case .fetchInventory: ""
         case .openInventory: "/cardpack"
+        case .openCredit: "/credit-pack/use"
         }
     }
     
@@ -30,6 +32,7 @@ extension InventoryService {
         switch self {
         case .fetchInventory: .get
         case .openInventory: .post
+        case .openCredit: .post
         }
     }
     
@@ -38,6 +41,8 @@ extension InventoryService {
         case .fetchInventory:
             return .requestPlain
         case let .openInventory(request):
+            return .requestJSONEncodable(request)
+        case let .openCredit(request):
             return .requestJSONEncodable(request)
         }
     }

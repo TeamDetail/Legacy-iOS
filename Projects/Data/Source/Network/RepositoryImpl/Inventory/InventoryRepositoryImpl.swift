@@ -9,6 +9,7 @@ import Foundation
 import Domain
 
 public struct InventoryRepositoryImpl: InventoryRepository {
+    
     let dataSource: InventoryDataSource
     
     public init(dataSource: InventoryDataSource) {
@@ -16,12 +17,14 @@ public struct InventoryRepositoryImpl: InventoryRepository {
     }
     
     public func fetchInventory() async throws -> [InventoryResponse] {
-        let data = try await dataSource.fetchInventory()
-        return data
+        try await dataSource.fetchInventory()
     }
     
-    public func openInventory(_ request: InventoryRequest) async throws -> [Card] {
-        let data = try await dataSource.openInventory(request)
-        return data
+    public func openInventory(_ request: InventoryCardpackRequest) async throws -> [Card] {
+        try await dataSource.openInventory(request)
+    }
+    
+    public func openCredit(_ request: Domain.InventoryCreditRequest) async throws {
+        _ = try await dataSource.openCredit(request)
     }
 }

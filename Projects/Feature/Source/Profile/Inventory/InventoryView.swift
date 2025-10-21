@@ -21,7 +21,8 @@ struct InventoryView: View {
                     Text("인벤토리가 비었어요!")
                         .font(.title2(.bold))
                         .foreground(LegacyColor.Common.white)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 200)
                 } else {
                     LazyVGrid(columns: columns, spacing: 16) {
                         ForEach(data, id: \.self) { item in

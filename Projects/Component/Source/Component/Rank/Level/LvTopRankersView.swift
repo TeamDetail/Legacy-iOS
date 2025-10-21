@@ -1,5 +1,5 @@
 //
-//  RankingBoardView.swift
+//  LvTopRankersView.swift
 //  Component
 //
 //  Created by 김은찬 on 6/4/25.
@@ -20,30 +20,39 @@ public struct LvTopRankersView: View {
     }
     
     public var body: some View {
-        VStack(spacing: 8) {
-            if let url = URL(string: data.imageUrl) {
-                KFImage(url)
-                    .placeholder { _ in
-                        Circle()
-                            .fill(Color.gray.opacity(0.3))
-                            .frame(width: 60, height: 60)
-                            .redacted(reason: .placeholder)
-                            .shimmering()
-                    }
-                    .resizable()
-                    .aspectRatio(contentMode: .fill)
-                    .frame(width: 60, height: 60)
-                    .clipShape(size: 300)
-                    .clipped()
+        VStack(spacing: 0) {
+            ZStack(alignment: .top) {
+                if let url = URL(string: data.imageUrl) {
+                    KFImage(url)
+                        .placeholder { _ in
+                            Circle()
+                                .fill(Color.gray.opacity(0.3))
+                                .frame(width: 80, height: 80)
+                                .redacted(reason: .placeholder)
+                                .shimmering()
+                        }
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 80, height: 80)
+                        .clipShape(Circle())
+                        .clipped()
+                        .overlay(
+                            Circle()
+                                .stroke(lineWidth: 3)
+                                .foreground(rankType.strokeColor)
+                        )
+                        .offset(y: -15)
+                }
             }
+            .frame(height: 80)
             
-            VStack(spacing: 6) {
+            VStack(spacing: 4) {
                 Text(rankType.ranking)
                     .font(.title3(.bold))
                     .foreground(rankType.strokeColor)
                 
                 Text("\(data.level)레벨")
-                    .font(.body1(.bold))
+                    .font(.body2(.bold))
                     .foreground(LegacyColor.Yellow.normal)
                 
                 Text(data.nickname)
@@ -53,7 +62,8 @@ public struct LvTopRankersView: View {
                     .truncationMode(.tail)
             }
             .multilineTextAlignment(.center)
-            .padding(.vertical, 14)
+            .padding(.horizontal, 8)
+            .padding(.top, 4)
             
             if !data.title.name.isEmpty {
                 TitleBadge(
@@ -61,9 +71,15 @@ public struct LvTopRankersView: View {
                     styleId: data.title.styleId
                 )
                 .padding(.horizontal, 8)
+                .padding(.top, 8)
+                .padding(.bottom, 12)
+            } else {
+                Spacer()
+                    .frame(height: 12)
             }
         }
-        .frame(width: 100, height: 230)
+        .frame(maxWidth: .infinity)
+        .frame(height: 260)
         .background(LegacyColor.Background.normal)
         .clipShape(size: 20)
         .overlay(

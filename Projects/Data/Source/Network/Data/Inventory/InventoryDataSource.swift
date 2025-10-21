@@ -17,8 +17,12 @@ public struct InventoryDataSource: DataSourceProtocol {
         try await performRequest(.fetchInventory)
     }
     
-    public func openInventory(_ request: InventoryRequest) async throws -> [Card] {
+    public func openInventory(_ request: InventoryCardpackRequest) async throws -> [Card] {
         try await performRequest(.openInventory(request))
+    }
+    
+    public func openCredit(_ request: InventoryCreditRequest) async throws -> CreditResponse {
+        try await performRequest(.openCredit(request))
     }
 }
 

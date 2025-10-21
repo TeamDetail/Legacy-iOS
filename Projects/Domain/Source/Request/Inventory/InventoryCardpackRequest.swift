@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct InventoryRequest: RequestProtocol {
+public struct InventoryCardpackRequest: RequestProtocol {
     public let cardpackId: Int
     public let count: Int
     

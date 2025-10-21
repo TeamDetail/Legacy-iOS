@@ -92,11 +92,20 @@ struct ProfileView: View {
                             maxCount: selectedData.itemCount
                         ) {
                             Task {
-                                await inventoryViewModel.openInventory(
-                                    .init(cardpackId: selectedData.itemId, count: openCount)
-                                )
-                                showCountModal = false
-                                revealCard = true
+                                // MARK: 카드팩 or 크레딧팩
+                                if selectedData.itemType == .cardPack {
+                                    await inventoryViewModel.openInventory(
+                                        .init(cardpackId: selectedData.itemId, count: openCount)
+                                    )
+                                    showCountModal = false
+                                    revealCard = true
+                                } else {
+                                    await inventoryViewModel.openCredit(
+                                        .init(creditpackId: selectedData.itemId, count: openCount)
+                                    )
+                                    showCountModal = false
+                                    flow.pop()
+                                }
                             }
                         } onCancel: {
                             showCountModal = false

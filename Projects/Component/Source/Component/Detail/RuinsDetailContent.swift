@@ -32,7 +32,7 @@ struct RuinsDetailContent: View {
                 }
                 
                 HStack {
-                    DetailRatingInfoItem()
+                    DetailRatingInfoItem(data)
                     Spacer()
                 }
                 
@@ -42,13 +42,14 @@ struct RuinsDetailContent: View {
                     Text("한줄평 남기기")
                         .font(.caption1(.bold))
                         .foreground(LegacyColor.Label.netural)
-                        .padding(.horizontal, 6)
+                        .padding(.horizontal, 4)
                         .frame(maxWidth: .infinity)
                         .frame(height: 30)
                         .background(LegacyColor.Fill.normal)
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
-                                .stroke(lineWidth: 2)
+                                .inset(by: 5)
+                                .stroke(lineWidth: 1)
                                 .foreground(LegacyColor.Line.netural)
                         )
                         .clipShape(size: 12)

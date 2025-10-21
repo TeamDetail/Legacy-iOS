@@ -61,13 +61,16 @@ public struct ProfileComponent: View {
                     }
                 }
                 
-                TitleBadge(
-                    title: data.title.name,
-                    styleId: data.title.styleId
-                )
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 8)
+                if !data.title.name.isEmpty {
+                    TitleBadge(
+                        title: data.title.name,
+                        styleId: data.title.styleId
+                    )
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 8)
+                }
             }
+            .padding(.leading, 4)
         }
     }
 }

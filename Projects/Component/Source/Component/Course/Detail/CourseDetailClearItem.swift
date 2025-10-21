@@ -38,7 +38,7 @@ public struct CourseDetailClearItem: View {
                     .font(.heading1(.bold))
                     .foreground(LegacyColor.Common.white)
                 
-                DetailRatingInfoItem()
+                DetailRatingInfoItem(data.data)
                     .frame(maxWidth: .infinity, alignment: .leading)
             }
             .frame(maxWidth: .infinity, alignment: .topLeading)

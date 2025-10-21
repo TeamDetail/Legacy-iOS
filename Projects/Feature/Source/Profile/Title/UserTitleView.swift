@@ -4,8 +4,7 @@ import SwiftUI
 import Component
 
 struct UserTitleView: View {
-    @StateObject private var viewModel = UserTitleViewModel()
-    @EnvironmentObject private var userViewModel: UserViewModel
+    @EnvironmentObject private var viewModel: UserViewModel
     @State private var selectedTitleId: Int? = nil
     
     private let columns = [
@@ -27,41 +26,40 @@ struct UserTitleView: View {
                     Text("칭호가 없어요!")
                         .font(.title2(.bold))
                         .foreground(LegacyColor.Common.white)
-                        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 200)
                 } else {
                     LazyVGrid(columns: columns, spacing: 12) {
-                        ForEach(data, id: \.styleId) { item in
+                        ForEach(data, id: \.titleId) { item in
                             TitleBox(
                                 data: item,
-                                isSelected: selectedTitleId == item.styleId,
+                                isSelected: selectedTitleId == item.titleId,
                                 onTap: {
                                     withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
-                                        if selectedTitleId == item.styleId {
+                                        if selectedTitleId == item.titleId {
                                             selectedTitleId = nil
                                         } else {
-                                            selectedTitleId = item.styleId
+                                            selectedTitleId = item.titleId
                                         }
                                     }
                                 },
                                 action: {
                                     Task {
-                                        await viewModel.applyTitle(item.styleId)
-                                        await userViewModel.fetchMyinfo()
+                                        await viewModel.applyTitle(item.titleId)
                                     }
                                 }
                             )
                         }
                     }
+                    .padding(.bottom, 20)
                 }
             } else {
                 LegacyLoadingView()
+                    .frame(height: 200)
             }
         }
-        .padding(.bottom, 6)
         .task {
             await viewModel.fetchTitle()
         }
     }
 }
-
-

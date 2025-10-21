@@ -54,27 +54,28 @@ public struct TitleBox: View {
             .padding(.horizontal, 12)
             .padding(.bottom, 4)
             
-            AnimationButton {
-                action()
-            } label: {
-                Text("장착")
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 30)
-                    .font(.caption1(.bold))
-                    .foreground(LegacyColor.Purple.normal)
-                    .background(LegacyColor.Fill.normal)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .inset(by: 5)
-                            .stroke(lineWidth: 1)
-                            .foreground(LegacyColor.Purple.normal)
-                    )
-                    .clipShape(size: 8)
-                    .opacity(isSelected ? 1 : 0)
-                    .offset(y: isSelected ? 0 : 10)
+            if isSelected {
+                AnimationButton {
+                    action()
+                } label: {
+                    Text("장착")
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 30)
+                        .font(.caption1(.bold))
+                        .foreground(LegacyColor.Purple.normal)
+                        .background(LegacyColor.Fill.normal)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .inset(by: 5)
+                                .stroke(lineWidth: 1)
+                                .foreground(LegacyColor.Purple.normal)
+                        )
+                        .clipShape(size: 8)
+                }
+                .padding(.horizontal, 6)
+                .padding(.bottom, 12)
+                .transition(.scale.combined(with: .opacity))
             }
-            .padding(.horizontal, 6)
-            .padding(.bottom, 12)
         }
         .frame(maxWidth: .infinity)
         .background(

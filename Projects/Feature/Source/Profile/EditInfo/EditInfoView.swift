@@ -46,7 +46,7 @@ struct EditInfoView: View {
                 } label: {
                     Text("이미지 변경")
                         .frame(maxWidth: .infinity)
-                        .frame(height: 30)
+                        .frame(height: 40)
                         .font(.caption1(.bold))
                         .foreground(LegacyColor.Purple.normal)
                         .background(LegacyColor.Fill.normal)
@@ -84,9 +84,6 @@ struct EditInfoView: View {
             AnimationButton {
                 Task {
                     await viewModel.editProfile()
-                    try? await Task.sleep(nanoseconds: 2_000_000_000)
-                    flow.pop()
-                    flow.pop()
                 }
             } label: {
                 Text("변경사항 저장")
@@ -112,6 +109,8 @@ struct EditInfoView: View {
             statusType: .success
         ) {
             viewModel.successMessage = ""
+            flow.pop()
+            flow.pop()
         }
         .statusModal(
             message: viewModel.errorMessage,

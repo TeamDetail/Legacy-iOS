@@ -18,6 +18,8 @@ public class UserViewModel: ObservableObject, APIMessageable {
     @Published var imageUrlResponse: ImageUrlResponse?
     @Published var image: Data?
     
+    @Published var titleList: [UserTitleResponse]?
+    
     @Inject var userRepository: any UserRepository
     
     public init() {}
@@ -71,6 +73,27 @@ public class UserViewModel: ObservableObject, APIMessageable {
         do {
             try await userRepository.changeProfileImage(.init(profileImageUrl: imageUrl))
             successMessage = "저장 완료!"
+        } catch let apiError as APIError {
+            errorMessage = apiError.message
+        } catch {
+            print("에러: \(error)")
+        }
+    }
+    
+    @MainActor
+    func fetchTitle() async {
+        do {
+            titleList = try await userRepository.fetchTitle()
+        } catch {
+            print("에러: \(error)")
+        }
+    }
+    
+    @MainActor
+    func applyTitle(_ styleId: Int) async {
+        do {
+            try await userRepository.applyTitle(styleId)
+            successMessage = "칭호 장착 완료!"
         } catch let apiError as APIError {
             errorMessage = apiError.message
         } catch {

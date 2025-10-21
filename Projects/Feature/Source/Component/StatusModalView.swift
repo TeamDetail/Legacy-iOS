@@ -55,7 +55,7 @@ extension View {
         bottomPadding: CGFloat = 75,
         onClear: @escaping () -> Void
     ) -> some View {
-        self.overlay(
+        self.overlay(alignment: .bottom) {
             VStack {
                 Spacer()
                 StatusModalView(
@@ -65,7 +65,7 @@ extension View {
                     bottomPadding: bottomPadding
                 )
             }
-                .allowsHitTesting(false)
-        )
+            .allowsHitTesting(false)
+        }
     }
 }

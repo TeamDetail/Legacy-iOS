@@ -10,13 +10,13 @@ import Foundation
 public struct UserTitleResponse: ResponseProtocol {
     public let name: String
     public let content: String
-    public let grade: Int
+    public let titleId: Int
     public let styleId: Int
     
-    public init(name: String, content: String, grade: Int, styleId: Int) {
+    public init(name: String, content: String, titleId: Int, styleId: Int) {
         self.name = name
         self.content = content
-        self.grade = grade
+        self.titleId = titleId
         self.styleId = styleId
     }
 }

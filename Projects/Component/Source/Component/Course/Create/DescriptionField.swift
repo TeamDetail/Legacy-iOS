@@ -55,7 +55,7 @@ public struct DescriptionField: View {
             }
             .padding(.horizontal, 10)
             .padding(.vertical, 8)
-            .background(LegacyColor.Fill.normal)
+            .background(LegacyColor.Background.normal)
             .clipShape(size: 16)
         }
         .frame(maxWidth: .infinity, maxHeight: 100)

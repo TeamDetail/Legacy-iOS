@@ -65,11 +65,6 @@ struct ProfileView: View {
                     )
                 }
             }
-            .refreshable {
-                Task {
-                    await viewModel.fetchMyinfo()
-                }
-            }
             .padding(.horizontal, 10)
             .blur(radius: revealCard || inventoryViewModel.selectedItem != nil ? 2 : 0)
             .animation(.easeInOut(duration: 0.25), value: revealCard)
@@ -128,6 +123,21 @@ struct ProfileView: View {
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
+        }
+        .statusModal(
+            message: viewModel.successMessage,
+            statusType: .success,
+            bottomPadding: 30
+        ) {
+            viewModel.successMessage = ""
+            flow.pop()
+        }
+        .statusModal(
+            message: viewModel.errorMessage,
+            statusType: .failure,
+            bottomPadding: 30
+        ) {
+            viewModel.errorMessage = ""
         }
         .backButton(title: "프로필") {
             flow.pop()

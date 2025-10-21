@@ -54,9 +54,12 @@ public struct AchievementItem: View {
                                 .font(.caption1(.regular))
                                 .foreground(LegacyColor.Label.netural)
                             
-                            Text("\(data.goalRate)블록 탐험") //MARK: 수정해야함
+                            Text(data.achievementGradeText)
                                 .font(.caption1(.extraBold))
                                 .foreground(LegacyColor.Label.normal)
+                                .lineLimit(1)
+                                .minimumScaleFactor(1.0)
+                                .truncationMode(.tail)
                         }
                         
                         HStack(spacing: 4) {

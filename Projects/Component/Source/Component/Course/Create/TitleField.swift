@@ -45,7 +45,7 @@ public struct TitleField: View {
             }
             .padding(.horizontal, 10)
             .padding(.vertical, 4)
-            .background(LegacyColor.Fill.normal)
+            .background(LegacyColor.Background.normal)
             .clipShape(size: 12)
         }
         .frame(maxWidth: .infinity, maxHeight: 56)

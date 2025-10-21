@@ -49,7 +49,7 @@ public struct RuinsSearchItem: View {
                         .font(.heading1(.bold))
                         .foreground(LegacyColor.Common.white)
                     
-                    DetailRatingInfoItem()
+                    DetailRatingInfoItem(data)
                 }
                 .frame(maxWidth: .infinity, alignment: .topLeading)
                 

@@ -14,18 +14,20 @@ public struct AchievementResponse: ResponseProtocol {
     public let achievementType: AchievementType
     public let achieveUserPercent: Double
     public let currentRate: Int
+    public let achievementGradeText: String
     public let goalRate: Int
     public let achievementGrade: AchievementGrade
     public let achievementAward: [MailItem]
     public let receive: Bool
     
-    public init(achievementId: Int, achievementName: String, achievementContent: String, achievementType: AchievementType, achieveUserPercent: Double, currentRate: Int, goalRate: Int, achievementGrade: AchievementGrade, achievementAward: [MailItem], receive: Bool) {
+    public init(achievementId: Int, achievementName: String, achievementContent: String, achievementType: AchievementType, achieveUserPercent: Double, currentRate: Int, achievementGradeText: String, goalRate: Int, achievementGrade: AchievementGrade, achievementAward: [MailItem], receive: Bool) {
         self.achievementId = achievementId
         self.achievementName = achievementName
         self.achievementContent = achievementContent
         self.achievementType = achievementType
         self.achieveUserPercent = achieveUserPercent
         self.currentRate = currentRate
+        self.achievementGradeText = achievementGradeText
         self.goalRate = goalRate
         self.achievementGrade = achievementGrade
         self.achievementAward = achievementAward

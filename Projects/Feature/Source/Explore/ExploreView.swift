@@ -107,11 +107,19 @@ public struct ExploreView: View {
                     GeometryReader { geometry in
                         VStack {
                             Spacer()
+                            
+                            let locationBinding = Binding<CLLocation?>(
+                                get: { locationManager.location },
+                                set: { newValue in
+                                    locationManager.location = newValue
+                                }
+                            )
+                            
                             RuinsDetailModal(
                                 showDetail: $showDetail,
                                 detail: detail,
                                 viewModel: viewModel,
-                                userLocation: locationManager.location,
+                                userLocation: locationBinding,
                                 onShowDetail: {
                                     withAnimation(.easeInOut(duration: 0.3)) {
                                         isTabBarHidden = true
@@ -128,11 +136,6 @@ public struct ExploreView: View {
                                     await quizViewModel.reset(userData.userInfo?.userId ?? 0)
                                     quizStateViewModel.startQuiz()
                                     showDetail = false
-                                    await MainActor.run {
-                                        withAnimation(.easeInOut(duration: 0.3)) {
-                                            isTabBarHidden = false
-                                        }
-                                    }
                                 }
                             }
                         }

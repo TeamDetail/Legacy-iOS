@@ -19,7 +19,7 @@ struct RuinsDetailModal: View {
     
     let detail: RuinsDetailResponse
     let viewModel: ExploreViewModel
-    let userLocation: CLLocation?
+    @Binding var userLocation: CLLocation?
     
     let onShowDetail: () -> Void
     let onDismissDetail: () -> Void
@@ -87,7 +87,7 @@ struct RuinsDetailModal: View {
                                     showComment = true
                                 }
                             },
-                            userLocation: userLocation
+                            userLocation: $userLocation
                         )
                         .id("Detail-\(UUID().uuidString)")
                         .padding(.horizontal, 4)

@@ -26,7 +26,7 @@ public struct QuizButton: View {
                 .multilineTextAlignment(.center)
                 .lineLimit(nil)
                 .fixedSize(horizontal: false, vertical: true)
-                .padding(.horizontal, 10)
+                .padding(.horizontal, 6)
                 .padding(.vertical, 12)
                 .frame(width: buttonType.width)
                 .background(LegacyColor.Fill.normal)

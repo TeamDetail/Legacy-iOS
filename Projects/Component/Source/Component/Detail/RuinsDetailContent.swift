@@ -44,7 +44,7 @@ struct RuinsDetailContent: View {
                         .foreground(LegacyColor.Label.netural)
                         .padding(.horizontal, 4)
                         .frame(maxWidth: .infinity)
-                        .frame(height: 30)
+                        .frame(height: 35)
                         .background(LegacyColor.Fill.normal)
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)

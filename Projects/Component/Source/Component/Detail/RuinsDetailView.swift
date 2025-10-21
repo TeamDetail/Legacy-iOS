@@ -114,7 +114,8 @@ public struct RuinsDetailView: View {
     public let action: () -> Void
     public let onComment: (() -> Void)?
     public let commentData: [CommentResponse]?
-    public let userLocation: CLLocation?
+    
+    @Binding public var userLocation: CLLocation?
     
     @State private var scrollOffset: CGFloat = 0
     @State private var isExpanded: Bool = false
@@ -124,7 +125,7 @@ public struct RuinsDetailView: View {
     }
     
     private var canStartQuiz: Bool {
-        guard let userLocation else { return false }
+        guard let userLocation = userLocation else { return false }
         let ruinLocation = CLLocation(latitude: data.latitude, longitude: data.longitude)
         let distance = userLocation.distance(from: ruinLocation)
         return distance <= 50
@@ -136,14 +137,14 @@ public struct RuinsDetailView: View {
         onClose: (() -> Void)? = nil,
         action: @escaping () -> Void,
         onComment: (() -> Void)? = nil,
-        userLocation: CLLocation? = nil
+        userLocation: Binding<CLLocation?> = .constant(nil)
     ) {
-        self.commentData = commentData
         self.data = data
+        self.commentData = commentData
         self.onClose = onClose
         self.action = action
         self.onComment = onComment
-        self.userLocation = userLocation
+        self._userLocation = userLocation
     }
     
     public var body: some View {

@@ -104,35 +104,42 @@ public struct ExploreView: View {
                 
                 // 유적지 상세 모달
                 if let detail = viewModel.ruinDetail, showDetail {
-                    RuinsDetailModal(
-                        showDetail: $showDetail,
-                        detail: detail,
-                        viewModel: viewModel,
-                        userLocation: locationManager.location,
-                        onShowDetail: {
-                            withAnimation(.easeInOut(duration: 0.3)) {
-                                isTabBarHidden = true
-                            }
-                        },
-                        onDismissDetail: {
-                            withAnimation(.easeInOut(duration: 0.3)) {
-                                isTabBarHidden = false
-                            }
-                        }
-                    ) {
-                        Task {
-                            await quizViewModel.fetchQuiz(detail.ruinsId)
-                            await quizViewModel.reset(userData.userInfo?.userId ?? 0)
-                            quizStateViewModel.startQuiz()
-                            showDetail = false
-                            await MainActor.run {
-                                withAnimation(.easeInOut(duration: 0.3)) {
-                                    isTabBarHidden = false
+                    GeometryReader { geometry in
+                        VStack {
+                            Spacer()
+                            RuinsDetailModal(
+                                showDetail: $showDetail,
+                                detail: detail,
+                                viewModel: viewModel,
+                                userLocation: locationManager.location,
+                                onShowDetail: {
+                                    withAnimation(.easeInOut(duration: 0.3)) {
+                                        isTabBarHidden = true
+                                    }
+                                },
+                                onDismissDetail: {
+                                    withAnimation(.easeInOut(duration: 0.3)) {
+                                        isTabBarHidden = false
+                                    }
+                                }
+                            ) {
+                                Task {
+                                    await quizViewModel.fetchQuiz(detail.ruinsId)
+                                    await quizViewModel.reset(userData.userInfo?.userId ?? 0)
+                                    quizStateViewModel.startQuiz()
+                                    showDetail = false
+                                    await MainActor.run {
+                                        withAnimation(.easeInOut(duration: 0.3)) {
+                                            isTabBarHidden = false
+                                        }
+                                    }
                                 }
                             }
                         }
+                        .frame(width: geometry.size.width, height: geometry.size.height)
                     }
                     .id(detail.ruinsId)
+                    .ignoresSafeArea()
                 }
             }
             

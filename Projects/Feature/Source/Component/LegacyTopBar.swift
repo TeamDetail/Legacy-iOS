@@ -122,7 +122,9 @@ struct LegacyTopBar: View {
                     case .setting:
                         flow.push(SettingView())
                     case .wrong:
-                        print("메일")
+                        if let url = URL(string: "https://www.notion.so/2936459d2055806e9920d3d7ec692657") {
+                            UIApplication.shared.open(url)
+                        }
                     case .logout:
                         Sign.logout()
                     }

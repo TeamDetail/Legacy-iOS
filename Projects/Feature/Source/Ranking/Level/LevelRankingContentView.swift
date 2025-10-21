@@ -25,7 +25,6 @@ struct LevelRankingContentView: View {
                     if let data = rankingList {
                         let top3 = Array(data.prefix(3))
                         TopThreeLevelView(top3: top3)
-                            .padding(.top, 20)
                         
                         VStack(spacing: 12) {
                             let others = Array(data.dropFirst(3))

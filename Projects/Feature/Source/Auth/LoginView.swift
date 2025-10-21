@@ -60,7 +60,7 @@ struct LoginView: View {
             }
         }
         .sheet(isPresented: $showWebView) {
-            FlexibleWebView(url: "https://youtube.com")
+            FlexibleWebView(url: "https://www.notion.so/2936459d2055806e9920d3d7ec692657?source=copy_link")
         }
         .onAppear {
             SoundPlayer.shared.loginSound()

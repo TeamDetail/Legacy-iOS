@@ -48,17 +48,18 @@ struct TopThreeExploreView: View {
         ZStack(alignment: .bottom) {
             HStack(alignment: .bottom, spacing: 8) {
                 if top3.count > 1 {
-                    ExTopRankersView(rankType: .two, data: top3[1])
-                        .offset(y: 30)
+                    ExTopRankersView(rankType: .two, data: top3[1], top1: false)
+                        .offset(y: 45)
                 }
                 
                 if top3.count > 0 {
-                    ExTopRankersView(rankType: .one, data: top3[0])
+                    ExTopRankersView(rankType: .one, data: top3[0], top1: true)
+                        .offset(y: 45)
                 }
                 
                 if top3.count > 2 {
-                    ExTopRankersView(rankType: .three, data: top3[2])
-                        .offset(y: 30)
+                    ExTopRankersView(rankType: .three, data: top3[2], top1: false)
+                        .offset(y: 45)
                 }
             }
             .padding(.horizontal, 20)
@@ -73,17 +74,18 @@ struct TopThreeLevelView: View {
         ZStack(alignment: .bottom) {
             HStack(alignment: .bottom, spacing: 8) {
                 if top3.count > 1 {
-                    LvTopRankersView(rankType: .two, data: top3[1])
-                        .offset(y: 30)
+                    LvTopRankersView(rankType: .two, data: top3[1], top1: false)
+                        .offset(y: 45)
                 }
                 
                 if top3.count > 0 {
-                    LvTopRankersView(rankType: .one, data: top3[0])
+                    LvTopRankersView(rankType: .one, data: top3[0], top1: true)
+                        .offset(y: 45)
                 }
                 
                 if top3.count > 2 {
-                    LvTopRankersView(rankType: .three, data: top3[2])
-                        .offset(y: 30)
+                    LvTopRankersView(rankType: .three, data: top3[2], top1: false)
+                        .offset(y: 45)
                 }
             }
             .padding(.horizontal, 20)

@@ -13,10 +13,12 @@ import Kingfisher
 public struct LvTopRankersView: View {
     let rankType: TopRankEnum
     let data: LevelRankingResponse
+    let top1: Bool
     
-    public init(rankType: TopRankEnum, data: LevelRankingResponse) {
+    public init(rankType: TopRankEnum, data: LevelRankingResponse, top1: Bool) {
         self.rankType = rankType
         self.data = data
+        self.top1 = top1
     }
     
     public var body: some View {
@@ -79,7 +81,7 @@ public struct LvTopRankersView: View {
             }
         }
         .frame(maxWidth: .infinity)
-        .frame(height: 260)
+        .frame(height: top1 ? 320 : 280)
         .background(LegacyColor.Background.normal)
         .clipShape(size: 20)
         .overlay(

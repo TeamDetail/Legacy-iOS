@@ -17,18 +17,12 @@ struct AchievementView: View {
     @Binding var tabItem: LegacyTabItem
     @Flow var flow
     
-    private var dataForSelection: [AchievementResponse]? {
-        selection == 0
-        ? viewModel.achievementList
-        : viewModel.achievementTypeList
-    }
-    
-    private var categoryType: AchievementCategoryType? {
+    private var categoryType: AchievementCategoryType {
         switch selection {
-        case 1: return .explore
-        case 2: return .level
-        case 3: return .hidden
-        default: return nil
+        case 0: return .explore
+        case 1: return .level
+        case 2: return .hidden
+        default: return .explore
         }
     }
     
@@ -37,18 +31,14 @@ struct AchievementView: View {
             LegacyScrollView(title: "도전과제", icon: .medal, item: tabItem) {
                 VStack(spacing: 12) {
                     CategoryButtonGroup(
-                        categories: ["전체", "탐험", "숙련", "히든"],
+                        categories: ["탐험", "숙련", "히든"],
                         selection: $selection
                     )
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .onChange(of: selection) { newValue in
+                    .onChange(of: selection) { _ in
                         Task {
                             viewModel.clearData()
-                            if let type = categoryType {
-                                await viewModel.fetchAchievementType(type)
-                            } else {
-                                await viewModel.fetchAchievement()
-                            }
+                            await viewModel.fetchAchievementType(categoryType)
                         }
                     }
                     
@@ -56,9 +46,9 @@ struct AchievementView: View {
                         Task { await viewModel.fetchAward() }
                     }
                     
-                    if let data = dataForSelection {
+                    if let data = viewModel.achievementTypeList {
                         ForEach(data, id: \.self) { item in
-                            AchievementItem(data: item) {
+                            AchievementItem(data: item, selection: selection) {
                                 flow.push(AchievementDetailView(data: item))
                             }
                         }
@@ -69,11 +59,12 @@ struct AchievementView: View {
                 .padding(.horizontal, 14)
             }
             .refreshable {
-                await viewModel.onRefresh(selection: selection)
+                await viewModel.onRefresh(category: categoryType)
             }
         }
         .task {
-            await viewModel.fetchAchievement()
+            await viewModel.fetchAchievementType(categoryType)
         }
     }
 }
+

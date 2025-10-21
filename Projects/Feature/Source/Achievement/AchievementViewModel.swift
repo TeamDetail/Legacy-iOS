@@ -12,21 +12,10 @@ import Data
 
 @MainActor
 public final class AchievementViewModel: ObservableObject {
-    @Published var achievementList: [AchievementResponse]?
     @Published var achievementAward: AchievementAwardResponse?
     @Published var achievementTypeList: [AchievementResponse]?
     
     @Inject var achievementRepository: any AchievementRepository
-    
-    func fetchAchievement() async {
-        do {
-            achievementList = try await achievementRepository.fetchAchievement()
-        } catch let apiError as APIError {
-            print("API Error:", apiError.message)
-        } catch {
-            print("에러:", error)
-        }
-    }
     
     func fetchAward() async {
         do {
@@ -45,26 +34,20 @@ public final class AchievementViewModel: ObservableObject {
     }
     
     func clearData() {
-        achievementList = nil
         achievementTypeList = nil
     }
     
-    func onRefresh(selection: Int) async {
+    func onRefresh(category: AchievementCategoryType) async {
         clearData()
-        if let type = categoryType(for: selection) {
-            await fetchAchievementType(type)
-        } else {
-            await fetchAchievement()
-        }
+        await fetchAchievementType(category)
     }
     
-    private func categoryType(for selection: Int) -> AchievementCategoryType? {
+    private func categoryType(for selection: Int) -> AchievementCategoryType {
         switch selection {
-        case 1: return .explore
-        case 2: return .level
-        case 3: return .hidden
-        default: return nil
+        case 0: return .explore
+        case 1: return .level
+        case 2: return .hidden
+        default: return .explore
         }
     }
-    
 }

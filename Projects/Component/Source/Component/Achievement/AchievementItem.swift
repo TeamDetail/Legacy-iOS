@@ -10,11 +10,31 @@ import Domain
 
 public struct AchievementItem: View {
     let data: AchievementResponse
+    let selection: Int
     let action: () -> Void
     
-    public init(data: AchievementResponse, action: @escaping () -> Void) {
+    public init(data: AchievementResponse, selection: Int, action: @escaping () -> Void) {
         self.data = data
+        self.selection = selection
         self.action = action
+    }
+    
+    private var categoryText: String {
+        switch selection {
+        case 0: return "탐험"
+        case 1: return "숙련"
+        case 2: return "히든"
+        default: return ""
+        }
+    }
+    
+    private var categoryColor: LegacyColorable {
+        switch selection {
+        case 0: return LegacyColor.Blue.netural
+        case 1: return LegacyColor.Yellow.netural
+        case 2: return LegacyColor.Primary.normal
+        default: return LegacyColor.Red.normal
+        }
     }
     
     public var body: some View {
@@ -39,9 +59,9 @@ public struct AchievementItem: View {
                             Text(data.achievementName)
                                 .font(.label(.bold))
                                 .foreground(LegacyColor.Common.white)
-                            Text("#\(data.achievementType)")
+                            Text("#\(categoryText)")
                                 .font(.caption1(.medium))
-                                .foreground(LegacyColor.Red.normal)
+                                .foreground(categoryColor)
                         }
                         Text(data.achievementContent)
                             .font(.caption2(.medium))

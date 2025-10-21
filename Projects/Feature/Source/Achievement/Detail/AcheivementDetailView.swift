@@ -38,11 +38,6 @@ struct AchievementDetailView: View {
                             .multilineTextAlignment(.leading)
                             .minimumScaleFactor(0.9)
                             .layoutPriority(1)
-                        
-                        Text("#\(data.achievementType)")
-                            .font(.title3(.bold))
-                            .foreground(LegacyColor.Red.normal)
-                            .fixedSize()
                     }
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.horizontal, 8)

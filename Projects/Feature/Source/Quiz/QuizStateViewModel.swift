@@ -5,7 +5,6 @@
 //  Created by 김은찬 on 7/19/25.
 //
 
-
 import Foundation
 import SwiftUI
 import Domain
@@ -21,6 +20,9 @@ public class QuizStateViewModel: ObservableObject {
     
     // MARK: - 탭바 숨김 상태 관리
     @Published var shouldHideTabBar = false
+    
+    // MARK: - 퀴즈 완료 신호 (ExploreView에서 감지용)
+    @Published var didCompleteQuiz = false
     
     // MARK: - Quiz Flow Management
     @MainActor
@@ -53,12 +55,14 @@ public class QuizStateViewModel: ObservableObject {
     func showResult() {
         showClap = false
         showFinishView = true
+        didCompleteQuiz = true
     }
     
     @MainActor
     func hideResult() {
         showFinishView = false
         shouldHideTabBar = false
+        didCompleteQuiz = false
     }
     
     @MainActor
@@ -111,6 +115,7 @@ public class QuizStateViewModel: ObservableObject {
         showFinishView = false
         showClap = false
         showCrying = false
+        didCompleteQuiz = false
         resetQuizProgress()
     }
     

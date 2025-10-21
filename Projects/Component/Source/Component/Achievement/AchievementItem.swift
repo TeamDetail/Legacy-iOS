@@ -22,9 +22,10 @@ public struct AchievementItem: View {
             action()
         } label: {
             HStack {
-                RoundedRectangle(cornerRadius: 8)
-                    .foreground(LegacyColor.Purple.normal)
+                Image(icon: data.achievementType.icon)
+                    .resizable()
                     .frame(width: 64, height: 64)
+                    .clipShape(size: 8)
                 
                 VStack(alignment: .leading, spacing: 8) {
                     VStack(alignment: .leading, spacing: 4) {

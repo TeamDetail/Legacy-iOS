@@ -5,6 +5,8 @@ public struct LegacyTabBar<Content: View>: View {
     @Binding var isTabBarHidden: Bool
     let content: Content
     
+    @State private var offsetY: CGFloat = 0
+    
     public init(
         selection: Binding<LegacyTabItem>,
         isTabBarHidden: Binding<Bool>,
@@ -51,9 +53,12 @@ public struct LegacyTabBar<Content: View>: View {
                     .safeAreaInset(edge: .bottom) {
                         Color.clear.frame(height: 20)
                     }
-                    .offset(y: isTabBarHidden ? 150 : 0)
-                    .animation(.easeInOut(duration: 0.3), value: isTabBarHidden)
-                
+                    .offset(y: offsetY)
+                    .onChange(of: isTabBarHidden) { hidden in
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                            offsetY = hidden ? 150 : 0
+                        }
+                    }
             }
             .ignoresSafeArea(.all, edges: .bottom)
         }

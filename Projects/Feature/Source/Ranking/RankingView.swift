@@ -26,7 +26,8 @@ struct RankingView: View {
                     .padding(.horizontal, 14)
                     
                     RankingContentView(
-                        rankingList: viewModel.rankingList
+                        rankingList: viewModel.rankingList,
+                        rankType: rankType
                     )
                 }
             }

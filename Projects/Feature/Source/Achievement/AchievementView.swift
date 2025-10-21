@@ -59,7 +59,7 @@ struct AchievementView: View {
                     if let data = dataForSelection {
                         ForEach(data, id: \.self) { item in
                             AchievementItem(data: item) {
-                                flow.push(AcheivementDetailView(data: item))
+                                flow.push(AchievementDetailView(data: item))
                             }
                         }
                     } else {

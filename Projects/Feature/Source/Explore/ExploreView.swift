@@ -1,3 +1,10 @@
+//
+//  ExploreView.swift
+//  Feature
+//
+//  Created by 김은찬 on 7/19/25.
+//
+
 import SwiftUI
 import Component
 import GoogleMaps
@@ -16,7 +23,7 @@ public struct ExploreView: View {
     @State private var showDetail = false
     @State private var showMenu = false
     
-    //MARK: 탭바 숨기는 바인딩
+    //MARK: 탭바 숨김 상태
     @Binding var isTabBarHidden: Bool
     
     @State private var showSearchModal = false
@@ -26,9 +33,7 @@ public struct ExploreView: View {
     @State private var alarmSentRuinIds: Set<Int> = []
     private let minAlarmDistance: CLLocationDistance = 100
     
-    public init (
-        _ isTabBarHidden: Binding<Bool>
-    ) {
+    public init(_ isTabBarHidden: Binding<Bool>) {
         self._isTabBarHidden = isTabBarHidden
     }
     
@@ -52,8 +57,6 @@ public struct ExploreView: View {
                                 maxLng: location.northEast.longitude
                             )
                         )
-                        
-                        // 지도 데이터가 새로 로드된 후 근처 유적지 알람 체크
                         await checkNearbyRuinsAlarm()
                     }
                 } onPolygonTap: { ruinsId in
@@ -68,10 +71,8 @@ public struct ExploreView: View {
                             showMenu = false
                         }
                     }
-                } onLocationButtonTap: {
-                    
-                }
-                .ignoresSafeArea()
+                } onLocationButtonTap: {}
+                    .ignoresSafeArea()
                 
                 VStack {
                     if let data = userData.userInfo {
@@ -101,36 +102,49 @@ public struct ExploreView: View {
                     LoadingRuins()
                 }
                 
-                // 상세 정보 오버레이
+                // 유적지 상세 모달
                 if let detail = viewModel.ruinDetail, showDetail {
                     RuinsDetailModal(
                         showDetail: $showDetail,
-                        isTabBarHidden: $isTabBarHidden,
                         detail: detail,
-                        viewModel: viewModel
+                        viewModel: viewModel,
+                        userLocation: locationManager.location,
+                        onShowDetail: {
+                            withAnimation(.easeInOut(duration: 0.3)) {
+                                isTabBarHidden = true
+                            }
+                        },
+                        onDismissDetail: {
+                            withAnimation(.easeInOut(duration: 0.3)) {
+                                isTabBarHidden = false
+                            }
+                        }
                     ) {
                         Task {
                             await quizViewModel.fetchQuiz(detail.ruinsId)
-                            await quizViewModel.reset(userData.userInfo?.userId ?? 0) //MARK: 서버 고쳐지면 지울것
+                            await quizViewModel.reset(userData.userInfo?.userId ?? 0)
                             quizStateViewModel.startQuiz()
                             showDetail = false
+                            await MainActor.run {
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                    isTabBarHidden = false
+                                }
+                            }
                         }
                     }
-                    
-                    .onAppear {
-                        isTabBarHidden = true
-                    }
+                    .id(detail.ruinsId)
                 }
             }
             
-            // 퀴즈 플로우 전체
+            // MARK: 퀴즈 플로우 전체
             QuizFlowOverlay(
                 quizViewModel: quizViewModel,
                 stateViewModel: quizStateViewModel,
-                userData: userData, //MARK: 얘도 서버 고쳐지면 나중에 삭제
+                userData: userData, //MARK: 임시 — 서버 수정 후 제거
                 ruinDetail: viewModel.ruinDetail
             )
             
+            // MARK: 검색 모달
             if showSearchModal {
                 Color.black.opacity(0.6)
                     .ignoresSafeArea()
@@ -153,7 +167,6 @@ public struct ExploreView: View {
                             longitude: selectedRuin.longitude
                         )
                         
-                        // 지도 카메라 이동 알림
                         NotificationCenter.default.post(
                             name: NSNotification.Name("MoveToSelectedRuin"),
                             object: targetLocation
@@ -167,16 +180,17 @@ public struct ExploreView: View {
                 .transition(.scale.combined(with: .opacity))
             }
         }
+        // MARK: 위치 변경 시 탐험 생성 및 알람 체크
         .onChange(of: locationManager.location) { newLocation in
             guard let newLocation, newLocation.horizontalAccuracy < 100 else { return }
             
-            //MARK: 일정 거리 이상 이동했을 때만 알람 체크
             if shouldCheckAlarm(for: newLocation) {
                 Task {
                     await checkNearbyRuinsAlarm()
                     lastAlarmLocation = newLocation
                 }
             }
+            
             Task {
                 await viewModel.createBlock(
                     .init(
@@ -186,8 +200,21 @@ public struct ExploreView: View {
                 )
             }
         }
+        // MARK: 탭바 숨김 동기화
         .onChange(of: quizStateViewModel.shouldHideTabBar) { shouldHide in
             isTabBarHidden = shouldHide
+        }
+        .onChange(of: quizStateViewModel.didCompleteQuiz) { didComplete in
+            guard didComplete, let ruin = viewModel.ruinDetail else { return }
+            Task {
+                await viewModel.createBlock(
+                    .init(
+                        latitude: ruin.latitude,
+                        longitude: ruin.longitude
+                    )
+                )
+                quizStateViewModel.didCompleteQuiz = false
+            }
         }
         .task {
             locationManager.startUpdating()
@@ -198,22 +225,18 @@ public struct ExploreView: View {
         .task {
             await viewModel.fetchMyBlock()
             await userData.fetchMyinfo()
-            
-            //MARK: 위치 테스트
-            //                locationManager.stopUpdating()
-            //                locationManager.setTestLocation()
             await checkNearbyRuinsAlarm()
         }
     }
-    
-    // MARK: - Private Methods
-    
-    /// 알람을 체크해야 하는지 판단
+}
+
+// MARK: - Private Methods
+extension ExploreView {
+    /// 알람 체크 여부
     private func shouldCheckAlarm(for newLocation: CLLocation) -> Bool {
         guard let lastLocation = lastAlarmLocation else {
             return true // 처음 위치면 체크
         }
-        
         let distance = newLocation.distance(from: lastLocation)
         return distance >= minAlarmDistance
     }

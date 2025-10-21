@@ -65,7 +65,7 @@ public struct TitleBox: View {
                     .background(LegacyColor.Fill.normal)
                     .overlay(
                         RoundedRectangle(cornerRadius: 8)
-                            .inset(by: 0.5)
+                            .inset(by: 5)
                             .stroke(lineWidth: 1)
                             .foreground(LegacyColor.Purple.normal)
                     )

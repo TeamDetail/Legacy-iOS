@@ -65,7 +65,7 @@ public struct CommentModal: View {
                         .clipShape(size: 12)
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
-                                .inset(by: 0.5)
+                                .inset(by: 5)
                                 .stroke(lineWidth: 1)
                                 .foreground(LegacyColor.Line.alternative)
                         )
@@ -84,7 +84,7 @@ public struct CommentModal: View {
                         .clipShape(size: 12)
                         .overlay(
                             RoundedRectangle(cornerRadius: 12)
-                                .inset(by: 0.5)
+                                .inset(by: 5)
                                 .stroke(lineWidth: 1)
                                 .foreground(LegacyColor.Purple.normal)
                         )

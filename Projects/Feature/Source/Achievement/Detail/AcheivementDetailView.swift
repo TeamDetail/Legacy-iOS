@@ -1,5 +1,5 @@
 //
-//  AcheivementDetailView.swift
+//  AchievementDetailView.swift
 //  Feature
 //
 //  Created by 김은찬 on 9/17/25.
@@ -10,7 +10,7 @@ import FlowKit
 import SwiftUI
 import Component
 
-struct AcheivementDetailView: View {
+struct AchievementDetailView: View {
     @Flow var flow
     let data: AchievementResponse
     private let columns = Array(repeating: GridItem(.flexible(), spacing: 24), count: 7)

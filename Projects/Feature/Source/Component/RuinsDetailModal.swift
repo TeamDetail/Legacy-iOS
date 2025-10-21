@@ -8,6 +8,7 @@
 import SwiftUI
 import Domain
 import Component
+import CoreLocation
 
 struct RuinsDetailModal: View {
     @StateObject private var commentViewModel = CommentViewModel()
@@ -15,9 +16,13 @@ struct RuinsDetailModal: View {
     @State private var rating: Double = 0.0
     @State private var commentText: String = ""
     @Binding var showDetail: Bool
-    @Binding var isTabBarHidden: Bool
+    
     let detail: RuinsDetailResponse
     let viewModel: ExploreViewModel
+    let userLocation: CLLocation?
+    
+    let onShowDetail: () -> Void
+    let onDismissDetail: () -> Void
     let action: () -> Void
     
     var body: some View {
@@ -31,7 +36,7 @@ struct RuinsDetailModal: View {
                             if showComment {
                                 showComment = false
                             } else {
-                                isTabBarHidden = false
+                                onDismissDetail()
                                 dismissDetail()
                             }
                         }
@@ -71,14 +76,18 @@ struct RuinsDetailModal: View {
                     } else {
                         RuinsDetailView(
                             data: detail,
-                            commentData: commentViewModel.ruinComments, //MARK: commentResponse 바뀔예정
-                            onClose: { dismissDetail() },
+                            commentData: commentViewModel.ruinComments,
+                            onClose: {
+                                onDismissDetail()
+                                dismissDetail()
+                            },
                             action: action,
                             onComment: {
                                 withAnimation(.spring(response: 0.55, dampingFraction: 0.85)) {
                                     showComment = true
                                 }
-                            }
+                            },
+                            userLocation: userLocation
                         )
                         .id("Detail-\(UUID().uuidString)")
                         .padding(.horizontal, 4)
@@ -93,6 +102,7 @@ struct RuinsDetailModal: View {
                         )
                         .task {
                             await commentViewModel.fetchComment(detail.ruinsId)
+                            onShowDetail()
                         }
                     }
                 }

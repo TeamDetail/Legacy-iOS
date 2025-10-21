@@ -4,7 +4,7 @@ public enum LegacyIconography: String, Hashable {
     case kakao = "Kakao"
     case background = "Background"
     case logo = "Logo"
-    //MARK: Tab
+    // MARK: Icon
     case menu = "Menu"
     case topArrow = "Arrow"
     case people = "People"
@@ -41,4 +41,26 @@ public enum LegacyIconography: String, Hashable {
     case airPlane = "AirPlane"
     case cardBackground = "CardBackground"
     case calendar = "Calendar"
+    
+    // MARK: Achievement image
+    case achievementWrongQuiz = "WRONG_QUIZ"
+    case achievementUnique = "UNIQUE"
+    case achievementSolveQuiz = "SOLVE_QUIZ"
+    case achievementShiningCard = "SHINING_CARD"
+    case achievementSequencePresent = "SEQUENCE_PRESENT"
+    case achievementRuins = "RUINS"
+    case achievementPresent = "PRESENT"
+    case achievementMakeCourse = "MAKE_COURSE"
+    case achievementLevel = "LEVEL"
+    case achievementLegendary = "LEGENDARY"
+    case achievementFriend = "FRIEND"
+    case achievementEpic = "EPIC"
+    case achievementCommon = "COMMON"
+    case achievementComment = "COMMENT"
+    case achievementClearCourse = "CLEAR_COURSE"
+    case achievementChallenge = "CHALLENGE"
+    case achievementCard = "CARD"
+    case achievementCardPack = "CARD_PACK"
+    case achievementBuyItem = "BUY_ITEM"
+    case achievementBlocks = "BLOCKS"
 }

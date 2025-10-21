@@ -1,4 +1,5 @@
 import SwiftUI
+import CoreLocation
 import Domain
 import Kingfisher
 import Shimmer
@@ -16,6 +17,7 @@ public struct RuinsDetailView: View {
     public let action: () -> Void
     public let onComment: (() -> Void)?
     public let commentData: [CommentResponse]?
+    public let userLocation: CLLocation?
     
     @State private var scrollOffset: CGFloat = 0
     @State private var isExpanded: Bool = false
@@ -24,18 +26,27 @@ public struct RuinsDetailView: View {
         isExpanded ? UIScreen.main.bounds.height * 0.75 : 400
     }
     
+    private var canStartQuiz: Bool {
+        guard let userLocation else { return false }
+        let ruinLocation = CLLocation(latitude: data.latitude, longitude: data.longitude)
+        let distance = userLocation.distance(from: ruinLocation)
+        return distance <= 50
+    }
+    
     public init(
         data: RuinsDetailResponse,
         commentData: [CommentResponse]?,
         onClose: (() -> Void)? = nil,
         action: @escaping () -> Void,
-        onComment: (() -> Void)? = nil
+        onComment: (() -> Void)? = nil,
+        userLocation: CLLocation? = nil
     ) {
         self.commentData = commentData
         self.data = data
         self.onClose = onClose
         self.action = action
         self.onComment = onComment
+        self.userLocation = userLocation
     }
     
     public var body: some View {
@@ -63,17 +74,23 @@ public struct RuinsDetailView: View {
                         data: data,
                         onComment: { onComment?() }
                     )
-                    
                 }
                 .padding(.horizontal, 6)
                 .padding(.bottom, 14)
                 
-                Text(data.description)
-                    .font(.body2(.medium))
-                    .foreground(LegacyColor.Label.normal)
-                    .padding(.horizontal, 8)
-                
-                LegacyDivider()
+                if data.description.isEmpty {
+                    Text("유적지 소개가 없어요!")
+                        .font(.headline(.bold))
+                        .foreground(LegacyColor.Label.normal)
+                        .padding(.horizontal, 8)
+                } else {
+                    Text(data.description)
+                        .font(.body2(.medium))
+                        .foreground(LegacyColor.Label.normal)
+                        .padding(.horizontal, 8)
+                    
+                    LegacyDivider()
+                }
                 
                 if let commentData {
                     ForEach(commentData, id: \.self) { data in
@@ -97,22 +114,25 @@ public struct RuinsDetailView: View {
             .clipShape(size: 24)
             
             AnimationButton {
-                action()
+                if canStartQuiz {
+                    action()
+                }
             } label: {
-                Text("퀴즈 풀고 탐험하기")
+                Text(canStartQuiz ? "퀴즈 풀고 탐험하기" : "유적지 근처에서만 퀴즈를 풀 수 있어요")
                     .frame(maxWidth: .infinity)
                     .frame(height: 45)
                     .font(.caption1(.bold))
-                    .foreground(LegacyColor.Blue.netural)
+                    .foreground(canStartQuiz ? LegacyColor.Blue.netural : LegacyColor.Label.alternative)
                     .background(LegacyColor.Fill.normal)
                     .clipShape(size: 12)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
                             .inset(by: 5)
                             .stroke(lineWidth: 1)
-                            .foreground(LegacyColor.Blue.netural)
+                            .foreground(canStartQuiz ? LegacyColor.Blue.netural : LegacyColor.Label.alternative)
                     )
             }
+            .disabled(!canStartQuiz)
             .padding(.horizontal, 4)
             .padding(.bottom, 8)
         }
@@ -123,3 +143,4 @@ public struct RuinsDetailView: View {
         .padding(.horizontal, 4)
     }
 }
+

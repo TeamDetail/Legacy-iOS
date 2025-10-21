@@ -184,6 +184,8 @@ public struct RuinsDetailView: View {
                             CommentItem(data: data)
                         }
                     }
+                    
+                    Spacer(minLength: UIScreen.main.bounds.height * 0.3)
                 }
             }
             .frame(height: dynamicHeight)

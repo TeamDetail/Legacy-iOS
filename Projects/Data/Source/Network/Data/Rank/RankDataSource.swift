@@ -13,11 +13,11 @@ public struct RankDataSource: DataSourceProtocol {
     
     public init() {}
     
-    public func fetchLevelRanking(_ type: RankType) async throws -> [RankResponse] {
+    public func fetchLevelRanking(_ type: RankType) async throws -> [LevelRankingResponse] {
         try await performRequest(.fetchLevelRanking(type))
     }
     
-    public func fetchExploreRanking(_ type: RankType) async throws -> [RankResponse] {
+    public func fetchExploreRanking(_ type: RankType) async throws -> [ExploreRankingResponse] {
         try await performRequest(.fetchExploreRanking(type))
     }
 }

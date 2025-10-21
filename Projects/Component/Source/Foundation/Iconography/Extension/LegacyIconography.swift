@@ -63,4 +63,7 @@ public enum LegacyIconography: String, Hashable {
     case achievementCardPack = "CARD_PACK"
     case achievementBuyItem = "BUY_ITEM"
     case achievementBlocks = "BLOCKS"
+    case achievementTitle = "TITLE"
+    
+    case emptyImage = ""
 }

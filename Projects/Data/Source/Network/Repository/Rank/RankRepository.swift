@@ -9,6 +9,6 @@ import Foundation
 import Domain
 
 public protocol RankRepository {
-    func fetchLevelRanking(_ type: RankType) async throws -> [RankResponse]
-    func fetchExploreRanking(_ type: RankType) async throws -> [RankResponse]
+    func fetchLevelRanking(_ type: RankType) async throws -> [LevelRankingResponse]
+    func fetchExploreRanking(_ type: RankType) async throws -> [ExploreRankingResponse]
 }

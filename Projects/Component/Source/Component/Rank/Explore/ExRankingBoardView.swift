@@ -1,16 +1,24 @@
+//
+//  ExRankingBoardView.swift
+//  Component
+//
+//  Created by 김은찬 on 10/21/25.
+//
+
 import SwiftUI
 import Shimmer
 import Domain
 import Kingfisher
 
-public struct RankingBoardView: View {
+public struct ExRankingBoardView: View {
     let rank: Int
-    let data: RankResponse
+    let data: ExploreRankingResponse
     
-    public init(rank: Int, data: RankResponse) {
+    public init(rank: Int, data: ExploreRankingResponse) {
         self.rank = rank
         self.data = data
     }
+    
     
     public var body: some View {
         HStack {
@@ -29,9 +37,10 @@ public struct RankingBoardView: View {
                             .shimmering()
                     }
                     .resizable()
-                    .aspectRatio(contentMode: .fit)
+                    .aspectRatio(contentMode: .fill)
                     .frame(width: 45, height: 45)
                     .clipShape(size: 300)
+                    .clipped()
                     .padding(.leading, 8)
             }
             
@@ -45,11 +54,13 @@ public struct RankingBoardView: View {
                 }
                 .padding(.horizontal, 8)
                 
-                TitleBadge(
-                    title: data.title.name,
-                    styleId: data.title.styleId
-                )
-                .frame(width: 120, alignment: .leading)
+                if !data.title.name.isEmpty {
+                    TitleBadge(
+                        title: data.title.name,
+                        styleId: data.title.styleId
+                    )
+                    .frame(width: 120, alignment: .leading)
+                }
                 
             }
             

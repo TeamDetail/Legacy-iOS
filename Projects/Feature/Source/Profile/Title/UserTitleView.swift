@@ -5,6 +5,7 @@ import Component
 
 struct UserTitleView: View {
     @StateObject private var viewModel = UserTitleViewModel()
+    @EnvironmentObject private var userViewModel: UserViewModel
     @State private var selectedTitleId: Int? = nil
     
     private let columns = [
@@ -45,6 +46,7 @@ struct UserTitleView: View {
                                 action: {
                                     Task {
                                         await viewModel.applyTitle(item.styleId)
+                                        await userViewModel.fetchMyinfo()
                                     }
                                 }
                             )
@@ -61,4 +63,5 @@ struct UserTitleView: View {
         }
     }
 }
+
 

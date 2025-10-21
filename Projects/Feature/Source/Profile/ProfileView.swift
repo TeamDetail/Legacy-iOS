@@ -115,9 +115,6 @@ struct ProfileView: View {
             if revealCard, let openedCards = inventoryViewModel.openedCards, let packName = inventoryViewModel.selectedItem {
                 Color.black.opacity(0.7)
                     .ignoresSafeArea()
-                //                    .onTapGesture {
-                //                        revealCard = false
-                //                    }
                 
                 VStack {
                     CardRevealModal(

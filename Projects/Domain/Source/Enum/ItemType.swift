@@ -10,5 +10,5 @@ import Foundation
 public enum ItemType: String, EnumProtocol {
     case cardPack = "CARD_PACK"
     case nation = "NATION"
+    case style = "STYLE"
 }
-

@@ -38,7 +38,7 @@ struct DailyView: View {
                 
                 HStack {
                     CategoryButtonGroup(
-                        categories: [dateData.name, "론칭"],
+                        categories: [dateData.name],
                         selection: $selection
                     )
                     Spacer()
@@ -78,7 +78,9 @@ struct DailyView: View {
                                                 name: dateData.name,
                                                 startAt: dateData.startAt,
                                                 endAt: dateData.endAt,
-                                                awards: [dateData.awards[day - 1]], checkCount: dateData.checkCount
+                                                awards: [dateData.awards[day - 1]],
+                                                checkCount: dateData.checkCount,
+                                                check: dateData.check
                                             )
                                         },
                                         date: day
@@ -88,6 +90,21 @@ struct DailyView: View {
                         }
                         
                         if showingDetail, let selectedDaily = viewModel.selectDaily {
+                            let nextAvailableDay = dateData.checkCount + 1
+                            let isTodayChecked = dateData.check
+                            let isTodayAvailable = selectedDay == nextAvailableDay
+                            let isButtonEnabled = isTodayAvailable && !isTodayChecked
+                            
+                            let buttonText: String = {
+                                if isTodayChecked && isTodayAvailable {
+                                    return "오늘 이미 출석했어요!"
+                                } else if isTodayAvailable {
+                                    return "출석하기"
+                                } else {
+                                    return "출석 일이 아니에요!"
+                                }
+                            }()
+                            
                             VStack {
                                 LegacyDivider()
                                 HStack {
@@ -106,15 +123,14 @@ struct DailyView: View {
                                     .padding(.horizontal, 4)
                                 }
                                 
-                                let nextAvailableDay = dateData.checkCount + 1
-                                let isButtonEnabled = selectedDay == nextAvailableDay
-                                
                                 AnimationButton {
                                     Task {
                                         await viewModel.postAward(selectedDaily.id)
+                                        await viewModel.fetchDaily()
+                                        showingDetail = false
                                     }
                                 } label: {
-                                    Text(isButtonEnabled ? "출석하기" : "출석 일이 아니에요!")
+                                    Text(buttonText)
                                         .font(.caption1(.bold))
                                         .foreground(isButtonEnabled ? LegacyColor.Primary.normal : LegacyColor.Label.alternative)
                                         .frame(maxWidth: .infinity)
@@ -156,4 +172,3 @@ struct DailyView: View {
         }
     }
 }
-

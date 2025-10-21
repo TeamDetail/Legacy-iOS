@@ -22,10 +22,16 @@ public struct AchievementItem: View {
             action()
         } label: {
             HStack {
-                Image(icon: data.achievementType.icon)
-                    .resizable()
-                    .frame(width: 64, height: 64)
-                    .clipShape(size: 8)
+                ZStack {
+                    Image(icon: data.achievementGrade.icon)
+                        .resizable()
+                        .frame(width: 64, height: 64)
+                    
+                    Image(icon: data.achievementType.icon)
+                        .resizable()
+                        .frame(width: 40, height: 40)
+                }
+                .padding(.horizontal, 4)
                 
                 VStack(alignment: .leading, spacing: 8) {
                     VStack(alignment: .leading, spacing: 4) {
@@ -48,7 +54,7 @@ public struct AchievementItem: View {
                                 .font(.caption1(.regular))
                                 .foreground(LegacyColor.Label.netural)
                             
-                            Text("\(data.goalRate)블록 탐험")
+                            Text("\(data.goalRate)블록 탐험") //MARK: 수정해야함
                                 .font(.caption1(.extraBold))
                                 .foreground(LegacyColor.Label.normal)
                         }

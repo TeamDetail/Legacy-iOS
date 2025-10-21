@@ -69,11 +69,11 @@ public struct TitleBox: View {
                             .stroke(lineWidth: 1)
                             .foreground(LegacyColor.Purple.normal)
                     )
-                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                    .clipShape(size: 8)
                     .opacity(isSelected ? 1 : 0)
                     .offset(y: isSelected ? 0 : 10)
             }
-            .padding(.horizontal, 8)
+            .padding(.horizontal, 6)
             .padding(.bottom, 12)
         }
         .frame(maxWidth: .infinity)

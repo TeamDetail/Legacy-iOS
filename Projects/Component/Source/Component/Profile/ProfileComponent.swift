@@ -35,35 +35,38 @@ public struct ProfileComponent: View {
                     .shimmering()
             }
             
-            HStack {
-                VStack(alignment: .leading, spacing: 6) {
-                    Text(data.nickname)
-                        .font(.title3(.bold))
-                        .foreground(LegacyColor.Common.white)
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Text(data.nickname)
+                            .font(.title3(.bold))
+                            .foreground(LegacyColor.Common.white)
+                        
+                        Text("Lv.\(data.level)")
+                            .font(.body1(.bold))
+                            .foreground(LegacyColor.Label.alternative)
+                            .padding(.horizontal, 2)
+                    }
                     
-                    Text("Lv.\(data.level)")
-                        .font(.body1(.bold))
-                        .foreground(LegacyColor.Label.alternative)
-                        .padding(.horizontal, 2)
+                    Spacer()
                     
-                    TitleBadge(
-                        title: data.title.name,
-                        styleId: data.title.styleId
-                    )
-                    .layoutPriority(1)
+                    AnimationButton {
+                        action()
+                    } label: {
+                        Image(icon: .pen)
+                            .frame(width: 32, height: 32)
+                            .padding(2)
+                            .background(LegacyColor.Background.normal)
+                            .clipShape(size: 99)
+                    }
                 }
                 
-                Spacer()
-                
-                AnimationButton {
-                    action()
-                } label: {
-                    Image(icon: .pen)
-                        .frame(width: 32, height: 32)
-                        .padding(2)
-                        .background(LegacyColor.Background.normal)
-                        .clipShape(size: 99)
-                }
+                TitleBadge(
+                    title: data.title.name,
+                    styleId: data.title.styleId
+                )
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal, 8)
             }
         }
     }

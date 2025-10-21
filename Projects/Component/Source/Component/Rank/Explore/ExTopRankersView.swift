@@ -10,11 +10,11 @@ import Shimmer
 import Domain
 import Kingfisher
 
-public struct TopRankersView: View {
+public struct ExTopRankersView: View {
     let rankType: TopRankEnum
-    let data: RankResponse
+    let data: ExploreRankingResponse
     
-    public init(rankType: TopRankEnum, data: RankResponse) {
+    public init(rankType: TopRankEnum, data: ExploreRankingResponse) {
         self.rankType = rankType
         self.data = data
     }
@@ -31,9 +31,10 @@ public struct TopRankersView: View {
                             .shimmering()
                     }
                     .resizable()
-                    .aspectRatio(contentMode: .fit)
+                    .aspectRatio(contentMode: .fill)
                     .frame(width: 60, height: 60)
                     .clipShape(size: 300)
+                    .clipped()
             }
             
             VStack(spacing: 6) {
@@ -54,11 +55,13 @@ public struct TopRankersView: View {
             .multilineTextAlignment(.center)
             .padding(.vertical, 14)
             
-            TitleBadge(
-                title: data.title.name,
-                styleId: data.title.styleId
-            )
-            
+            if !data.title.name.isEmpty {
+                TitleBadge(
+                    title: data.title.name,
+                    styleId: data.title.styleId
+                )
+                .padding(.horizontal, 8)
+            }
         }
         .frame(width: 100, height: 230)
         .background(LegacyColor.Background.normal)

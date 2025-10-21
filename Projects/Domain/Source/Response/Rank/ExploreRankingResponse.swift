@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct RankResponse: ResponseProtocol {
+public struct ExploreRankingResponse: ResponseProtocol {
     public let nickname: String
     public let level: Int
     public let allBlocks: Int

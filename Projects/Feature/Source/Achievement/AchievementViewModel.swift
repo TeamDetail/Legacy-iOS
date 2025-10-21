@@ -11,7 +11,7 @@ import Domain
 import Data
 
 @MainActor
-public final class AchievementViewModel: ObservableObject, Refreshable {
+public final class AchievementViewModel: ObservableObject {
     @Published var achievementList: [AchievementResponse]?
     @Published var achievementAward: AchievementAwardResponse?
     @Published var achievementTypeList: [AchievementResponse]?
@@ -49,8 +49,22 @@ public final class AchievementViewModel: ObservableObject, Refreshable {
         achievementTypeList = nil
     }
     
-    func onRefresh() async {
+    func onRefresh(selection: Int) async {
         clearData()
-        await fetchAchievement()
+        if let type = categoryType(for: selection) {
+            await fetchAchievementType(type)
+        } else {
+            await fetchAchievement()
+        }
     }
+    
+    private func categoryType(for selection: Int) -> AchievementCategoryType? {
+        switch selection {
+        case 1: return .explore
+        case 2: return .level
+        case 3: return .hidden
+        default: return nil
+        }
+    }
+    
 }

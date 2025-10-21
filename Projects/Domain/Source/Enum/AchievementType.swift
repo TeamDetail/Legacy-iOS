@@ -27,7 +27,7 @@ public enum AchievementType: String, EnumProtocol, Codable {
     case writeComment = "WRITE_COMMENT"
     case cardDGSW = "CARD_DGSW"
     case cardSeongsimdang = "CARD_SEONGSIMDANG"
-    case cardGyeongbokgung = "CARD_GYEONGBOKG"
+    case cardGyeongbokgung = "CARD_GYEONGBOKGUNG"
     case cardDokdo = "CARD_DOKDO"
     case allCard = "ALL_CARD"
     case shiningAllCard = "SHINING_ALL_CARD"

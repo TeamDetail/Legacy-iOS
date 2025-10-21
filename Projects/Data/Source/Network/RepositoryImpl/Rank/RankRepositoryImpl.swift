@@ -16,11 +16,11 @@ public struct RankRepositoryImpl: RankRepository {
         self.dataSource = dataSource
     }
     
-    public func fetchLevelRanking(_ type: Domain.RankType) async throws -> [RankResponse] {
+    public func fetchLevelRanking(_ type: Domain.RankType) async throws -> [LevelRankingResponse] {
         try await dataSource.fetchLevelRanking(type)
     }
     
-    public func fetchExploreRanking(_ type: Domain.RankType) async throws -> [RankResponse] {
+    public func fetchExploreRanking(_ type: Domain.RankType) async throws -> [ExploreRankingResponse] {
         try await dataSource.fetchExploreRanking(type)
     }
 }

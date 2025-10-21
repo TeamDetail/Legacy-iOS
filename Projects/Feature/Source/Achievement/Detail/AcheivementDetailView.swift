@@ -18,9 +18,16 @@ struct AchievementDetailView: View {
     var body: some View {
         VStack(alignment: .center, spacing: 14) {
             VStack(spacing: 8) {
-                RoundedRectangle(cornerRadius: 8)
-                    .foreground(LegacyColor.Purple.normal)
-                    .frame(width: 200, height: 200)
+                ZStack {
+                    Image(icon: data.achievementGrade.icon)
+                        .resizable()
+                        .frame(width: 200, height: 200)
+                    
+                    Image(icon: data.achievementType.icon)
+                        .resizable()
+                        .frame(width: 120, height: 120)
+                }
+                .padding(.horizontal, 4)
                 
                 HStack(spacing: 6) {
                     Text(data.achievementName)

@@ -69,7 +69,7 @@ struct AchievementView: View {
                 .padding(.horizontal, 14)
             }
             .refreshable {
-                await viewModel.onRefresh()
+                await viewModel.onRefresh(selection: selection)
             }
         }
         .task {

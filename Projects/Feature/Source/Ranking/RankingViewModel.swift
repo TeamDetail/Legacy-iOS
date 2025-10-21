@@ -10,28 +10,26 @@ import DIContainer
 import Domain
 import Data
 
+@MainActor
 public class RankingViewModel: ObservableObject {
-    @Published var rankingList: [RankResponse]?
+    @Published var exploreRanking: [ExploreRankingResponse]? = nil
+    @Published var levelRanking: [LevelRankingResponse]? = nil
+    
     @Inject var rankingRepository: any RankRepository
     
-    @MainActor
     func fetchRanking(isExplore: Bool, type: RankType) async {
+        exploreRanking = nil
+        levelRanking = nil
         do {
             if isExplore {
-                rankingList = try await rankingRepository.fetchExploreRanking(type)
+                exploreRanking = try await rankingRepository.fetchExploreRanking(type)
             } else {
-                rankingList = try await rankingRepository.fetchLevelRanking(type)
+                levelRanking = try await rankingRepository.fetchLevelRanking(type)
             }
         } catch let apiError as APIError {
-            print(apiError)
+            print("API 에러: \(apiError)")
         } catch {
             print("에러: \(error)")
         }
     }
-    
-    @MainActor
-    func onRefresh(isExplore: Bool, type: RankType) async {
-        await fetchRanking(isExplore: isExplore, type: type)
-    }
-    
 }

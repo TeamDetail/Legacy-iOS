@@ -23,7 +23,20 @@ public extension AchievementType {
         case .present: return .achievementPresent
         case .sequencePresent: return .achievementSequencePresent
         case .writeComment: return .achievementComment
-        default: return .achievementCommon
+        case .title: return .achievementTitle
+        default: return .emptyImage
+        }
+    }
+}
+
+public extension AchievementGrade {
+    var icon: LegacyIconography {
+        switch self {
+        case .legendary: return .achievementLegendary
+        case .epic: return .achievementEpic
+        case .unique: return .achievementUnique
+        case .challenge: return .achievementChallenge
+        case .common: return .achievementCommon
         }
     }
 }

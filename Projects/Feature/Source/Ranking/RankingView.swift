@@ -20,15 +20,21 @@ struct RankingView: View {
                         )
                         
                         Spacer()
-                        
                         RankingTypeButtonGroup(rankType: $rankType)
                     }
                     .padding(.horizontal, 14)
                     
-                    RankingContentView(
-                        rankingList: viewModel.rankingList,
-                        rankType: rankType
-                    )
+                    if selection == 0 {
+                        ExploreRankingContentView(
+                            rankingList: viewModel.exploreRanking,
+                            rankType: rankType
+                        )
+                    } else {
+                        LevelRankingContentView(
+                            rankingList: viewModel.levelRanking,
+                            rankType: rankType
+                        )
+                    }
                 }
             }
             .task {

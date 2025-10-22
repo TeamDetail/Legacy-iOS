@@ -41,6 +41,7 @@ public enum LegacyIconography: String, Hashable {
     case airPlane = "AirPlane"
     case cardBackground = "CardBackground"
     case calendar = "Calendar"
+    case moneyBundle = "MoneyBundle"
     
     // MARK: Achievement image
     case achievementWrongQuiz = "WRONG_QUIZ"

@@ -19,7 +19,7 @@ struct InventoryView: View {
                 } else {
                     LazyVGrid(columns: columns, spacing: 16) {
                         ForEach(data, id: \.self) { item in
-                            InventoryItem() {
+                            InventoryItem(item: item) {
                                 viewModel.selectedItem = item
                             }
                         }

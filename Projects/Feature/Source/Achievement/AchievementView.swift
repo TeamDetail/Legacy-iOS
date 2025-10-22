@@ -202,7 +202,7 @@ struct RewardSuccessView: View {
             
             LazyVGrid(columns: Array(repeating: GridItem(.flexible(), spacing: 12), count: 5), spacing: 12) {
                 ForEach(0..<(award.itemCount ?? 0), id: \.self) { index in
-                    InventoryItem() {}
+                    InventoryItem(item: nil) {}
                         .opacity(itemsAppeared ? 1 : 0)
                         .scaleEffect(itemsAppeared ? 1 : 0.3)
                         .animation(

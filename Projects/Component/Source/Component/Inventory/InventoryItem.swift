@@ -6,11 +6,14 @@
 //
 
 import SwiftUI
+import Domain
 
 public struct InventoryItem: View {
+    let item: InventoryResponse?
     let action: () -> Void
     
-    public init(action: @escaping () -> Void) {
+    public init(item: InventoryResponse?, action: @escaping () -> Void) {
+        self.item = item
         self.action = action
     }
     
@@ -19,9 +22,15 @@ public struct InventoryItem: View {
             action()
         } label: {
             VStack {
-                Image(icon: .cardPack)
-                    .resizable()
-                    .frame(width: 48, height: 48)
+                if let item = item {
+                    Image(icon: item.itemType == .cardPack ? .cardPack : .moneyBundle)
+                        .resizable()
+                        .frame(width: 48, height: 48)
+                } else {
+                    Image(icon: .cardPack)
+                        .resizable()
+                        .frame(width: 48, height: 48)
+                }
             }
             .frame(width: 48, height: 48)
             .background(LegacyColor.Fill.normal)
@@ -33,4 +42,5 @@ public struct InventoryItem: View {
             )
         }
     }
+    
 }

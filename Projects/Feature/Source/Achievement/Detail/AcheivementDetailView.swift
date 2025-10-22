@@ -131,7 +131,7 @@ struct AchievementDetailView: View {
                         
                         Spacer()
                         
-                        InventoryItem() {}
+                        InventoryItem(item: nil) {}
                             .overlay(alignment: .bottomTrailing) {
                                 Text("\(data.achievementAward.count)")
                                     .font(.system(size: 12).bold())

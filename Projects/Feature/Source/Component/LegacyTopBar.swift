@@ -119,8 +119,8 @@ struct LegacyTopBar: View {
                             showMail = true
                             showMenu = false
                         }
-                    case .setting:
-                        flow.push(SettingView())
+                        //                    case .setting:
+                        //                        flow.push(SettingView())
                     case .wrong:
                         if let url = URL(string: "https://www.notion.so/2936459d2055806e9920d3d7ec692657") {
                             UIApplication.shared.open(url)

@@ -23,47 +23,38 @@ struct ShopView: View {
             LegacyView {
                 LegacyScrollView(title: "상점", icon: .shop, item: tabItem) {
                     VStack(spacing: 16) {
-                        HStack {
-                            CategoryButtonGroup(
-                                categories: ["카드 팩"],
-                                selection: $selection
-                            )
-                            
-                            Spacer()
-                        }
-                        .padding(.horizontal, 14)
+                        //                        HStack {
+                        //                            CategoryButtonGroup(
+                        //                                categories: ["카드 팩"],
+                        //                                selection: $selection
+                        //                            )
+                        //
+                        //                            Spacer()
+                        //                        }
+                        //                        .padding(.horizontal, 14)
                         
-                        if selection == 0 {
-                            AdvertiseView(viewModel: viewModel)
-                            
-                            if !viewModel.groupedCardPacks.isEmpty {
-                                ForEach(viewModel.groupedCardPacks, id: \.0) { storeType, cardPacks in
-                                    VStack(spacing: 12) {
-                                        HStack {
-                                            Text(storeType.typeName)
-                                                .font(.heading2(.bold))
-                                                .foreground(LegacyColor.Common.white)
-                                            Spacer()
-                                        }
-                                        .padding(.horizontal, 14)
-                                        
-                                        ForEach(cardPacks, id: \.cardpackId) { cardPack in
-                                            ShopItem(data: cardPack) {
-                                                selectedCardPack = cardPack
-                                                showModal = true
-                                            }
+                        //                        if selection == 0 {
+                        //                        AdvertiseView(viewModel: viewModel)
+                        
+                        if !viewModel.groupedCardPacks.isEmpty {
+                            ForEach(viewModel.groupedCardPacks, id: \.0) { storeType, cardPacks in
+                                VStack(spacing: 12) {
+                                    HStack {
+                                        Text(storeType.typeName)
+                                            .font(.heading2(.bold))
+                                            .foreground(LegacyColor.Common.white)
+                                        Spacer()
+                                    }
+                                    .padding(.horizontal, 14)
+                                    
+                                    ForEach(cardPacks, id: \.cardpackId) { cardPack in
+                                        ShopItem(data: cardPack) {
+                                            selectedCardPack = cardPack
+                                            showModal = true
                                         }
                                     }
-                                    .padding(.bottom, 20)
                                 }
-                            } else {
-                                //                                ForEach(1...6, id: \.self) { _ in
-                                //                                    ErrorShopItem()
-                                //                                }
-                                VStack {
-                                    Spacer()
-                                    LegacyLoadingView()
-                                }
+                                .padding(.bottom, 20)
                             }
                         } else {
                             VStack {
@@ -71,6 +62,12 @@ struct ShopView: View {
                                 LegacyLoadingView()
                             }
                         }
+                        //                        } else {
+                        //                            VStack {
+                        //                                Spacer()
+                        //                                LegacyLoadingView()
+                        //                            }
+                        //                        }
                     }
                 }
             }

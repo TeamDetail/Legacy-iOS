@@ -88,8 +88,8 @@ struct ErrorTopBar: View {
                         print("사람")
                     case .mail:
                         print("메일")
-                    case .setting:
-                        print("설정")
+//                    case .setting:
+//                        print("설정")
                     case .wrong:
                         print("메일")
                     case .logout:

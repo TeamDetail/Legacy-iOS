@@ -39,13 +39,17 @@ struct MailView: View {
                     .padding(.horizontal, 18)
                     
                     if selection == 0 {
-                        ScrollView(showsIndicators: false) {
-                            if let mails = viewModel.myMail {
-                                if mails.isEmpty {
+                        if let mails = viewModel.myMail {
+                            if mails.isEmpty {
+                                VStack {
+                                    Spacer()
                                     Text("우편함이 비었어요!")
                                         .font(.headline(.bold))
                                         .foreground(LegacyColor.Common.white)
-                                } else {
+                                    Spacer()
+                                }
+                            } else {
+                                ScrollView(showsIndicators: false) {
                                     VStack(spacing: 12) {
                                         ForEach(mails, id: \.self) { mailData in
                                             MailboxItem(data: mailData) {
@@ -57,14 +61,15 @@ struct MailView: View {
                                         .padding(.vertical, 4)
                                     }
                                 }
-                            } else {
-                                LegacyLoadingView()
-                                    .padding(.top, 10)
+                                .padding(.bottom, 60)
+                                .refreshable {
+                                    Task { await viewModel.fetchMail() }
+                                }
                             }
-                        }
-                        .padding(.bottom, 60)
-                        .refreshable {
-                            Task { await viewModel.fetchMail() }
+                        } else {
+                            LegacyLoadingView()
+                                .frame(maxHeight: .infinity)
+                                .padding(.top, 10)
                         }
                     } else {
                         if let data = viewModel.selectMail {

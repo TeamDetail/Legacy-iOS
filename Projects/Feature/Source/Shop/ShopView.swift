@@ -93,6 +93,7 @@ struct ShopView: View {
                             Task {
                                 await viewModel.buyCard(selected.cardpackId)
                                 await userViewModel.fetchMyinfo()
+                                await viewModel.fetchShop()
                             }
                             showModal = false
                         },

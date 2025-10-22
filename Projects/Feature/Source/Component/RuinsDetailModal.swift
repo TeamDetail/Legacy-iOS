@@ -25,6 +25,8 @@ struct RuinsDetailModal: View {
     let onDismissDetail: () -> Void
     let action: () -> Void
     
+    @State private var offsetY: CGFloat = 0
+    
     var body: some View {
         ZStack(alignment: .bottom) {
             if showDetail {
@@ -36,8 +38,7 @@ struct RuinsDetailModal: View {
                             if showComment {
                                 showComment = false
                             } else {
-                                onDismissDetail()
-                                dismissDetail()
+                                closeModal()
                             }
                         }
                     }
@@ -64,23 +65,18 @@ struct RuinsDetailModal: View {
                         }
                         .padding(.horizontal, 4)
                         .padding(.bottom, 40)
-                        .transition(
-                            .asymmetric(
-                                insertion: .move(edge: .trailing)
-                                    .combined(with: .opacity)
-                                    .combined(with: .scale(scale: 0.95, anchor: .trailing)),
-                                removal: .move(edge: .trailing).combined(with: .opacity)
-                            )
-                        )
+                        .transition(.asymmetric(
+                            insertion: .move(edge: .trailing).combined(with: .opacity).combined(with: .scale(scale: 0.95, anchor: .trailing)),
+                            removal: .move(edge: .trailing).combined(with: .opacity)
+                        ))
                     } else {
                         RuinsDetailView(
                             data: detail,
                             commentData: commentViewModel.ruinComments,
-                            onClose: {
-                                onDismissDetail()
-                                dismissDetail()
-                            },
-                            action: action,
+                            onClose: { closeModal() },
+                            onDismissDetail: {
+                                closeModal()
+                            }, action: action,
                             onComment: {
                                 withAnimation(.spring(response: 0.55, dampingFraction: 0.85)) {
                                     showComment = true
@@ -91,14 +87,28 @@ struct RuinsDetailModal: View {
                         .id("Detail-\(UUID().uuidString)")
                         .padding(.horizontal, 4)
                         .padding(.bottom, 40)
-                        .transition(
-                            .asymmetric(
-                                insertion: .move(edge: .leading)
-                                    .combined(with: .opacity)
-                                    .combined(with: .scale(scale: 0.95, anchor: .leading)),
-                                removal: .move(edge: .leading).combined(with: .opacity)
-                            )
+                        .offset(y: offsetY)
+                        .gesture(
+                            DragGesture()
+                                .onChanged { value in
+                                    if value.translation.height > 0 {
+                                        offsetY = value.translation.height
+                                    }
+                                }
+                                .onEnded { value in
+                                    if value.translation.height > 30 {
+                                        closeModal()
+                                    } else {
+                                        withAnimation(.spring()) {
+                                            offsetY = 0
+                                        }
+                                    }
+                                }
                         )
+                        .transition(.asymmetric(
+                            insertion: .move(edge: .leading).combined(with: .opacity).combined(with: .scale(scale: 0.95, anchor: .leading)),
+                            removal: .move(edge: .leading).combined(with: .opacity)
+                        ))
                         .task {
                             await commentViewModel.fetchComment(detail.ruinsId)
                             onShowDetail()
@@ -110,12 +120,15 @@ struct RuinsDetailModal: View {
         }
     }
     
-    private func dismissDetail() {
+    private func closeModal() {
         withAnimation(.spring(response: 0.55, dampingFraction: 0.85)) {
             showDetail = false
+            offsetY = 0
         }
         delayRun(0.25) {
             viewModel.ruinDetail = nil
+            onDismissDetail()
         }
     }
 }
+

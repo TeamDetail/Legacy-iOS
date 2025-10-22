@@ -50,12 +50,24 @@ public struct CourseItem: View {
                     
                     LinearGradient(
                         gradient: Gradient(stops: [
-                            .init(color: Color.black.opacity(0.0), location: 0.4),
-                            .init(color: Color.black.opacity(0.8), location: 0.7),
-                            .init(color: Color.black.opacity(1.0), location: 1.0)
+                            .init(color: Color.black.opacity(0.0), location: 0.0),
+                            .init(color: Color.black.opacity(0.5), location: 0.7),
+                            .init(color: Color.black.opacity(0.8), location: 1.0)
                         ]),
-                        startPoint: .trailing,
-                        endPoint: .leading
+                        startPoint: .topLeading,
+                        endPoint: .bottomTrailing
+                    )
+                    .clipShape(size: 8)
+                    .frame(height: 180)
+                    
+                    LinearGradient(
+                        gradient: Gradient(stops: [
+                            .init(color: Color.black.opacity(0.0), location: 0.0),
+                            .init(color: Color.black.opacity(0.3), location: 0.5),
+                            .init(color: Color.black.opacity(0.6), location: 1.0)
+                        ]),
+                        startPoint: .topTrailing,
+                        endPoint: .bottomLeading
                     )
                     .clipShape(size: 8)
                     .frame(height: 180)

@@ -22,6 +22,12 @@ struct InventoryView: View {
                             InventoryItem(item: item) {
                                 viewModel.selectedItem = item
                             }
+                            .overlay(alignment: .bottomTrailing) {
+                                Text(item.itemCount > 900 ? "..." : "\(item.itemCount)")
+                                    .font(.system(size: 12).bold())
+                                    .foreground(LegacyColor.Common.white)
+                                    .padding(4)
+                            }
                         }
                     }
                 }

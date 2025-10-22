@@ -10,40 +10,53 @@ struct UIKitScrollView<Content: View>: UIViewControllerRepresentable {
     let content: Content
     @Binding var scrollOffset: CGFloat
     @Binding var isExpanded: Bool
-    
-    init(scrollOffset: Binding<CGFloat>, isExpanded: Binding<Bool>, @ViewBuilder content: () -> Content) {
+    var onOverscroll: (() -> Void)? = nil
+
+    init(
+        scrollOffset: Binding<CGFloat>,
+        isExpanded: Binding<Bool>,
+        onOverscroll: (() -> Void)? = nil,
+        @ViewBuilder content: () -> Content
+    ) {
         self.content = content()
         self._scrollOffset = scrollOffset
         self._isExpanded = isExpanded
+        self.onOverscroll = onOverscroll
     }
-    
+
     func makeCoordinator() -> Coordinator {
-        Coordinator(scrollOffset: $scrollOffset, isExpanded: $isExpanded)
+        Coordinator(scrollOffset: $scrollOffset, isExpanded: $isExpanded, onOverscroll: onOverscroll)
     }
-    
+
     func makeUIViewController(context: Context) -> UIScrollViewViewController<Content> {
         let viewController = UIScrollViewViewController(rootView: content)
         viewController.scrollView.delegate = context.coordinator
         return viewController
     }
-    
+
     func updateUIViewController(_ viewController: UIScrollViewViewController<Content>, context: Context) {
         viewController.hostingController.rootView = content
         viewController.hostingController.view.setNeedsLayout()
     }
-    
+
     class Coordinator: NSObject, UIScrollViewDelegate {
         @Binding var scrollOffset: CGFloat
         @Binding var isExpanded: Bool
-        
-        init(scrollOffset: Binding<CGFloat>, isExpanded: Binding<Bool>) {
+        var onOverscroll: (() -> Void)?
+
+        init(
+            scrollOffset: Binding<CGFloat>,
+            isExpanded: Binding<Bool>,
+            onOverscroll: (() -> Void)?
+        ) {
             self._scrollOffset = scrollOffset
             self._isExpanded = isExpanded
+            self.onOverscroll = onOverscroll
         }
-        
+
         func scrollViewDidScroll(_ scrollView: UIScrollView) {
             let offset = scrollView.contentOffset.y
-            
+
             DispatchQueue.main.async {
                 self.scrollOffset = offset
                 
@@ -59,45 +72,51 @@ struct UIKitScrollView<Content: View>: UIViewControllerRepresentable {
                         self.isExpanded = false
                     }
                 }
+
+                if offset < -30 {
+                    self.onOverscroll?()
+                }
             }
         }
     }
 }
 
+// MARK: - UIScrollView Hosting Controller
 class UIScrollViewViewController<Content: View>: UIViewController {
     var scrollView: UIScrollView!
     var hostingController: UIHostingController<Content>!
-    
+
     init(rootView: Content) {
         super.init(nibName: nil, bundle: nil)
-        
+
         scrollView = UIScrollView()
         scrollView.showsVerticalScrollIndicator = false
+        scrollView.alwaysBounceVertical = true
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         hostingController = UIHostingController(rootView: rootView)
         hostingController.view.translatesAutoresizingMaskIntoConstraints = false
         hostingController.view.backgroundColor = .clear
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         addChild(hostingController)
         view.addSubview(scrollView)
         scrollView.addSubview(hostingController.view)
         hostingController.didMove(toParent: self)
-        
+
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
+
             hostingController.view.topAnchor.constraint(equalTo: scrollView.topAnchor),
             hostingController.view.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             hostingController.view.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
@@ -111,30 +130,33 @@ class UIScrollViewViewController<Content: View>: UIViewController {
 public struct RuinsDetailView: View {
     public let data: RuinsDetailResponse
     public var onClose: (() -> Void)? = nil
+    public var onDismissDetail: (() -> Void)? = nil
     public let action: () -> Void
     public let onComment: (() -> Void)?
     public let commentData: [CommentResponse]?
-    
+
     @Binding public var userLocation: CLLocation?
-    
+
     @State private var scrollOffset: CGFloat = 0
     @State private var isExpanded: Bool = false
-    
+    @State private var offsetY: CGFloat = 0
+
     private var dynamicHeight: CGFloat {
         isExpanded ? UIScreen.main.bounds.height * 0.75 : 400
     }
-    
+
     private var canStartQuiz: Bool {
         guard let userLocation = userLocation else { return false }
         let ruinLocation = CLLocation(latitude: data.latitude, longitude: data.longitude)
         let distance = userLocation.distance(from: ruinLocation)
         return distance <= 50
     }
-    
+
     public init(
         data: RuinsDetailResponse,
         commentData: [CommentResponse]?,
         onClose: (() -> Void)? = nil,
+        onDismissDetail: (() -> Void)? = nil,
         action: @escaping () -> Void,
         onComment: (() -> Void)? = nil,
         userLocation: Binding<CLLocation?> = .constant(nil)
@@ -142,11 +164,12 @@ public struct RuinsDetailView: View {
         self.data = data
         self.commentData = commentData
         self.onClose = onClose
+        self.onDismissDetail = onDismissDetail
         self.action = action
         self.onComment = onComment
         self._userLocation = userLocation
     }
-    
+
     public var body: some View {
         VStack(spacing: 16) {
             Capsule()
@@ -156,8 +179,17 @@ public struct RuinsDetailView: View {
                 .onTapGesture {
                     withAnimation { isExpanded.toggle() }
                 }
-            
-            UIKitScrollView(scrollOffset: $scrollOffset, isExpanded: $isExpanded) {
+
+            UIKitScrollView(
+                scrollOffset: $scrollOffset,
+                isExpanded: $isExpanded,
+                onOverscroll: { // 👇 여기서 감지
+                    withAnimation(.spring()) {
+                        offsetY = UIScreen.main.bounds.height
+                    }
+                    onDismissDetail?()
+                }
+            ) {
                 VStack(spacing: 16) {
                     RuinsDetailContent(
                         data: data,
@@ -165,7 +197,7 @@ public struct RuinsDetailView: View {
                     )
                     .padding(.horizontal, 6)
                     .padding(.bottom, 14)
-                    
+
                     if data.description.isEmpty {
                         Text("유적지 소개가 없어요!")
                             .font(.headline(.bold))
@@ -176,23 +208,24 @@ public struct RuinsDetailView: View {
                             .font(.body2(.medium))
                             .foreground(LegacyColor.Label.normal)
                             .padding(.horizontal, 8)
-                        
+
                         LegacyDivider()
                     }
-                    
+
                     if let commentData {
                         ForEach(commentData, id: \.self) { data in
                             CommentItem(data: data)
                         }
                     }
-                    
+
                     Spacer(minLength: UIScreen.main.bounds.height * 0.3)
                 }
             }
             .frame(height: dynamicHeight)
             .animation(.easeInOut(duration: 0.3), value: dynamicHeight)
             .clipShape(size: 24)
-            
+            .offset(y: offsetY)
+
             AnimationButton {
                 if canStartQuiz {
                     action()

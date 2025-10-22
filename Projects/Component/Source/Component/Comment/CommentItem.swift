@@ -12,6 +12,22 @@ import Shimmer
 
 public struct CommentItem: View {
     let data: CommentResponse
+    
+    private var formattedDate: String {
+        let trimmed = data.createAt.split(separator: "T").first.map(String.init) ?? data.createAt
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ko_KR")
+        formatter.dateFormat = "yyyy-MM-dd"
+        if let date = formatter.date(from: trimmed) {
+            let outputFormatter = DateFormatter()
+            outputFormatter.locale = Locale(identifier: "ko_KR")
+            outputFormatter.dateFormat = "M월 d일"
+            return outputFormatter.string(from: date)
+        } else {
+            return data.createAt
+        }
+    }
+    
     public var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
@@ -27,14 +43,14 @@ public struct CommentItem: View {
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 40, height: 40)
                     .clipped()
-                    .clipShape(size: 999)
+                    .clipShape(Circle())
                 
                 VStack(alignment: .leading, spacing: 4) {
                     Text(data.userName ?? "")
                         .font(.body1(.bold))
                         .foreground(LegacyColor.Common.white)
                     
-                    Text(data.createAt)
+                    Text(formattedDate)
                         .font(.caption2(.regular))
                         .foreground(LegacyColor.Label.alternative)
                 }

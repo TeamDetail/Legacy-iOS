@@ -19,10 +19,10 @@ struct ExploreRankingContentView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                if rankType == .friend, (rankingList?.isEmpty ?? true) {
-                    EmptyFriendView(flow: _flow)
-                } else {
-                    if let data = rankingList {
+                if let data = rankingList {
+                    if rankType == .friend, (data.isEmpty) {
+                        EmptyFriendView(flow: _flow)
+                    } else {
                         let top3 = Array(data.prefix(3))
                         TopThreeExploreView(top3: top3)
                         
@@ -38,9 +38,9 @@ struct ExploreRankingContentView: View {
                         .clipShape(size: 16)
                         .padding(.horizontal, 12)
                         .padding(.top, 16)
-                    } else {
-                        LegacyLoadingView()
                     }
+                } else {
+                    LegacyLoadingView()
                 }
             }
         }

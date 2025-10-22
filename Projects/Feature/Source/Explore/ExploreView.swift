@@ -229,6 +229,9 @@ public struct ExploreView: View {
         .task {
             locationManager.startUpdating()
         }
+        .onAppear {
+            SoundPlayer.shared.mainSound()
+        }
         .onDisappear {
             locationManager.stopUpdating()
         }

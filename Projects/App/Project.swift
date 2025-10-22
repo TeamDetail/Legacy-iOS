@@ -25,7 +25,10 @@ let project = Project(
             deploymentTargets: .iOS("15.0"),
             infoPlist: .extendingDefault(
                 with: [
-                    //MARK: map
+                    "CFBundleShortVersionString": "1.0.0",
+                    "CFBundleVersion": "1",
+                    
+                    // MARK: Map
                     "UIApplicationSceneManifest": [
                         "UIApplicationSupportsMultipleScenes": false,
                     ],
@@ -41,10 +44,10 @@ let project = Project(
                     //MARK: 다크모드만 지원
                     "UIUserInterfaceStyle": "Dark",
                     
-                    //MARK: Instagram App ID
+                    // MARK: Instagram App ID
                     "META_APP_ID": "826905676417975",
                     
-                    //MARK: kakao
+                    // MARK: Kakao & Instagram
                     "LSApplicationQueriesSchemes": [
                         "kakaokompassauth",
                         "kakaolink",

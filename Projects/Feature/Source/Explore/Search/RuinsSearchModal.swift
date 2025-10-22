@@ -39,10 +39,11 @@ struct RuinsSearchModal: View {
                 }
             }
             
-            ScrollView(.vertical, showsIndicators: false) {
-                if viewModel.isLoadingSearch {
-                    LegacyLoadingView()
-                } else if let data = viewModel.searchResult {
+            if viewModel.isLoadingSearch {
+                LegacyLoadingView()
+                    .padding(.top, 13)
+            } else if let data = viewModel.searchResult {
+                ScrollView(.vertical, showsIndicators: false) {
                     if data.isEmpty {
                         Text("검색 결과가 없어요")
                             .font(.headline(.bold))

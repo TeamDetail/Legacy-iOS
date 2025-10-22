@@ -132,7 +132,7 @@ struct AchievementDetailView: View {
                         Spacer()
                         
                         InventoryItem() {}
-                            .overlay(alignment: .topLeading) {
+                            .overlay(alignment: .bottomTrailing) {
                                 Text("\(data.achievementAward.count)")
                                     .font(.system(size: 12).bold())
                                     .foreground(LegacyColor.Common.white)

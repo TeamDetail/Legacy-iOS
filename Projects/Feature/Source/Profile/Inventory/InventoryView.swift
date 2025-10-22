@@ -1,10 +1,3 @@
-//
-//  InventoryView.swift
-//  Feature
-//
-//  Created by 김은찬 on 9/9/25.
-//
-
 import Domain
 import SwiftUI
 import Component

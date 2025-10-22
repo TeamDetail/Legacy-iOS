@@ -3,8 +3,8 @@ import Domain
 import Component
 
 struct QuizView: View {
-    @State private var hint = "불러오는 중..."
-    @State private var isHintLoading = false
+    @State private var hints: [Int: String] = [:]
+    @State private var hintLoadingStates: [Int: Bool] = [:]
     @ObservedObject var quizViewModel: QuizViewModel
     @ObservedObject var stateViewModel: QuizStateViewModel
     
@@ -28,6 +28,17 @@ struct QuizView: View {
                             if quizzes.indices.contains(stateViewModel.currentIndex) {
                                 let quiz = quizzes[stateViewModel.currentIndex]
                                 let selectedIndex = stateViewModel.getCurrentSelectedIndex()
+                                let currentHint: String = {
+                                    if let hint = hints[stateViewModel.currentIndex] {
+                                        return hint
+                                    } else if let cost = quizViewModel.creditCost?.nextQuizCost {
+                                        return "\(cost) 크레딧으로 힌트 확인"
+                                    } else {
+                                        return "불러오는 중..."
+                                    }
+                                }()
+                                let isCurrentHintLoading = hintLoadingStates[stateViewModel.currentIndex] ?? false
+                                let hasHint = hints[stateViewModel.currentIndex] != nil
                                 
                                 VStack(spacing: 20) {
                                     Text("Q\(stateViewModel.currentIndex + 1)")
@@ -61,7 +72,7 @@ struct QuizView: View {
                                     }
                                     .padding(.vertical, 4)
                                 }
-                                .padding(.vertical, 25)
+                                .padding(.vertical, 16)
                                 
                                 HStack(spacing: 8) {
                                     QuizButton(
@@ -76,25 +87,25 @@ struct QuizView: View {
                                     }
                                     
                                     QuizButton(
-                                        title: isHintLoading ? "불러오는 중..." : hint,
+                                        title: isCurrentHintLoading ? "불러오는 중..." : currentHint,
                                         buttonType: .medium
                                     ) {
                                         Task {
-                                            isHintLoading = true
-                                            hint = "힌트 불러오는 중..."
+                                            hintLoadingStates[stateViewModel.currentIndex] = true
                                             
-                                            await quizViewModel.fetchHint(quizId)
+                                            await quizViewModel.fetchHint(quiz.quizId)
                                             
                                             withAnimation {
-                                                hint = "힌트: \(quizViewModel.quizHint)"
-                                                isHintLoading = false
+                                                hints[stateViewModel.currentIndex] = "힌트: \(quizViewModel.quizHint)"
+                                                hintLoadingStates[stateViewModel.currentIndex] = false
                                             }
                                         }
                                     }
                                     
                                     QuizButton(
                                         title: stateViewModel.isLastQuestion(totalQuestions: quizzes.count) ? "완료" : "다음",
-                                        buttonType: .small
+                                        buttonType: .small,
+                                        isDisabled: !stateViewModel.hasSelectedOption()
                                     ) {
                                         if stateViewModel.isLastQuestion(totalQuestions: quizzes.count) {
                                             Task {
@@ -107,9 +118,8 @@ struct QuizView: View {
                                             stateViewModel.nextQuestion(totalQuestions: quizzes.count)
                                         }
                                     }
-                                    .disabled(!stateViewModel.hasSelectedOption())
                                 }
-                                .padding(.bottom, 30)
+                                .padding(.bottom, 40)
                             }
                         }
                         Spacer()
@@ -120,11 +130,10 @@ struct QuizView: View {
                     LegacyLoadingView("퀴즈를 불러오는 중...")
                 }
             }
-            .padding(.horizontal, 16)
+            .padding(16)
             .background(LegacyColor.Background.normal)
             .task {
                 await quizViewModel.fetchQuizCreditCost()
-                hint = "\(quizViewModel.creditCost?.nextQuizCost ?? 0) 크레딧으로 힌트 확인"
             }
         }
     }

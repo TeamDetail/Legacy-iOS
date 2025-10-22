@@ -10,11 +10,13 @@ import SwiftUI
 public struct QuizButton: View {
     let title: String
     let buttonType: QuizEnum
+    let isDisabled: Bool
     let action: () -> Void
     
-    public init(title: String, buttonType: QuizEnum, action: @escaping () -> Void) {
+    public init(title: String, buttonType: QuizEnum, isDisabled: Bool = false, action: @escaping () -> Void) {
         self.title = title
         self.buttonType = buttonType
+        self.isDisabled = isDisabled
         self.action = action
     }
     
@@ -22,7 +24,7 @@ public struct QuizButton: View {
         Button(action: action) {
             Text(title)
                 .font(.caption1(.bold))
-                .foreground(buttonType.color)
+                .foreground(isDisabled ? LegacyColor.Line.normal : buttonType.color)
                 .multilineTextAlignment(.center)
                 .lineLimit(nil)
                 .fixedSize(horizontal: false, vertical: true)
@@ -34,9 +36,10 @@ public struct QuizButton: View {
                     RoundedRectangle(cornerRadius: 12)
                         .inset(by: 5)
                         .stroke(lineWidth: 2)
-                        .foreground(buttonType.stroke)
+                        .foreground(isDisabled ? LegacyColor.Line.normal : buttonType.stroke)
                 )
                 .clipShape(size: 12)
         }
+        .disabled(isDisabled)
     }
 }

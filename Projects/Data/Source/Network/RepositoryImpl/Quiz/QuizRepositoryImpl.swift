@@ -30,4 +30,8 @@ public struct QuizRepositoryImpl: QuizRepository {
         let data = try await dataSource.fetchHint(quizId)
         return data
     }
+    
+    public func fetchQuizCreditCost() async throws -> QuizCreditCostResponse {
+        try await dataSource.fetchQuizCreditCost()
+    }
 }

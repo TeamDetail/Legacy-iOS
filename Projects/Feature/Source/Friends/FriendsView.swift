@@ -43,13 +43,15 @@ struct FriendsView: View {
         }
         .statusModal(
             message: viewModel.successMessage,
-            statusType: .success
+            statusType: .success,
+            bottomPadding: 30
         ) {
             viewModel.successMessage = ""
         }
         .statusModal(
             message: viewModel.errorMessage,
-            statusType: .failure
+            statusType: .failure,
+            bottomPadding: 30
         ) {
             viewModel.errorMessage = ""
         }

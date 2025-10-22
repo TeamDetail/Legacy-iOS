@@ -3,7 +3,7 @@ import Domain
 import Component
 
 struct QuizView: View {
-    @State private var hint = "힌트 확인하기"
+    @State private var hint = "불러오는 중..."
     @State private var isHintLoading = false
     @ObservedObject var quizViewModel: QuizViewModel
     @ObservedObject var stateViewModel: QuizStateViewModel
@@ -122,6 +122,10 @@ struct QuizView: View {
             }
             .padding(.horizontal, 16)
             .background(LegacyColor.Background.normal)
+            .task {
+                await quizViewModel.fetchQuizCreditCost()
+                hint = "\(quizViewModel.creditCost?.nextQuizCost ?? 0) 크레딧으로 힌트 확인"
+            }
         }
     }
 }

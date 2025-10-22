@@ -127,7 +127,7 @@ struct ProfileView: View {
                     ) {
                         revealCard = false
                         inventoryViewModel.selectedItem = nil
-                        flow.pop()
+                        selection = 2
                     }
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)

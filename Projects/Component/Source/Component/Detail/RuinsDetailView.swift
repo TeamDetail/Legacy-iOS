@@ -194,25 +194,22 @@ public struct RuinsDetailView: View {
             .clipShape(size: 24)
             
             AnimationButton {
-                if canStartQuiz {
-                    action()
-                }
+                action()
             } label: {
-                Text(canStartQuiz ? "퀴즈 풀고 탐험하기" : "유적지 근처에서만 퀴즈를 풀 수 있어요")
+                Text("퀴즈 풀고 탐험하기")
                     .frame(maxWidth: .infinity)
                     .frame(height: 45)
                     .font(.caption1(.bold))
-                    .foreground(canStartQuiz ? LegacyColor.Blue.netural : LegacyColor.Label.alternative)
+                    .foreground(LegacyColor.Blue.netural)
                     .background(LegacyColor.Fill.normal)
                     .clipShape(size: 12)
                     .overlay(
                         RoundedRectangle(cornerRadius: 12)
                             .inset(by: 5)
                             .stroke(lineWidth: 1)
-                            .foreground(canStartQuiz ? LegacyColor.Blue.netural : LegacyColor.Label.alternative)
+                            .foreground(LegacyColor.Blue.netural)
                     )
             }
-            .disabled(!canStartQuiz)
             .padding(.horizontal, 4)
             .padding(.bottom, 8)
         }

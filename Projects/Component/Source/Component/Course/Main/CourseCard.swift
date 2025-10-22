@@ -46,8 +46,9 @@ public struct CourseCard: View {
                 
                 LinearGradient(
                     gradient: Gradient(stops: [
-                        .init(color: Color.black.opacity(0.0), location: 0.5),
-                        .init(color: Color.black.opacity(0.7), location: 1.0)
+                        .init(color: Color.black.opacity(0.0), location: 0.0),
+                        .init(color: Color.black.opacity(0.55), location: 0.75),
+                        .init(color: Color.black.opacity(0.75), location: 1.0)
                     ]),
                     startPoint: .top,
                     endPoint: .bottom

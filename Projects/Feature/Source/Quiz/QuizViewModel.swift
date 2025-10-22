@@ -13,6 +13,7 @@ public class QuizViewModel: ObservableObject {
     @Published var wrongNumbers: [Int] = []
     @Published var isLoadingQuiz = false
     @Published var quizHint: String = "힌트가 없어요!"
+    @Published var creditCost: QuizCreditCostResponse?
     
     @Inject var quizRepository: any QuizRepository
     
@@ -73,6 +74,15 @@ public class QuizViewModel: ObservableObject {
     func fetchHint(_ quizId: Int) async {
         do {
             quizHint = try await quizRepository.fetchHint(quizId)
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    @MainActor
+    func fetchQuizCreditCost() async {
+        do {
+            creditCost = try await quizRepository.fetchQuizCreditCost()
         } catch {
             print(error.localizedDescription)
         }

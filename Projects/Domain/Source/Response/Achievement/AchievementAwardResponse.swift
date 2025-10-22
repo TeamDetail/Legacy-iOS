@@ -7,18 +7,19 @@
 
 import Foundation
 
-public struct AchievementAwardResponse: ResponseProtocol {
-    public let awardExp: Int
-    public let awardCredit: Int
-    public let achievementAward: [MailItem]
+public struct AchievementAwardResponse: ResponseProtocol, Decodable {
+    public let itemId: Int?
+    public let itemType: StoreType?
+    public let itemName: String?
+    public let itemDescription: String?
+    public let itemCount: Int?
     
-    public init(
-        awardExp: Int,
-        awardCredit: Int,
-        achievementAward: [MailItem]
-    ) {
-        self.awardExp = awardExp
-        self.awardCredit = awardCredit
-        self.achievementAward = achievementAward
+    public init(itemId: Int? = nil, itemType: StoreType? = nil, itemName: String? = nil, itemDescription: String? = nil, itemCount: Int? = nil) {
+        self.itemId = itemId
+        self.itemType = itemType
+        self.itemName = itemName
+        self.itemDescription = itemDescription
+        self.itemCount = itemCount
     }
 }
+

@@ -17,6 +17,7 @@ let project = Project(
                 .project(target: "DIContainer", path: .relativeToRoot("Projects/DIContainer")),
                 .project(target: "Shared", path: .relativeToRoot("Projects/Shared")),
                 .project(target: "Component", path: .relativeToRoot("Projects/Component")),
+                .project(target: "Data", path: .relativeToRoot("Projects/Data")),
                 .external(name: "Moya"),
                 .external(name: "GoogleMaps"),
                 .external(name: "FlexibleKit"),

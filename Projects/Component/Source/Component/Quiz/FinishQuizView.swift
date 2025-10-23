@@ -26,7 +26,7 @@ public struct FinishQuizView: View {
     
     public var body: some View {
         ZStack {
-            LegacyModalView(onDismiss) {
+            LegacyModalView {
                 VStack(spacing: 20) {
                     Spacer()
                     

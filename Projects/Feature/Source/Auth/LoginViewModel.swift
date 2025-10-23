@@ -13,39 +13,39 @@ class LoginViewModel: NSObject, ObservableObject {
     
     // MARK: - Kakao 로그인
     func startKakaoLogin() {
-        if UserApi.isKakaoTalkLoginAvailable() {
-            UserApi.shared.loginWithKakaoTalk { oauthToken, error in
-                guard let oauthToken = oauthToken else {
-                    print("OAuthToken이 nil입니다.")
-                    return
-                }
-                
-                let request = AuthRequest(
-                    accessToken: oauthToken.accessToken,
-                    refreshToken: oauthToken.refreshToken
-                )
-                
-                Task {
-                    await self.kakaoLogin(request)
-                }
+        //        if UserApi.isKakaoTalkLoginAvailable() {
+        //            UserApi.shared.loginWithKakaoTalk { oauthToken, error in
+        //                guard let oauthToken = oauthToken else {
+        //                    print("OAuthToken이 nil입니다.")
+        //                    return
+        //                }
+        //
+        //                let request = AuthRequest(
+        //                    accessToken: oauthToken.accessToken,
+        //                    refreshToken: oauthToken.refreshToken
+        //                )
+        //
+        //                Task {
+        //                    await self.kakaoLogin(request)
+        //                }
+        //            }
+        //        } else {
+        //MARK: 웹로그인
+        UserApi.shared.loginWithKakaoAccount { oauthToken, error in
+            guard let oauthToken = oauthToken else {
+                print("OAuthToken이 nil입니다.")
+                return
             }
-        } else {
-            //MARK: 웹로그인
-            UserApi.shared.loginWithKakaoAccount { oauthToken, error in
-                guard let oauthToken = oauthToken else {
-                    print("OAuthToken이 nil입니다.")
-                    return
-                }
-                
-                let request = AuthRequest(
-                    accessToken: oauthToken.accessToken,
-                    refreshToken: oauthToken.refreshToken
-                )
-                
-                Task {
-                    await self.kakaoLogin(request)
-                }
+            
+            let request = AuthRequest(
+                accessToken: oauthToken.accessToken,
+                refreshToken: oauthToken.refreshToken
+            )
+            
+            Task {
+                await self.kakaoLogin(request)
             }
+            //            }
         }
     }
     

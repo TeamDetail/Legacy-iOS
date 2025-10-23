@@ -35,12 +35,12 @@ public struct LegacyTabBar<Content: View>: View {
                                 ForEach(LegacyTabItem.allCases, id: \.self) { item in
                                     LegacyNavigationCell(item: item, isSelected: item == selection) {
                                         if selection == item {
-                                            withAnimation(.easeInOut(duration: 0.6)) {
-                                                scrollViewProxy.scrollTo(
-                                                    "ScrollToTop-\(item.rawValue)",
-                                                    anchor: .top
-                                                )
-                                            }
+                                            //                                            withAnimation(.easeInOut(duration: 0.6)) {
+                                            scrollViewProxy.scrollTo(
+                                                "ScrollToTop-\(item.rawValue)",
+                                                anchor: .top
+                                            )
+                                            //                                            }
                                         } else {
                                             selection = item
                                         }

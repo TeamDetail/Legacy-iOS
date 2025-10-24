@@ -32,4 +32,8 @@ public struct UserDataSource: DataSourceProtocol {
     public func applyTitle(_ styleId: Int) async throws -> String {
         try await performRequest(.applyTitle(styleId))
     }
+    
+    public func deleteUser() async throws -> String {
+        try await performRequest(.deleteUser)
+    }
 }

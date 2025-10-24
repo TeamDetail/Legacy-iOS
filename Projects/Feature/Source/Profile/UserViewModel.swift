@@ -100,4 +100,13 @@ public class UserViewModel: ObservableObject, APIMessageable {
             print("에러: \(error)")
         }
     }
+    
+    @MainActor
+    func deleteUser() async {
+        do {
+            try await userRepository.deleteUser()
+        } catch {
+            print("에러: \(error)")
+        }
+    }
 }

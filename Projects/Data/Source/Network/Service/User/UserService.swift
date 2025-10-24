@@ -15,6 +15,7 @@ public enum UserService: ServiceProtocol {
     case changeProfileImage(_ request: ChangeProfileImageRequest)
     case fetchTitle
     case applyTitle(_ styleId: Int)
+    case deleteUser
 }
 
 extension UserService {
@@ -34,6 +35,8 @@ extension UserService {
             "/titles"
         case .applyTitle:
             "/title"
+        case .deleteUser:
+            ""
         }
     }
     
@@ -44,6 +47,7 @@ extension UserService {
         case .changeProfileImage: .patch
         case .fetchTitle: .get
         case .applyTitle: .patch
+        case .deleteUser: .delete
         }
     }
     
@@ -65,6 +69,8 @@ extension UserService {
                 parameters: ["styleId": styleId],
                 encoding: JSONEncoding.default
             )
+        case .deleteUser:
+            return .requestPlain
         }
     }
 }

@@ -37,5 +37,9 @@ public struct UserRepositoryImpl: UserRepository {
     public func applyTitle(_ styleId: Int) async throws {
         _ = try await dataSource.applyTitle(styleId)
     }
+    
+    public func deleteUser() async throws {
+        _ = try await dataSource.deleteUser()
+    }
 }
 

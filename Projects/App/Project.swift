@@ -33,8 +33,8 @@ let project = Project(
                         "UIApplicationSupportsMultipleScenes": false,
                     ],
                     "UILaunchStoryboardName": "LaunchScreen",
-                    "NSLocationWhenInUseUsageDescription": "이 앱은 지도에 현재 위치를 표시하기 위해 위치 정보를 사용합니다.",
-                    "NSLocationAlwaysAndWhenInUseUsageDescription": "이 앱은 지도에 현재 위치를 표시하기 위해 위치 정보를 사용합니다.",
+                    "NSLocationWhenInUseUsageDescription": "사용자의 현재 위치를 기반으로 주변 역사 유적지를 탐색하고, 해당 지역을 점령하는 게임 기능을 제공하기 위해 위치 정보를 사용합니다.",
+                    "NSLocationAlwaysAndWhenInUseUsageDescription": "앱이 백그라운드에서도 사용자의 위치를 기반으로 점령 현황을 갱신하고, 인근 유적지 이벤트 알림을 제공하기 위해 위치 정보를 사용합니다.",
                     
                     //MARK: 가로모드 제한
                     "UISupportedInterfaceOrientations": [

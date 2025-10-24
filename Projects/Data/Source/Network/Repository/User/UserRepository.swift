@@ -14,5 +14,6 @@ public protocol UserRepository {
     func changeProfileImage(_ request: ChangeProfileImageRequest) async throws
     func fetchTitle() async throws -> [UserTitleResponse]
     func applyTitle(_ styleId: Int) async throws
+    func deleteUser() async throws
 }
 

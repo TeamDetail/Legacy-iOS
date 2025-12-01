@@ -13,4 +13,5 @@ public protocol AuthRepository {
     func postReissue(_ request: RefreshRequest) async throws
     func appleLogin(_ request: AppleLoginRequest) async throws -> TokenResponse
     func googleLogin(_ request: GoogleLoginRequest) async throws -> TokenResponse
+    func updateName(_ nickName: String) async throws
 }

@@ -22,6 +22,7 @@ public class ExploreViewModel: ObservableObject {
     @Published var isLoadingSearch = false
     
     @Inject var exploreRepository: any ExploreRepository
+    @Inject var nameRepository: any AuthRepository
     
     @MainActor
     func fetchMap(_ location: MapBoundsRequest) async {
@@ -87,6 +88,15 @@ public class ExploreViewModel: ObservableObject {
         do {
             searchResult = try await exploreRepository.searchRuins(ruinsName)
             isLoadingSearch = false
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
+    @MainActor
+    func updateName(_ name: String) async {
+        do {
+            try await nameRepository.updateName(name)
         } catch {
             print(error.localizedDescription)
         }

@@ -82,6 +82,8 @@ struct ErrorTopBar: View {
                         withAnimation(.appSpring) {
                             showMenu = false
                         }
+                    case .star:
+                        print("이밴트")
                     case .calendar:
                         print("출첵")
                     case .people:

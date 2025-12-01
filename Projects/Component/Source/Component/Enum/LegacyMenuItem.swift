@@ -1,12 +1,14 @@
 import SwiftUI
 
 public enum LegacyMenuItem: Int, CaseIterable {
-    case arrow, calendar, people, mail, setting, wrong, logout //MARK: setting 나중에 추가
+    case arrow, star, calendar, people, mail, setting, wrong, logout //MARK: setting 나중에 추가
     
     var icon: Image {
         switch self {
         case .arrow:
             Image(icon: .topArrow)
+        case .star:
+            Image(icon: .star)
         case .calendar:
             Image(icon: .calendar)
         case .people:

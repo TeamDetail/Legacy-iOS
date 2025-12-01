@@ -107,6 +107,8 @@ struct LegacyTopBar: View {
                         withAnimation(.appSpring) {
                             showMenu = false
                         }
+                    case .star:
+                        flow.push(EventView())
                     case .calendar:
                         withAnimation(.appSpring) {
                             showDaily = true

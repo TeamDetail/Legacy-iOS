@@ -64,6 +64,10 @@ public struct DataSourceAssembly: Assembly {
             DailyDataSource()
         }.inObjectScope(.container)
         
+        container.register(EventDataSource.self) { _ in
+            EventDataSource()
+        }.inObjectScope(.container)
+        
         container.register(BlockRepository.self) { _ in //MARK: 나중에 구현
             BlockService()
         }.inObjectScope(.container)

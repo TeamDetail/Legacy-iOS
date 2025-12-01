@@ -77,5 +77,10 @@ public struct RepositoryAssembly: Assembly {
             let dataSource = resolver.resolve(DailyDataSource.self)!
             return DailyRepositoryImpl(dataSource: dataSource)
         }.inObjectScope(.container)
+        
+        container.register(EventRepository.self) { resolver in
+            let dataSource = resolver.resolve(EventDataSource.self)!
+            return EventRepositoryImpl(dataSource: dataSource)
+        }.inObjectScope(.container)
     }
 }

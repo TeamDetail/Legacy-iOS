@@ -6,6 +6,7 @@ public enum AuthService: ServiceProtocol {
     case postReissue(_ request: RefreshRequest)
     case appleLogin(_ request: AppleLoginRequest)
     case googleLogin(_ request: GoogleLoginRequest)
+    case updateName(_ nickName: String)
 }
 
 extension AuthService {
@@ -19,6 +20,8 @@ extension AuthService {
             "/apple/accessToken"
         case .googleLogin:
             "/google/ios"
+        case .updateName:
+            "/apple/update-nickname"
         }
     }
     
@@ -32,6 +35,7 @@ extension AuthService {
         case .postReissue: .post
         case .appleLogin: .post
         case .googleLogin: .post
+        case .updateName: .post
         }
     }
     
@@ -45,6 +49,11 @@ extension AuthService {
             request .toJSONParameters()
         case let .googleLogin(request):
             request .toJSONParameters()
+        case let .updateName(nickname):
+            .requestParameters(
+                parameters: ["nickname": nickname],
+                encoding: JSONEncoding.default
+            )
         }
     }
     

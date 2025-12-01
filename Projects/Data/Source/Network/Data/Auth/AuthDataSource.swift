@@ -21,4 +21,8 @@ public struct AuthDataSource: DataSourceProtocol {
     public func googleLogin(_ request: GoogleLoginRequest) async throws -> TokenResponse {
         try await performRequest(.googleLogin(request))
     }
+    
+    public func updateName(_ nickName: String) async throws -> String {
+        try await performRequest(.updateName(nickName))
+    }
 }

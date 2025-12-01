@@ -51,4 +51,8 @@ public struct AuthRepositoryImpl: AuthRepository {
         )
         return data
     }
+    
+    public func updateName(_ nickName: String) async throws {
+        _ = try await dataSource.updateName(nickName)
+    }
 }

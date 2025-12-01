@@ -20,6 +20,7 @@ public struct CategoryButton: View {
     
     public var body: some View {
         AnimationButton {
+            HapticManager.instance.impact(style: .light)
             action()
         } label: {
             Text(category)

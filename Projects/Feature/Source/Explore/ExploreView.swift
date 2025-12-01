@@ -25,10 +25,14 @@ public struct ExploreView: View {
     
     //MARK: 탭바 숨김 상태
     @Binding var isTabBarHidden: Bool
-    
     @State private var showSearchModal = false
     
-    // MARK: - 알람 관련 State
+    // MARK: - NickName Modal State
+    @State private var showNickModal = false
+    @State private var nickName: String = ""
+    @FocusState private var isNickFocused: Bool
+    
+    // MARK: - 알람 관련
     @State private var lastAlarmLocation: CLLocation?
     @State private var alarmSentRuinIds: Set<Int> = []
     private let minAlarmDistance: CLLocationDistance = 100
@@ -189,8 +193,30 @@ public struct ExploreView: View {
                 )
                 .transition(.scale.combined(with: .opacity))
             }
+            
+            if showNickModal {
+                Color.black.opacity(0.6)
+                    .ignoresSafeArea()
+                
+                NickNameModal(
+                    nickName: $nickName,
+                    isTextFieldFocused: $isNickFocused
+                ) {
+                    Task {
+                        await viewModel.updateName(nickName)
+                        withAnimation(.spring) {
+                            showNickModal = false
+                        }
+                    }
+                }
+                .padding(.bottom, 20)
+                .padding(.horizontal, 32)
+                .transition(.scale.combined(with: .opacity))
+                .onAppear { isNickFocused = true }
+            }
         }
-        // MARK: 위치 변경 시 탐험 생성 및 알람 체크
+        
+        // MARK: 위치 변경
         .onChange(of: locationManager.location) { newLocation in
             guard let newLocation, newLocation.horizontalAccuracy < 100 else { return }
             
@@ -231,6 +257,13 @@ public struct ExploreView: View {
         }
         .onAppear {
             SoundPlayer.shared.mainSound()
+            if let data = userData.userInfo {
+                if data.nickname.isEmpty {
+                    withAnimation(.spring) {
+                        showNickModal = true
+                    }
+                }
+            }
         }
         .onDisappear {
             locationManager.stopUpdating()

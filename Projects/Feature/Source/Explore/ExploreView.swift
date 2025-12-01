@@ -37,6 +37,10 @@ public struct ExploreView: View {
     @State private var alarmSentRuinIds: Set<Int> = []
     private let minAlarmDistance: CLLocationDistance = 100
     
+    // MARK: 키보드 높이
+    @State private var keyboardHeight: CGFloat = 0
+    @State private var isNickKeyboardFocused = false
+    
     public init(_ isTabBarHidden: Binding<Bool>) {
         self._isTabBarHidden = isTabBarHidden
     }
@@ -198,20 +202,28 @@ public struct ExploreView: View {
                 Color.black.opacity(0.6)
                     .ignoresSafeArea()
                 
-                NickNameModal(
-                    nickName: $nickName,
-                    isTextFieldFocused: $isNickFocused
-                ) {
-                    Task {
-                        await viewModel.updateName(nickName)
-                        withAnimation(.spring) {
-                            showNickModal = false
+                VStack {
+                    Spacer()
+                    
+                    NickNameModal(
+                        nickName: $nickName,
+                        isTextFieldFocused: $isNickFocused
+                    ) {
+                        Task {
+                            await viewModel.updateName(nickName)
+                            withAnimation(.spring) {
+                                showNickModal = false
+                            }
+                            userData.userInfo = nil
+                            await userData.fetchMyinfo()
                         }
                     }
+                    .padding(.horizontal, 32)
+                    .padding(.bottom, isNickKeyboardFocused ? 140 : 20)
+                    .animation(.spring(response: 0.55, dampingFraction: 0.85), value: isNickKeyboardFocused)
+                    Spacer()
                 }
-                .padding(.bottom, 20)
-                .padding(.horizontal, 32)
-                .transition(.scale.combined(with: .opacity))
+                .transition(.move(edge: .bottom).combined(with: .opacity))
                 .onAppear { isNickFocused = true }
             }
         }
@@ -257,13 +269,6 @@ public struct ExploreView: View {
         }
         .onAppear {
             SoundPlayer.shared.mainSound()
-            if let data = userData.userInfo {
-                if data.nickname.isEmpty {
-                    withAnimation(.spring) {
-                        showNickModal = true
-                    }
-                }
-            }
         }
         .onDisappear {
             locationManager.stopUpdating()
@@ -272,7 +277,29 @@ public struct ExploreView: View {
             await viewModel.fetchMyBlock()
             await userData.fetchMyinfo()
             await checkNearbyRuinsAlarm()
+            if let data = userData.userInfo, data.nickname.isEmpty {
+                await MainActor.run {
+                    withAnimation(.appSpring) {
+                        showNickModal = true
+                    }
+                }
+            }
         }
+        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillShowNotification)) { notif in
+            if let rect = notif.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+                keyboardHeight = rect.cgRectValue.height
+                withAnimation(.spring(response: 0.55, dampingFraction: 0.85)) {
+                    isNickKeyboardFocused = true
+                }
+            }
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIResponder.keyboardWillHideNotification)) { _ in
+            withAnimation(.spring(response: 0.55, dampingFraction: 0.85)) {
+                keyboardHeight = 0
+                isNickKeyboardFocused = false
+            }
+        }
+        
     }
 }
 

@@ -33,6 +33,7 @@ public struct DropDown<T: CaseIterable & RawRepresentable>: View where T.RawValu
     public var body: some View {
         VStack(spacing: 0) {
             AnimationButton {
+                HapticManager.instance.impact(style: .light)
                 withAnimation(.easeOut(duration: 0.15)) {
                     isExpanded.toggle()
                     showAnimation = isExpanded

@@ -7,10 +7,15 @@ public class SoundPlayer {
     private init() {}
     
     public func play(sound name: String) {
+        if !UserDefaults.isBgmEnabled {
+            return
+        }
+        
         guard let url = Bundle.module.url(forResource: name, withExtension: "mp3") else {
             print("❌ \(name).mp3 not found!")
             return
         }
+        
         do {
             player = try AVAudioPlayer(contentsOf: url)
             player?.prepareToPlay()
@@ -19,6 +24,11 @@ public class SoundPlayer {
         } catch {
             print("❌ Error: \(error)")
         }
+    }
+    
+    public func stop() {
+        player?.stop()
+        player = nil
     }
     
     public func mainSound() {
@@ -33,4 +43,3 @@ public class SoundPlayer {
         play(sound: "loginbgm")
     }
 }
-

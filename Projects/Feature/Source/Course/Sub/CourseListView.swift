@@ -14,20 +14,64 @@ import FlowKit
 
 struct CourseListView: View {
     @ObservedObject var viewModel: CourseViewModel
+    
     @State private var selectedProgress: ProgressStatus = .incomplete
     @State private var selectedSort: SortType = .latest
     @State private var selectedContent: ContentType = .all
     @State private var searchText = ""
+    
     @Binding var activeDropDown: DropDownType
     @Binding var selection: Int
     @FocusState.Binding var isFocused: Bool
     @Flow var flow
     
-    var filteredCourses: [CourseResponse] {
-        guard !searchText.isEmpty else { return viewModel.courses ?? [] }
-        return viewModel.courses?.filter {
+    private var filteredCourses: [CourseResponse] {
+        guard let courses = viewModel.courses else { return [] }
+        return applySorting(to: applyContentFilter(to: applyProgressFilter(to: applySearchFilter(to: courses))))
+    }
+    
+    private func applySearchFilter(to list: [CourseResponse]) -> [CourseResponse] {
+        guard !searchText.isEmpty else { return list }
+        return list.filter {
             $0.courseName.localizedCaseInsensitiveContains(searchText)
-        } ?? []
+        }
+    }
+    
+    private func applyProgressFilter(to list: [CourseResponse]) -> [CourseResponse] {
+        list.filter { course in
+            switch selectedProgress {
+            case .all:
+                return true
+            case .complete:
+                return course.clear == true
+            case .incomplete:
+                return course.clear == false
+            }
+        }
+    }
+    
+    private func applyContentFilter(to list: [CourseResponse]) -> [CourseResponse] {
+        list.filter { course in
+            switch selectedContent {
+            case .all:
+                return true
+            case .general:
+                return course.eventId == nil
+            case .event:
+                return course.eventId != nil
+            }
+        }
+    }
+    
+    private func applySorting(to list: [CourseResponse]) -> [CourseResponse] {
+        switch selectedSort {
+        case .latest:
+            return list.sorted { $0.courseId > $1.courseId }
+        case .popular:
+            return list.sorted { $0.heartCount > $1.heartCount }
+        case .clearCount:
+            return list.sorted { $0.clearCount > $1.clearCount }
+        }
     }
     
     var body: some View {
@@ -44,14 +88,11 @@ struct CourseListView: View {
                 .focused($isFocused)
                 .padding(.horizontal, 8)
                 
-                // 드롭다운 필터
                 HStack {
                     DropDown(
                         isExpanded: Binding(
                             get: { activeDropDown == .progress },
-                            set: { newValue in
-                                activeDropDown = newValue ? .progress : .none
-                            }
+                            set: { activeDropDown = $0 ? .progress : .none }
                         ),
                         selected: $selectedProgress,
                         button: .big
@@ -61,9 +102,7 @@ struct CourseListView: View {
                     DropDown(
                         isExpanded: Binding(
                             get: { activeDropDown == .sort },
-                            set: { newValue in
-                                activeDropDown = newValue ? .sort : .none
-                            }
+                            set: { activeDropDown = $0 ? .sort : .none }
                         ),
                         selected: $selectedSort,
                         button: .small
@@ -72,9 +111,7 @@ struct CourseListView: View {
                     DropDown(
                         isExpanded: Binding(
                             get: { activeDropDown == .content },
-                            set: { newValue in
-                                activeDropDown = newValue ? .content : .none
-                            }
+                            set: { activeDropDown = $0 ? .content : .none }
                         ),
                         selected: $selectedContent,
                         button: .small
@@ -88,9 +125,7 @@ struct CourseListView: View {
                         LazyVStack(spacing: 4) {
                             ForEach(filteredCourses, id: \.self) { data in
                                 CourseItem(data: data) {
-                                    Task {
-                                        await viewModel.likeCourse(data.courseId)
-                                    }
+                                    Task { await viewModel.likeCourse(data.courseId) }
                                 } navigation: {
                                     flow.push(CourseDetailView(courseId: data.courseId))
                                 }

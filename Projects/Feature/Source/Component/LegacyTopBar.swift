@@ -21,6 +21,7 @@ struct LegacyTopBar: View {
     @State private var showDaily = false
     @State private var buttonFrame: CGRect = .zero
     @State private var showAnimation = false
+    @State private var showInfo = false
     let data: UserInfoResponse
     
     var body: some View {
@@ -124,8 +125,9 @@ struct LegacyTopBar: View {
                     case .setting:
                         flow.push(SettingView())
                     case .wrong:
-                        if let url = URL(string: "https://www.notion.so/2936459d2055806e9920d3d7ec692657") {
-                            UIApplication.shared.open(url)
+                        withAnimation(.appSpring) {
+                            showInfo = true
+                            showMenu = false
                         }
                     case .logout:
                         Sign.logout()
@@ -176,6 +178,28 @@ struct LegacyTopBar: View {
                     DailyView {
                         withAnimation(.appSpring) {
                             showDaily = false
+                        }
+                    }
+                    .transition(.scale.combined(with: .opacity))
+                    .zIndex(999)
+                }
+                .animation(.spring(response: 0.35, dampingFraction: 0.7), value: showDaily)
+            }
+            
+            if showInfo {
+                ZStack {
+                    Color.black.opacity(0.4)
+                        .ignoresSafeArea()
+                        .blur(radius: 2)
+                        .onTapGesture {
+                            withAnimation(.appSpring) {
+                                showInfo = false
+                            }
+                        }
+                    
+                    AppInfoModal {
+                        withAnimation(.appSpring) {
+                            showInfo = false
                         }
                     }
                     .transition(.scale.combined(with: .opacity))

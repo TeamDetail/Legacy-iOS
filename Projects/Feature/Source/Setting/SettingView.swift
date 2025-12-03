@@ -26,7 +26,7 @@ struct SettingView: View {
                         .font(.headline(.medium))
                         .foreground(LegacyColor.Common.white)
                     Spacer()
-                    Text("1.0.1")
+                    Text("1.0.2")
                         .font(.system(size: 18, weight: .medium))
                         .foreground(LegacyColor.Label.disable)
                 }

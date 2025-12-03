@@ -28,7 +28,6 @@ class EventViewModel: ObservableObject {
     func fetchEventDetail(_ id: Int) async {
         do {
             detailEvent = try await eventRepository.fetchEventDetail(id)
-            detailEvent = EventDetailResponse(title: "테스트", shortDescription: "ㅎㅇ", description: "ㅎㅇ", startAt: "2025.01.01", endAt: "2026.01.01", eventImage: "ㄹㅇ나ㅣ", links: [.init(name: "fd", link: "fd")])
         } catch {
             print(error.localizedDescription)
         }

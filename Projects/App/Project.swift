@@ -25,7 +25,7 @@ let project = Project(
             deploymentTargets: .iOS("15.0"),
             infoPlist: .extendingDefault(
                 with: [
-                    "CFBundleShortVersionString": "1.0.1",
+                    "CFBundleShortVersionString": "1.0.2",
                     "CFBundleVersion": "1",
                     
                     // MARK: Map
